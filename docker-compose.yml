@@ -1,0 +1,67 @@
+version: '3'
+services:
+  # processorderemail:
+  #   depends_on:
+  #     - kafka
+  #   container_name: processorderemail
+  #   image: ideafoundry/processorderemail
+  #   ports:
+  #     - "8181:8181"
+  #   environment:
+  #     - if.occasion.creds
+  # createperson:
+  #   depends_on:
+  #     - mysql
+  #   container_name: createperson
+  #   image: ideafoundry/createperson
+  #   ports:
+  #     - "8182:8182"
+  # createorder:
+  #   depends_on:
+  #     - mysql
+  #   container_name: createorder
+  #   image: ideafoundry/createorder
+  #   ports:
+  #     - "8183:8183"
+  # createquestion:
+  #   depends_on:
+  #     - mysql
+  #   container_name: createquestion
+  #   image: ideafoundry/createquestion
+  #   ports:
+  #     - "8184:8184"
+  mailstarter:
+    depends_on:
+      - kafka
+    container_name: mailstarter
+    image: ideafoundry/mailstarter
+    ports:
+      - "8185:8185"
+  mysql:
+    container_name: mysql
+    image: mysql:5.7
+     volumes:
+       - db_data:/var/lib/mysql
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: changeme
+       MYSQL_DATABASE: ideafoundrybi
+       MYSQL_USER: ideafoundry
+       MYSQL_PASSWORD: changeme
+  zookeeper:
+    container_name: zookeeper
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+  kafka:
+    container_name: kafka
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: 192.168.99.102
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+volumes:
+    db_data:
