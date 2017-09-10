@@ -1,6 +1,16 @@
 version: '3'
 
 services:
+  legacydataexport:
+    depends_on:
+      - kafka
+    container_name: legacydataexport
+    image: ideafoundry/occasion-legacy-data-export-service:1.0.0-SNAPSHOT
+    ports:
+      - "8686:8686"
+    environment:
+      - HOST_IP=${HOST_IP}
+      - IF_OCCASION_CREDS=${IF_OCCASION_CREDS}
   processorderemail:
     depends_on:
       - mailsource      
@@ -10,11 +20,7 @@ services:
     ports:
       - "8181:8181"
     environment:
-      - IF_AIRTABLE_CREDS=${IF_AIRTABLE_CREDS}
       - HOST_IP=${HOST_IP}
-      - IF_DB_PASSWORD=${IF_DB_PASSWORD}
-      - IF_DB_PORT=${IF_DB_PORT}
-      - IF_DB_USERNAME=${IF_DB_USERNAME}
       - IF_OCCASION_CREDS=${IF_OCCASION_CREDS}
   createperson:
     depends_on:
