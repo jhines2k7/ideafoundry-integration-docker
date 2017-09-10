@@ -1,30 +1,37 @@
 version: '3'
 
 services:
+  legacydataexport:
+    depends_on:
+      - kafka
+    container_name: legacydataexport
+    image: ideafoundry/occasion-legacy-data-export-service:1.0.0-SNAPSHOT
+    ports:
+      - "8686:8686"
+    environment:
+      - HOST_IP=${HOST_IP}
+      - IF_OCCASION_CREDS=${IF_OCCASION_CREDS}
   processorderemail:
     depends_on:
       - mailsource      
       - mysql
     container_name: processorderemail
-    image: ideafoundry/occasion-order-email-processor-service:1.0.0
+    image: ideafoundry/occasion-order-email-processor-service:1.0.0.RELEASE
     ports:
       - "8181:8181"
     environment:
-      - IF_AIRTABLE_CREDS=${IF_AIRTABLE_CREDS}
       - HOST_IP=${HOST_IP}
-      - IF_DB_PASSWORD=${IF_DB_PASSWORD}
-      - IF_DB_PORT=${IF_DB_PORT}
-      - IF_DB_USERNAME=${IF_DB_USERNAME}
       - IF_OCCASION_CREDS=${IF_OCCASION_CREDS}
   createperson:
     depends_on:
       - processorderemail      
     container_name: createperson
-    image: ideafoundry/create-airtable-person-service:1.0.1
+    image: ideafoundry/create-airtable-person-service:1.0.10.RELEASE
     ports:
       - "8182:8182"
     environment:
       - IF_AIRTABLE_CREDS=${IF_AIRTABLE_CREDS}
+      - AIRTABLE_APP_ID=${AIRTABLE_APP_ID}
       - HOST_IP=${HOST_IP}
       - IF_DB_PASSWORD=${IF_DB_PASSWORD}
       - IF_DB_PORT=${IF_DB_PORT}
@@ -33,11 +40,12 @@ services:
     depends_on:
       - createperson
     container_name: createorder
-    image: ideafoundry/create-airtable-order-service:1.0.0
+    image: ideafoundry/create-airtable-order-service:1.0.0.RELEASE
     ports:
       - "8183:8183"
     environment:
       - IF_AIRTABLE_CREDS=${IF_AIRTABLE_CREDS}
+      - AIRTABLE_APP_ID=${AIRTABLE_APP_ID}
       - HOST_IP=${HOST_IP}
       - IF_DB_PASSWORD=${IF_DB_PASSWORD}
       - IF_DB_PORT=${IF_DB_PORT}
@@ -46,11 +54,12 @@ services:
     depends_on:
       - createorder
     container_name: createquestion
-    image: ideafoundry/create-airtable-question-service:1.0.0
+    image: ideafoundry/create-airtable-question-service:1.0.0.RELEASE
     ports:
       - "8184:8184"
     environment:
     - IF_AIRTABLE_CREDS=${IF_AIRTABLE_CREDS}
+    - AIRTABLE_APP_ID=${AIRTABLE_APP_ID}
     - HOST_IP=${HOST_IP}
     - IF_DB_PASSWORD=${IF_DB_PASSWORD}
     - IF_DB_PORT=${IF_DB_PORT}
@@ -59,7 +68,7 @@ services:
     depends_on:
       - kafka
     container_name: mailsource
-    image: ideafoundry/mail-source:1.2.0
+    image: ideafoundry/mail-source:1.2.0.RELEASE
     ports:
       - "8185:8185"
     environment:
