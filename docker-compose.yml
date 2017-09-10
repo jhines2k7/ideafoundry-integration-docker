@@ -20,7 +20,7 @@ services:
     depends_on:
       - processorderemail      
     container_name: createperson
-    image: ideafoundry/create-airtable-person-service:1.0.0
+    image: ideafoundry/create-airtable-person-service:1.0.1
     ports:
       - "8182:8182"
     environment:
@@ -78,6 +78,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${IF_DB_ROOT_PASS}
       MYSQL_USER: ideafoundry
+      MYSQL_DATABASE: ideafoundrybi
       MYSQL_PASSWORD: ${IF_DB_PASSWORD}
   zookeeper:
     container_name: zookeeper
