@@ -5,7 +5,7 @@ services:
     depends_on:
       - createquestion
     container_name: legacydataexport
-    image: ideafoundry/occasion-legacy-data-export-service:1.1.1.RELEASE
+    image: ideafoundry/occasion-legacy-data-export-service:1.2.1.RELEASE
     ports:
       - "8686:8686"
     environment:
@@ -21,7 +21,6 @@ services:
     ports:
       - "8181:8181"
     environment:
-      - IF_OCCASION_EXPORT_URL=${IF_OCCASION_EXPORT_URL}
       - HOST_IP=${HOST_IP}
       - IF_OCCASION_CREDS=${IF_OCCASION_CREDS}
   createperson:
@@ -42,7 +41,7 @@ services:
     depends_on:
       - createperson
     container_name: createorder
-    image: ideafoundry/create-airtable-order-service:1.0.0.RELEASE
+    image: ideafoundry/create-airtable-order-service:1.1.0.RELEASE
     ports:
       - "8183:8183"
     environment:
