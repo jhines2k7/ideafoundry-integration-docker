@@ -36,8 +36,8 @@ CREATE TABLE air_table_order(
 
 CREATE TABLE air_table_question(
    id varchar(255) not null primary key,
-   answer varchar(255),
-   question varchar(255),
+   answer longtext,
+   question longtext,
    order_id varchar(255),
    person_id varchar(255),
    record_id int(11),
