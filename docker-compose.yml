@@ -1,16 +1,16 @@
 version: '3'
 
 services:
-  # legacydataexport:
-  #   depends_on:
-  #     - createquestion
-  #   container_name: legacydataexport
-  #   image: ideafoundry/occasion-legacy-data-export-service:1.4.1-SNAPSHOT
-  #   ports:
-  #     - "8686:8686"
-  #   environment:
-  #     - HOST_IP=${HOST_IP}
-  #     - IF_OCCASION_CREDS=${IF_OCCASION_CREDS}
+  legacydataexport:
+    depends_on:
+      - createquestion
+    container_name: legacydataexport
+    image: ideafoundry/occasion-legacy-data-export-service:1.4.1.RELEASE
+    ports:
+      - "8686:8686"
+    environment:
+      - HOST_IP=${HOST_IP}
+      - IF_OCCASION_CREDS=${IF_OCCASION_CREDS}
   processorderemail:
     depends_on:
       - mailsource      
@@ -54,7 +54,7 @@ services:
     depends_on:
       - createorder
     container_name: createquestion
-    image: ideafoundry/create-airtable-question-service:1.4.0-SNAPSHOT
+    image: ideafoundry/create-airtable-question-service:1.4.0.RELEASE
     ports:
       - "8184:8184"
     environment:
