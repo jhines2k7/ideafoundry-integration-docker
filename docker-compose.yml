@@ -54,7 +54,7 @@ services:
     depends_on:
       - createorder
     container_name: createquestion
-    image: ideafoundry/create-airtable-question-service:1.2.0-SNAPSHOT
+    image: ideafoundry/create-airtable-question-service:1.4.0-SNAPSHOT
     ports:
       - "8184:8184"
     environment:
