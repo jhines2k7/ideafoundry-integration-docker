@@ -5,10 +5,11 @@ services:
     depends_on:
       - createquestion
     container_name: legacydataexport
-    image: ideafoundry/occasion-legacy-data-export-service:1.4.1.RELEASE
+    image: ideafoundry/occasion-legacy-data-export-service:1.5.1.RELEASE
     ports:
       - "8686:8686"
     environment:
+      - IF_STARTING_PAGE_NUM=${IF_STARTING_PAGE_NUM} 
       - HOST_IP=${HOST_IP}
       - IF_OCCASION_CREDS=${IF_OCCASION_CREDS}
   processorderemail:
