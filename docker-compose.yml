@@ -5,7 +5,7 @@ services:
     depends_on:
       - createquestion
     container_name: legacydataexport
-    image: ideafoundry/occasion-legacy-data-export-service:1.5.1.RELEASE
+    image: ideafoundry/occasion-legacy-data-export-service:1.6.1.SNAPSHOT
     ports:
       - "8686:8686"
     environment:
