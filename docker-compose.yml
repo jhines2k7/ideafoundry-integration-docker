@@ -2,6 +2,8 @@ version: '3'
 
 services:
   # legacydataexport:
+  #   networks:
+  #     - privatenetwork
   #   depends_on:
   #     - createquestion
   #   container_name: legacydataexport
@@ -66,11 +68,11 @@ services:
     - IF_DB_PASSWORD=${IF_DB_PASSWORD}
     - IF_DB_PORT=${IF_DB_PORT}
     - IF_DB_USERNAME=${IF_DB_USERNAME}
-  mailsource:
+  mailsource:    
     depends_on:
-      - kafka
+      - kafka    
     container_name: mailsource
-    image: ideafoundry/mail-source:1.2.0.RELEASE
+    image: ideafoundry/mail-source:1.4.0.RELEASE
     ports:
       - "8185:8185"
     environment:
@@ -87,26 +89,29 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: ${IF_DB_ROOT_PASS}
-      MYSQL_USER: ideafoundry
-      MYSQL_DATABASE: ideafoundrybi
-      MYSQL_PASSWORD: ${IF_DB_PASSWORD}
-  zookeeper:
+      - MYSQL_ROOT_PASSWORD=${IF_DB_ROOT_PASS}
+      - MYSQL_USER=ideafoundry
+      - MYSQL_DATABASE=ideafoundrybi
+      - MYSQL_PASSWORD=${IF_DB_PASSWORD}
+  zookeeper:    
+    networks:
+      - private
     container_name: zookeeper
-    image: wurstmeister/zookeeper
-    expose:
-      - "2181"
-  kafka:
+    image: wurstmeister/zookeeper          
+  kafka:    
+    networks:
+      - private
     depends_on:
       - zookeeper
     container_name: kafka
-    image: wurstmeister/kafka
-    expose:
-      - "9092"
+    image: wurstmeister/kafka    
     environment:
-      KAFKA_ADVERTISED_HOST_NAME: ${HOST_IP}
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      - KAFKA_ADVERTISED_HOST_NAME=${HOST_IP}
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 volumes:
-    db_data:
+  db_data:
+networks:
+  private:
+    driver: overlay
