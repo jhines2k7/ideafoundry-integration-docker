@@ -68,7 +68,7 @@ services:
       - AIRTABLE_APP_ID=${AIRTABLE_APP_ID}
       - DB_HOST=${DB_HOST}
       - KAFKA_HOST=${KAFKA_HOST}
-      - ZOOKEEPER_HOST=${ZOOKEEPER_HOST
+      - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
       - IF_DB_PASSWORD=${IF_DB_PASSWORD}
       - IF_DB_PORT=${IF_DB_PORT}
       - IF_DB_USERNAME=${IF_DB_USERNAME}
@@ -103,12 +103,11 @@ services:
     depends_on:
       - zookeeper
     container_name: kafka
-    image: wurstmeister/kafka
-    ports:
-      - "9092:9092"
+    image: wurstmeister/kafka    
     environment:
       - KAFKA_ADVERTISED_HOST_NAME=${KAFKA_HOST}
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_ADVERTISED_PORT=9092
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 volumes:
