@@ -2,12 +2,15 @@ version: '3'
 
 services:
   legacydataexport:
-    networks:
-      - privatenetwork
     depends_on:
       - createquestion
     container_name: legacydataexport
-    image: ideafoundry/occasion-legacy-data-export-service:1.7.1.SNAPSHOT 
+    image: ideafoundry/occasion-legacy-data-export-service:1.7.1.SNAPSHOT
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == legacydataexport
     environment:
       - OKHTTP_CLIENT_TIMEOUT_SECONDS=${OKHTTP_CLIENT_TIMEOUT_SECONDS}
       - OCCASION_EXPORT_STARTING_PAGE_NUM=${OCCASION_EXPORT_STARTING_PAGE_NUM}
@@ -20,7 +23,12 @@ services:
       - mailsource      
       - mysql
     container_name: processorderemail
-    image: ideafoundry/occasion-order-email-processor-service:1.2.0-SNAPSHOT    
+    image: ideafoundry/occasion-order-email-processor-service:1.2.0-SNAPSHOT
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == processorderemail   
     environment:
       - OKHTTP_CLIENT_TIMEOUT_SECONDS=${OKHTTP_CLIENT_TIMEOUT_SECONDS}
       - DB_HOST=${DB_HOST}
@@ -31,7 +39,12 @@ services:
     depends_on:
       - processorderemail      
     container_name: createperson
-    image: ideafoundry/create-airtable-person-service:1.3.10-SNAPSHOT   
+    image: ideafoundry/create-airtable-person-service:1.3.10-SNAPSHOT
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == createperson   
     environment:
       - OKHTTP_CLIENT_TIMEOUT_SECONDS=${OKHTTP_CLIENT_TIMEOUT_SECONDS}
       - IF_AIRTABLE_CREDS=${IF_AIRTABLE_CREDS}
@@ -46,7 +59,12 @@ services:
     depends_on:
       - createperson
     container_name: createorder
-    image: ideafoundry/create-airtable-order-service:1.4.0-SNAPSHOT   
+    image: ideafoundry/create-airtable-order-service:1.4.0-SNAPSHOT
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == createperson
     environment:
       - OKHTTP_CLIENT_TIMEOUT_SECONDS=${OKHTTP_CLIENT_TIMEOUT_SECONDS}
       - IF_AIRTABLE_CREDS=${IF_AIRTABLE_CREDS}
@@ -61,7 +79,12 @@ services:
     depends_on:
       - createorder
     container_name: createquestion
-    image: ideafoundry/create-airtable-question-service:1.6.0-SNAPSHOT    
+    image: ideafoundry/create-airtable-question-service:1.6.0-SNAPSHOT
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == createquestion   
     environment:
       - OKHTTP_CLIENT_TIMEOUT_SECONDS=${OKHTTP_CLIENT_TIMEOUT_SECONDS}
       - IF_AIRTABLE_CREDS=${IF_AIRTABLE_CREDS}
@@ -77,6 +100,11 @@ services:
       - kafka    
     container_name: mailsource
     image: ideafoundry/mail-source:1.6.0.RELEASE
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == mailsource
     environment:
       - IF_EMAIL_ID=${IF_EMAIL_ID}
       - IF_EMAIL_CREDS=${IF_EMAIL_CREDS}
@@ -85,6 +113,11 @@ services:
   mysql:
     container_name: mysql
     image: mysql:8.0.1
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == if-mysql
     volumes:
       - db_data:/var/lib/mysql
       - ./docker/data:/docker-entrypoint-initdb.d
@@ -98,12 +131,22 @@ services:
       - MYSQL_PASSWORD=${IF_DB_PASSWORD}
   zookeeper:
     container_name: zookeeper
-    image: wurstmeister/zookeeper    
+    image: wurstmeister/zookeeper
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == if-kafka    
   kafka:    
     depends_on:
       - zookeeper
     container_name: kafka
-    image: wurstmeister/kafka    
+    image: wurstmeister/kafka
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == if-kafka   
     environment:
       - KAFKA_ADVERTISED_HOST_NAME=${KAFKA_HOST}
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
@@ -112,4 +155,3 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 volumes:
   db_data:
-
