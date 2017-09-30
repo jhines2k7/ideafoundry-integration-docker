@@ -3,7 +3,7 @@
 docker-machine create --driver digitalocean --digitalocean-image ubuntu-17-04-x64 --digitalocean-size 1gb --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN if-swarm-manager;
 
 #for i in legacydataexport processorderemail createperson createorder createquestion mailsource;
-for i in mailsource;
+for i in legacydataexport createperson;
     do docker-machine create --driver digitalocean --digitalocean-image ubuntu-17-04-x64 --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN $i; 
 done
 

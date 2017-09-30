@@ -5,7 +5,7 @@ services:
     depends_on:
       - createquestion
     container_name: legacydataexport
-    image: ideafoundry/occasion-legacy-data-export-service:1.7.1.SNAPSHOT
+    image: ideafoundry/occasion-legacy-data-export-service:1.8.1.SNAPSHOT
     deploy:
       replicas: 1
       placement:
@@ -110,7 +110,6 @@ services:
       - IF_EMAIL_CREDS=${IF_EMAIL_CREDS}
       - KAFKA_HOST=${KAFKA_HOST}
       - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
-  services:
   mysql:
     container_name: mysql
     image: mysql:8.0.1
@@ -121,7 +120,7 @@ services:
           - node.hostname == if-mysql
     volumes:
       - db_data:/var/lib/mysql
-      - ./docker/data:/docker-entrypoint-initdb.d
+      - docker/data:/docker-entrypoint-initdb.d
     restart: always
     ports:
       - "3306:3306"
