@@ -7,7 +7,7 @@ services:
     depends_on:
       - createquestion
     container_name: legacydataexport
-    image: ideafoundry/occasion-legacy-data-export-service:1.7.1.SNAPSHOT 
+    image: ideafoundry/occasion-legacy-data-export-service:1.7.1-SNAPSHOT 
     environment:
       - OKHTTP_CLIENT_TIMEOUT_SECONDS=${OKHTTP_CLIENT_TIMEOUT_SECONDS}
       - OCCASION_EXPORT_STARTING_PAGE_NUM=${OCCASION_EXPORT_STARTING_PAGE_NUM}
