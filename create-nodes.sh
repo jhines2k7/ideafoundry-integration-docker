@@ -1,9 +1,11 @@
 #!/bin/bash
-
-for i in if-swarm-manager legacydataexport processorderemail createperson createorder createquestion mailsource;
-    do docker-machine create --driver digitalocean --digitalocean-image ubuntu-17-04-x64 --digitalocean-size 1gb --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN $i; 
+#create 1gb worker nodes
+for i in {1..20};
+    do docker-machine create --driver digitalocean --digitalocean-image ubuntu-17-04-x64 --digitalocean-size 1gb --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN 1gbworker$i; 
 done
 
-for i in if-kafka if-mysql;
-    do docker-machine create --driver digitalocean --digitalocean-image ubuntu-17-04-x64 --digitalocean-size 2gb --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN $i;
-done
+#create 2gb worker nodes
+docker-machine create --driver digitalocean --digitalocean-image ubuntu-17-04-x64 --digitalocean-size 2gb --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN 2gbworker; 
+
+#create manager node
+docker-machine create --driver digitalocean --digitalocean-image ubuntu-17-04-x64 --digitalocean-size 2gb --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN manager;
