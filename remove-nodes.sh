@@ -15,6 +15,11 @@ for i in {0..11};
     do docker-machine rm -f createoquestion-worker-$i; 
 done
 
+#remove 1gb worker nodes
+for i in {0..2};
+    do docker-machine rm -f 1gb-worker-$i; 
+done
+
 #remove kafka and mysql nodes
 for i in mysql kafka;
     do docker-machine rm -f $i;

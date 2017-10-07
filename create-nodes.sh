@@ -1,6 +1,7 @@
 #!/bin/bash
 
 #create createperson worker nodes
+echo " ======> creating createperson worker nodes"
 for i in {0..3};
     do 
         docker-machine create \
@@ -13,6 +14,7 @@ for i in {0..3};
 done
 
 #create createorder worker nodes
+echo " ======> creating createperson worker nodes"
 for i in {0..3};
     do 
         docker-machine create \
@@ -25,6 +27,7 @@ for i in {0..3};
 done
 
 #create createquestion worker nodes
+echo " ======> creating createquestion worker nodes"
 for i in {0..11};
     do 
         docker-machine create \
@@ -36,6 +39,7 @@ for i in {0..11};
 done
 
 #create kafka and mysql nodes
+echo " ======> creating mysql and kafka worker nodes"
 for i in mysql kafka;
     do 
         docker-machine create \
@@ -47,6 +51,7 @@ for i in mysql kafka;
 done
 
 #create 1gb worker nodes
+echo " ======> creating 1gb worker nodes"
 for i in {0..2};
     do 
         docker-machine create \
@@ -59,7 +64,9 @@ for i in {0..2};
 done
 
 #create manager node
+echo " ======> creating manager worker nodes"
 docker-machine create \
+--swarm
 --swarm-master \
 --driver digitalocean \
 --digitalocean-image ubuntu-17-04-x64 \

@@ -1,5 +1,24 @@
 #!/bin/bash
 
+function get_worker_token {
+  # gets swarm manager token for a worker node
+  echo $(docker-machine ssh manager docker swarm join-token worker -q)
+}
+
+function getIP {
+  echo $(docker-machine ip $1)
+}
+
+function initSwarmManager {
+  # initialize swarm mode and create a manager
+  echo '============================================'
+  echo "======> Initializing first swarm manager ..."
+  docker-machine ssh manager \
+  docker swarm init \
+    --listen-addr $(getIP manager):2376 \
+    --advertise-addr $(getIP manager):2376
+}
+
 # set ufw rules for manager node
 echo "======> setting up firewall rules for manager ..."
 docker-machine ssh manager \
@@ -11,9 +30,12 @@ ufw allow 22/tcp \
 && ufw allow 4789/udp \
 && echo "y" | ufw enable
 
+echo "======> Initializing swarm manager ..."
+initSwarmManager
+
 # =========================================
 # Begin createperson worker nodes setup
-
+echo "======> setting env variables for createperson nodes ..."
 #set env variables for createperson nodes
 for i in {0..3};
     do 
@@ -119,12 +141,3 @@ docker-machine scp ./docker/data/ideafoundrybi.sql mysql:/schemas
 
 # End 1gb mysql and kafka nodes setup
 # =========================================
-
-function get_worker_token {
-  # gets swarm manager token for a worker node
-  echo $(docker-machine ssh manager docker swarm join-token worker -q)
-}
-
-function getIP {
-  echo $(docker-machine ip $1)
-}
