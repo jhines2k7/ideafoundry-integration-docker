@@ -38,6 +38,7 @@ initSwarmManager
 echo "======> setting env variables for createperson nodes ..."
 #set env variables for createperson nodes
 for i in {0..3};
+    echo "======> setting up env variables for createperson-worker $i ..."
     do 
         docker-machine ssh createperson-worker-$i \
         export CREATE_PERSON_NODES=4 \
@@ -47,7 +48,7 @@ done
 # set ufw rules for createperson nodes
 for node in {0..3};
     do
-        echo "======> setting up firewall rules for createperson-worker-$i ..."
+        echo "======> setting up firewall rules for createperson-worker $i ..."
         docker-machine ssh createperson-worker-$i \
         ufw allow 22/tcp \
         && ufw allow 2376/tcp \
@@ -61,7 +62,7 @@ done
 #join createperson worker nodes to swarm
 for node in {0..3};
     do
-        echo "======> createperson-worker-$i joining swarm as worker ..."
+        echo "======> createperson-worker $i joining swarm as worker ..."
         docker-machine ssh createperson-worker-$i \
         docker swarm join \
             --token $(get_worker_token) \
@@ -78,7 +79,7 @@ done
 # set ufw rules for 1gb worker nodes
 for node in {0..2};
     do
-        echo "======> setting up firewall rules for 1gb-worker-$i ..."
+        echo "======> setting up firewall rules for 1gb-worker $i ..."
         docker-machine ssh 1gb-worker-$i \
         ufw allow 22/tcp \
         && ufw allow 2376/tcp \
@@ -92,7 +93,7 @@ done
 #join 1gb worker nodes to swarm
 for node in {0..2};
     do
-        echo "======> 1gb-worker-$i joining swarm as worker ..."
+        echo "======> 1gb-worker $i joining swarm as worker ..."
         docker-machine ssh 1gb-worker-$i \
         docker swarm join \
             --token $(get_worker_token) \
