@@ -14,7 +14,7 @@ for i in {0..3};
 done
 
 #create createorder worker nodes
-echo " ======> creating createperson worker nodes"
+echo " ======> creating createorder worker nodes"
 for i in {0..3};
     do 
         docker-machine create \
@@ -66,7 +66,7 @@ done
 #create manager node
 echo " ======> creating manager worker nodes"
 docker-machine create \
---swarm
+--swarm \
 --swarm-master \
 --driver digitalocean \
 --digitalocean-image ubuntu-17-04-x64 \
