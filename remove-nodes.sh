@@ -1,17 +1,17 @@
 #!/bin/bash
 
 #remove createperson worker nodes
-for i in {1..4};
+for i in {0..3};
     do docker-machine rm -f createperson-worker-$i; 
 done
 
 #remove createorder worker nodes
-for i in {1..4};
+for i in {0..3};
     do docker-machine rm -f createorder-worker-$i; 
 done
 
 #remove createquestion worker nodes
-for i in {1..12};
+for i in {0..11};
     do docker-machine rm -f createoquestion-worker-$i; 
 done
 

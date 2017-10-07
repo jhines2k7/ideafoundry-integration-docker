@@ -5,7 +5,7 @@ services:
     depends_on:
       - createquestion
     container_name: legacydataexport
-    image: ideafoundry/occasion-legacy-data-export-service:1.8.1.RELEASE
+    image: ideafoundry/occasion-legacy-data-export-service:1.9.1-SNAPSHOT
     deploy:
       restart_policy:
         condition: on-failure
@@ -70,6 +70,8 @@ services:
       - IF_DB_PASSWORD=${IF_DB_PASSWORD}
       - IF_DB_PORT=${IF_DB_PORT}
       - IF_DB_USERNAME=${IF_DB_USERNAME}
+      - CREATE_PERSON_NODES=${CREATE_PERSON_NODES}
+      - CREATE_PERSON_NODE_INDEX=${CREATE_PERSON_NODE_INDEX}
   createorder:
     depends_on:
       - createperson
