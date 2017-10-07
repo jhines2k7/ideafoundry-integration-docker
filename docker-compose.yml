@@ -157,7 +157,7 @@ services:
           - node.hostname==mysql
     volumes:
       - db_data:/var/lib/mysql
-      - /docker/data:/docker-entrypoint-initdb.d
+      - /schemas:/docker-entrypoint-initdb.d
     restart: always
     ports:
       - "3306:3306"
