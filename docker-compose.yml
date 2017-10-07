@@ -15,7 +15,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - engine.labels.node.type = 1gbworker
+          - engine.labels.node.type=1gb-worker
     environment:
       - OKHTTP_CLIENT_TIMEOUT_SECONDS=${OKHTTP_CLIENT_TIMEOUT_SECONDS}
       - OCCASION_EXPORT_STARTING_PAGE_NUM=${OCCASION_EXPORT_STARTING_PAGE_NUM}
@@ -38,7 +38,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - engine.labels.node.type = 1gbworker   
+          - engine.labels.node.type=1gb-worker   
     environment:
       - OKHTTP_CLIENT_TIMEOUT_SECONDS=${OKHTTP_CLIENT_TIMEOUT_SECONDS}
       - DB_HOST=${DB_HOST}
@@ -49,7 +49,7 @@ services:
     depends_on:
       - processorderemail      
     container_name: createperson
-    image: ideafoundry/create-airtable-person-service:1.3.10.RELEASE
+    image: ideafoundry/create-airtable-person-service:1.4.10-SNAPSHOT
     deploy:
       restart_policy:
         condition: on-failure
@@ -59,7 +59,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - engine.labels.node.type = 1gbworker   
+          - engine.labels.node.type=createperson   
     environment:
       - OKHTTP_CLIENT_TIMEOUT_SECONDS=${OKHTTP_CLIENT_TIMEOUT_SECONDS}
       - IF_AIRTABLE_CREDS=${IF_AIRTABLE_CREDS}
@@ -84,7 +84,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - engine.labels.node.type = 1gbworker
+          - engine.labels.node.type=createorder
     environment:
       - OKHTTP_CLIENT_TIMEOUT_SECONDS=${OKHTTP_CLIENT_TIMEOUT_SECONDS}
       - IF_AIRTABLE_CREDS=${IF_AIRTABLE_CREDS}
@@ -109,7 +109,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - engine.labels.node.type = 1gbworker   
+          - engine.labels.node.type=createquestion   
     environment:
       - OKHTTP_CLIENT_TIMEOUT_SECONDS=${OKHTTP_CLIENT_TIMEOUT_SECONDS}
       - IF_AIRTABLE_CREDS=${IF_AIRTABLE_CREDS}
@@ -134,7 +134,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - engine.labels.node.type = 1gbworker
+          - engine.labels.node.type=1gbworker
     environment:
       - IF_EMAIL_ID=${IF_EMAIL_ID}
       - IF_EMAIL_CREDS=${IF_EMAIL_CREDS}
@@ -152,7 +152,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.hostname == kafka
+          - node.hostname==mysql
     volumes:
       - db_data:/var/lib/mysql
       - /docker/data:/docker-entrypoint-initdb.d
@@ -176,7 +176,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.hostname == kafka    
+          - node.hostname==kafka    
   kafka:    
     depends_on:
       - zookeeper
@@ -191,7 +191,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.hostname == kafka   
+          - node.hostname==kafka   
     environment:
       - KAFKA_ADVERTISED_HOST_NAME=${KAFKA_HOST}
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
