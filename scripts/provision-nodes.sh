@@ -19,9 +19,9 @@ function initSwarmManager {
 }
 
 function join_node_swarm {
-    local node=$1
+    local machine=$1
     echo "======> $node joining swarm as worker ..."
-    docker-machine ssh $node \
+    docker-machine ssh $machine \
     docker swarm join \
         --token $(get_worker_token) $(getIP manager):2377 \
     && systemctl restart docker
@@ -29,10 +29,10 @@ function join_node_swarm {
 
 # set ufw rules for node
 function set_ufw_rules {
-    local node=$1
+    local machine=$1
 
     echo "======> setting up firewall rules for $node ..."
-    docker-machine ssh $node \
+    docker-machine ssh $machine \
     ufw allow 22/tcp \
     && ufw allow 2376/tcp \
     && ufw allow 2377/tcp \
@@ -53,10 +53,10 @@ initSwarmManager
 echo "======> setting env variables for createperson nodes ..."
 #set env variables for createperson nodes
 index=0
-for i in $(docker-machine ls --format "{{.Name}}" | grep createperson);
+for machine in $(docker-machine ls --format "{{.Name}}" | grep createperson);
     do 
-        echo "======> setting up env variables for $i ..." 
-        docker-machine ssh $i \
+        echo "======> setting up env variables for $machine ..." 
+        docker-machine ssh $machine \
         export CREATE_PERSON_NODES=4 \
         && export CREATE_PERSON_NODE_INDEX=$index \
         && echo "Value of CREATE_PERSON_NODES: " \
@@ -68,15 +68,15 @@ for i in $(docker-machine ls --format "{{.Name}}" | grep createperson);
 done
 
 # set ufw rules for createperson nodes
-for i in $(docker-machine ls --format "{{.Name}}" | grep createperson);
+for machine in $(docker-machine ls --format "{{.Name}}" | grep createperson);
     do
-        set_ufw_rules $i
+        set_ufw_rules $machine
 done
 
 #join createperson worker nodes to swarm
-for i in $(docker-machine ls --format "{{.Name}}" | grep createperson);
+for machine in $(docker-machine ls --format "{{.Name}}" | grep createperson);
     do
-        join_node_swarm $i        
+        join_node_swarm $machine   
 done
 # End createperson worker nodes setup
 # =========================================
@@ -85,15 +85,15 @@ done
 # Begin 1gb worker nodes setup
 
 # set ufw rules for 1gb worker nodes
-for i in $(docker-machine ls --format "{{.Name}}" | grep 1gb-worker);
+for machine in $(docker-machine ls --format "{{.Name}}" | grep 1gb-worker);
     do
-        set_ufw_rules $i        
+        set_ufw_rules $machine    
 done
 
 #join 1gb worker nodes to swarm
-for i in $(docker-machine ls --format "{{.Name}}" | grep 1gb-worker);
+for machine in $(docker-machine ls --format "{{.Name}}" | grep 1gb-worker);
     do
-        join_node_swarm 1gb-worker-$i
+        join_node_swarm $machine
 done
 # End 1gb worker nodes setup
 # =========================================
