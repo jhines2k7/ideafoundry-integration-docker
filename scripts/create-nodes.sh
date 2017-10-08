@@ -6,14 +6,14 @@ function create_worker_node {
     local size=$3
     local ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
 
-    echo " ======> creating $ID-$machine node"
+    echo " ======> creating $machine-$ID node"
     docker-machine create \
         --engine-label $label \
         --driver digitalocean \
         --digitalocean-image ubuntu-17-04-x64 \
         --digitalocean-size $size \
         --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
-        $ID-$machine
+        $machine-$ID
 }
 
 #create createperson worker nodes
