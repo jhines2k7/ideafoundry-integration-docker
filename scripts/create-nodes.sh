@@ -4,6 +4,7 @@ function create_worker_node {
     node=$1
     label=$2
 
+    echo " ======> creating $node worker node"
     docker-machine create \
         --engine-label $label \
         --driver digitalocean \
@@ -12,8 +13,8 @@ function create_worker_node {
         --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
         $node
 }
+
 #create createperson worker nodes
-echo " ======> creating createperson worker nodes"
 for i in {0..3};
     do 
          create_worker_node createperson-worker-$i "node.type=createperson"
