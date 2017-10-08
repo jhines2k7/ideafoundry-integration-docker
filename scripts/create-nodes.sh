@@ -1,19 +1,19 @@
 #!/bin/bash
 
 function create_worker_node {
-    local node=$1
+    local machine=$1
     local label=$2
     local size=$3
     local ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
 
-    echo " ======> creating $node worker node"
+    echo " ======> creating $ID-$machine node"
     docker-machine create \
         --engine-label $label \
         --driver digitalocean \
         --digitalocean-image ubuntu-17-04-x64 \
         --digitalocean-size $size \
         --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
-        ID-$node
+        $ID-$machine
 }
 
 #create createperson worker nodes
@@ -58,7 +58,7 @@ done
 
 #create manager node
 ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
-echo " ======> creating manager worker nodes"
+echo " ======> creating manager worker node"
 docker-machine create \
 --swarm \
 --swarm-master \
