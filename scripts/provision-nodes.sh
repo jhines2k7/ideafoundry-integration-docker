@@ -52,28 +52,31 @@ initSwarmManager
 # Begin createperson worker nodes setup
 echo "======> setting env variables for createperson nodes ..."
 #set env variables for createperson nodes
-for i in {0..3};
+index=0
+for i in $(docker-machine ls --format "{{.Name}}" | grep createperson);
     do 
-        echo "======> setting up env variables for createperson-worker-$i ..." 
-        docker-machine ssh createperson-worker-$i \
+        echo "======> setting up env variables for $i ..." 
+        docker-machine ssh $i \
         export CREATE_PERSON_NODES=4 \
-        && export CREATE_PERSON_NODE_INDEX=$i \
+        && export CREATE_PERSON_NODE_INDEX=$index \
         && echo "Value of CREATE_PERSON_NODES: " \
         && echo $CREATE_PERSON_NODES \
         && echo "Value of CREATE_PERSON_NODE_INDEX: "  \
         && echo $CREATE_PERSON_NODE_INDEX
+
+        ((index++))
 done
 
 # set ufw rules for createperson nodes
-for i in {0..3};
+for i in $(docker-machine ls --format "{{.Name}}" | grep createperson);
     do
-        set_ufw_rules createperson-worker-$i
+        set_ufw_rules $i
 done
 
 #join createperson worker nodes to swarm
-for i in {0..3};
+for i in $(docker-machine ls --format "{{.Name}}" | grep createperson);
     do
-        join_node_swarm createperson-worker-$i        
+        join_node_swarm $i        
 done
 # End createperson worker nodes setup
 # =========================================
@@ -82,13 +85,13 @@ done
 # Begin 1gb worker nodes setup
 
 # set ufw rules for 1gb worker nodes
-for i in {0..2};
+for i in $(docker-machine ls --format "{{.Name}}" | grep 1gb-worker);
     do
-        set_ufw_rules 1gb-worker-$i        
+        set_ufw_rules $i        
 done
 
 #join 1gb worker nodes to swarm
-for i in {0..2};
+for i in $(docker-machine ls --format "{{.Name}}" | grep 1gb-worker);
     do
         join_node_swarm 1gb-worker-$i
 done
@@ -99,23 +102,24 @@ done
 # Begin mysql and kafka nodes setup
 
 # set ufw rules for mysql and kafka worker nodes
-for i in mysql kafka;
-    do
-        set_ufw_rules $i        
-done
+mysql-machine=$(docker-machine ls --format "{{.Name}}" | grep mysql)
+kafka-machine=$(docker-machine ls --format "{{.Name}}" | grep kafka)
+
+set_ufw_rules $kafka-machine
+
+set_ufw_rules $mysql-machine
 
 # join mysql and kafka worker nodes to swarm
-for i in mysql kafka;
-    do
-        join_node_swarm $i        
-done
+join_node_swarm $kafka-machine
+
+join_node_swarm $mysql-machine
 
 # copy the file for creating db schema to mysql node
 echo "=======> creating schema directory for mysql node"
-docker-machine ssh mysql \
+docker-machine ssh $mysql-machine \
 mkdir /schemas
 echo "=======> copying schema files to mysql node"
-docker-machine scp ./docker/data/ideafoundrybi.sql mysql:/schemas 
+docker-machine scp ./docker/data/ideafoundrybi.sql $mysql-machine:/schemas 
 
 # End 1gb mysql and kafka nodes setup
 # =========================================

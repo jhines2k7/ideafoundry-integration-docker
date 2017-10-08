@@ -1,9 +1,10 @@
 #!/bin/bash
 
 function create_worker_node {
-    node=$1
-    label=$2
-    size=$3
+    local node=$1
+    local label=$2
+    local size=$3
+    local ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
 
     echo " ======> creating $node worker node"
     docker-machine create \
@@ -12,7 +13,7 @@ function create_worker_node {
         --digitalocean-image ubuntu-17-04-x64 \
         --digitalocean-size $size \
         --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
-        $node
+        ID-$node
 }
 
 #create createperson worker nodes
@@ -38,13 +39,14 @@ done
 #create kafka and mysql nodes
 echo " ======> creating mysql and kafka worker nodes"
 for i in mysql kafka;
-    do 
+    do
+        ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1) 
         docker-machine create \
         --driver digitalocean \
         --digitalocean-image ubuntu-17-04-x64 \
         --digitalocean-size 2gb \
         --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
-        $i;
+        $ID-$i;
 done
 
 #create 1gb worker nodes
@@ -55,6 +57,7 @@ for i in {0..2};
 done
 
 #create manager node
+ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
 echo " ======> creating manager worker nodes"
 docker-machine create \
 --swarm \
@@ -63,4 +66,4 @@ docker-machine create \
 --digitalocean-image ubuntu-17-04-x64 \
 --digitalocean-size 1gb \
 --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
-manager;
+$ID-manager;
