@@ -38,17 +38,17 @@ initSwarmManager
 echo "======> setting env variables for createperson nodes ..."
 #set env variables for createperson nodes
 for i in {0..3};
-    echo "======> setting up env variables for createperson-worker $i ..."
     do 
+        echo "======> setting up env variables for createperson-worker-$i ..." 
         docker-machine ssh createperson-worker-$i \
         export CREATE_PERSON_NODES=4 \
         && export CREATE_PERSON_NODE_INDEX=$i 
 done
 
 # set ufw rules for createperson nodes
-for node in {0..3};
+for i in {0..3};
     do
-        echo "======> setting up firewall rules for createperson-worker $i ..."
+        echo "======> setting up firewall rules for createperson-worker-$i ..."
         docker-machine ssh createperson-worker-$i \
         ufw allow 22/tcp \
         && ufw allow 2376/tcp \
@@ -60,14 +60,14 @@ for node in {0..3};
 done
 
 #join createperson worker nodes to swarm
-for node in {0..3};
+for i in {0..3};
     do
-        echo "======> createperson-worker $i joining swarm as worker ..."
+        echo "======> createperson-worker-$i joining swarm as worker ..."
         docker-machine ssh createperson-worker-$i \
         docker swarm join \
             --token $(get_worker_token) \
             --listen-addr $(getIP createperson-worker-$i):2376 \
-            --advertise-addr $(getIP createperson-worker-$i):2376 $(getIP manager):2376 \
+            --advertise-addr $(getIP createperson-worker-$i):2377 $(getIP manager):2377 \
         && systemctl restart docker
 done
 # End createperson worker nodes setup
@@ -77,9 +77,9 @@ done
 # Begin 1gb worker nodes setup
 
 # set ufw rules for 1gb worker nodes
-for node in {0..2};
+for i in {0..2};
     do
-        echo "======> setting up firewall rules for 1gb-worker $i ..."
+        echo "======> setting up firewall rules for 1gb-worker-$i ..."
         docker-machine ssh 1gb-worker-$i \
         ufw allow 22/tcp \
         && ufw allow 2376/tcp \
@@ -91,7 +91,7 @@ for node in {0..2};
 done
 
 #join 1gb worker nodes to swarm
-for node in {0..2};
+for i in {0..2};
     do
         echo "======> 1gb-worker $i joining swarm as worker ..."
         docker-machine ssh 1gb-worker-$i \
@@ -108,7 +108,7 @@ done
 # Begin mysql and kafka nodes setup
 
 # set ufw rules for mysql and kafka worker nodes
-for node in mysql kafka;
+for i in mysql kafka;
     do
         echo "======> setting up firewall rules for $i ..."
         docker-machine ssh $i \
@@ -122,7 +122,7 @@ for node in mysql kafka;
 done
 
 # join mysql and kafka worker nodes to swarm
-for node in mysql kafka;
+for i in mysql kafka;
     do
         echo "======> $i joining swarm as worker ..."
         docker-machine ssh $i \
