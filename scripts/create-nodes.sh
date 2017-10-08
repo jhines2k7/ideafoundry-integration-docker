@@ -6,7 +6,7 @@ function create_worker_node {
     local size=$3
     local ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
 
-    echo " ======> creating $ID-$machine node"
+    echo " ======> creating $machine-$ID node"
     docker-machine create \
         --engine-label $label \
         --driver digitalocean \
