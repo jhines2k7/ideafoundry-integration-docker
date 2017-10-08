@@ -19,7 +19,7 @@ function create_worker_node {
 #create createperson worker nodes
 for i in {0..3};
     do 
-         create_worker_node createperson-worker-$i "node.type=createperson" 1gb
+         create_worker_node createperson-worker "node.type=createperson" 1gb
 done
 
 #create createorder worker nodes
@@ -46,14 +46,14 @@ for i in mysql kafka;
         --digitalocean-image ubuntu-17-04-x64 \
         --digitalocean-size 2gb \
         --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
-        $ID-$i;
+        $i-$ID;
 done
 
 #create 1gb worker nodes
 echo " ======> creating 1gb worker nodes"
 for i in {0..2};
     do 
-         create_worker_node 1gb-worker-$i "node.type=1gb-worker" 1gb
+         create_worker_node 1gb-worker "node.type=1gb-worker" 1gb
 done
 
 #create manager node
@@ -66,4 +66,4 @@ docker-machine create \
 --digitalocean-image ubuntu-17-04-x64 \
 --digitalocean-size 1gb \
 --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
-$ID-manager;
+manager-$ID;
