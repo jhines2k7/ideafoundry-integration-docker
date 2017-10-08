@@ -23,8 +23,7 @@ function join_node_swarm {
     echo "======> $node joining swarm as worker ..."
     docker-machine ssh $node \
     docker swarm join \
-    --token $(get_worker_token) \
-    $(getIP manager):2377 \
+        --token $(get_worker_token) $(getIP manager):2377 \
     && systemctl restart docker
 }
 
