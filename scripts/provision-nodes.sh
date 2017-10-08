@@ -33,7 +33,7 @@ function join_node_swarm {
 function set_ufw_rules {
     local machine=$1
 
-    echo "======> setting up firewall rules for $node ..."
+    echo "======> setting up firewall rules for $machine ..."
     docker-machine ssh $machine \
     ufw allow 22/tcp \
     && ufw allow 2376/tcp \
@@ -59,12 +59,11 @@ for machine in $(docker-machine ls --format "{{.Name}}" | grep createperson);
     do 
         echo "======> setting up env variables for $machine ..." 
         docker-machine ssh $machine \
-        export CREATE_PERSON_NODES=4 \
-        && export CREATE_PERSON_NODE_INDEX=$index \
-        && echo "Value of CREATE_PERSON_NODES: " \
-        && echo $CREATE_PERSON_NODES \
-        && echo "Value of CREATE_PERSON_NODE_INDEX: "  \
-        && echo $CREATE_PERSON_NODE_INDEX
+        echo "export CREATE_PERSON_NODES=4" >> /.profile \
+        && echo 'export CREATE_PERSON_NODE_INDEX="$index"' >> /.profile \
+        && source /.profile \
+        && echo "Value of CREATE_PERSON_NODES: $CREATE_PERSON_NODES" \
+        && echo "Value of CREATE_PERSON_NODE_INDEX: $CREATE_PERSON_NODE_INDEX"  \
 
         ((index++))
 done
