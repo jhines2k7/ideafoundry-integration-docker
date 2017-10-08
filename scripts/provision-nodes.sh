@@ -15,8 +15,7 @@ function initSwarmManager {
   echo "======> Initializing first swarm manager ..."
   docker-machine ssh manager \
   docker swarm init \
-    --listen-addr $(getIP manager):2376 \
-    --advertise-addr $(getIP manager):2376
+    --advertise-addr $(getIP manager)
 }
 
 function join_node_swarm {
@@ -25,8 +24,7 @@ function join_node_swarm {
     docker-machine ssh $node \
     docker swarm join \
     --token $(get_worker_token) \
-    --listen-addr $(getIP $node):2376 \
-    --advertise-addr $(getIP $node):2376 $(getIP manager):2376 \
+    $(getIP manager):2377 \
     && systemctl restart docker
 }
 

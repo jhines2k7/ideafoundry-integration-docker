@@ -1,42 +1,48 @@
 #!/bin/bash
 
+function create_worker_node {
+    node=$1
+    label=$2
+
+    docker-machine create \
+        --engine-label $label \
+        --driver digitalocean \
+        --digitalocean-image ubuntu-17-04-x64 \
+        --digitalocean-size 1gb \
+        --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
+        $node
+}
 #create createperson worker nodes
 echo " ======> creating createperson worker nodes"
 for i in {0..3};
     do 
-        docker-machine create \
-        --engine-label node.type=createperson \
-        --driver digitalocean \
-        --digitalocean-image ubuntu-17-04-x64 \
-        --digitalocean-size 1gb \
-        --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
-        createperson-worker-$i; 
+         create_worker_node createperson-worker-$i "node.type=createperson"
 done
 
 #create createorder worker nodes
-echo " ======> creating createorder worker nodes"
-for i in {0..3};
-    do 
-        docker-machine create \
-        --engine-label node.type=createorder \
-        --driver digitalocean \
-        --digitalocean-image ubuntu-17-04-x64 \
-        --digitalocean-size 1gb \
-        --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
-        createorder-worker-$i; 
-done
+# echo " ======> creating createorder worker nodes"
+# for i in {0..3};
+#     do 
+#         docker-machine create \
+#         --engine-label node.type=createorder \
+#         --driver digitalocean \
+#         --digitalocean-image ubuntu-17-04-x64 \
+#         --digitalocean-size 1gb \
+#         --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
+#         createorder-worker-$i; 
+# done
 
 #create createquestion worker nodes
-echo " ======> creating createquestion worker nodes"
-for i in {0..11};
-    do 
-        docker-machine create \
-        --engine-label node.type=createquestion \
-        --driver digitalocean --digitalocean-image ubuntu-17-04-x64 \
-        --digitalocean-size 1gb \
-        --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
-        createoquestion-worker-$i; 
-done
+#echo " ======> creating createquestion worker nodes"
+# for i in {0..11};
+#     do 
+#         docker-machine create \
+#         --engine-label node.type=createquestion \
+#         --driver digitalocean --digitalocean-image ubuntu-17-04-x64 \
+#         --digitalocean-size 1gb \
+#         --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
+#         createoquestion-worker-$i; 
+# done
 
 #create kafka and mysql nodes
 echo " ======> creating mysql and kafka worker nodes"
