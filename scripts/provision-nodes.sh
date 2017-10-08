@@ -20,19 +20,19 @@ function initSwarmManager {
 }
 
 function join_node_swarm {
-    local node = $1
+    local node=$1
     echo "======> $node joining swarm as worker ..."
     docker-machine ssh $node \
     docker swarm join \
     --token $(get_worker_token) \
     --listen-addr $(getIP $node):2376 \
-    --advertise-addr $(getIP $node):2376 $(getIP manager):2376
+    --advertise-addr $(getIP $node):2376 $(getIP manager):2376 \
     && systemctl restart docker
 }
 
 # set ufw rules for node
 function set_ufw_rules {
-    local node = $1
+    local node=$1
 
     echo "======> setting up firewall rules for $node ..."
     docker-machine ssh $node \
