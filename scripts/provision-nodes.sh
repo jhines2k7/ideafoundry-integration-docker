@@ -2,7 +2,8 @@
 
 function get_worker_token {
   # gets swarm manager token for a worker node
-  echo $(docker-machine ssh manager docker swarm join-token worker -q)
+  local manager-machine=$(docker-machine ls --format "{{.Name}}" | grep 'manager')
+  echo $(docker-machine ssh $manager-machine docker swarm join-token worker -q)
 }
 
 function getIP {
@@ -44,7 +45,7 @@ function set_ufw_rules {
 }
 
 #set ufw rules for manager node
-set_ufw_rules manager
+set_ufw_rules $(docker-machine ls --format "{{.Name}}" | grep 'manager')
 
 echo "======> Initializing swarm manager ..."
 initSwarmManager
