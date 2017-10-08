@@ -2,8 +2,8 @@
 
 function get_worker_token {
   # gets swarm manager token for a worker node
-  local manager-machine=$(docker-machine ls --format "{{.Name}}" | grep 'manager')
-  echo $(docker-machine ssh $manager-machine docker swarm join-token worker -q)
+  local managermachine=$(docker-machine ls --format "{{.Name}}" | grep 'manager')
+  echo $(docker-machine ssh $managermachine docker swarm join-token worker -q)
 }
 
 function getIP {
@@ -11,21 +11,41 @@ function getIP {
 }
 
 function initSwarmManager {
-  # initialize swarm mode and create a manager
-  echo '============================================'
-  echo "======> Initializing swarm manager ..."
-  docker-machine ssh $(docker-machine ls --format "{{.Name}}" | grep 'manager') \
-  docker swarm init \
-    --advertise-addr $(getIP manager)
+    local managermachine=$(docker-machine ls --format "{{.Name}}" | grep 'manager')
+   echo "=======> copying provision script to manager node"
+    docker-machine scp ./scripts/provision-manager.sh $managermachine:/provisioning 
+    docker-machine ssh $managermachine \
+    && echo 'export DB_HOST="$DB_HOST"' >> /.profile \
+    && echo 'export KAFKA_HOST="$KAFKA_HOST"' >> /.profile \
+    && echo 'export ZOOKEEPER_HOST="$ZOOKEEPER_HOST"' >> /.profile \
+    && echo 'export OKHTTP_CLIENT_TIMEOUT_SECONDS="$OKHTTP_CLIENT_TIMEOUT_SECONDS"' >> /.profile \
+    && echo 'export AIRTABLE_APP_ID="$AIRTABLE_APP_ID"' >> /.profile \
+    && echo 'export OCCASION_EXPORT_STARTING_PAGE_NUM="$OCCASION_EXPORT_STARTING_PAGE_NUM"' >> /.profile \
+    && echo 'export IF_OCCASION_EXPORT_URL="$IF_OCCASION_EXPORT_URL"' >> /.profile \
+    && echo 'export IF_AIRTABLE_CREDS="$IF_AIRTABLE_CREDS"' >> /.profile \
+    && echo 'export IF_DB_PASSWORD="$IF_DB_PASSWORD"' >> /.profile \
+    && echo 'export IF_DB_PORT="$IF_DB_PORT"' >> /.profile \
+    && echo 'export IF_DB_ROOT_PASS="$IF_DB_ROOT_PASS"' >> /.profile \
+    && echo 'export IF_DB_USERNAME="$IF_DB_USERNAME"' >> /.profile \
+    && echo 'export IF_EMAIL_CREDS="$IF_EMAIL_CREDS"' >> /.profile \
+    && echo 'export IF_EMAIL_ID="$IF_EMAIL_ID"' >> /.profile \
+    && echo 'export IF_OCCASION_CREDS="$IF_OCCASION_CREDS"' >> /.profile \
+    && echo 'export GIT_USERNAME="$GIT_USERNAME"' >> /.profile\
+    && echo 'export GIT_PASSWORD="$GIT_PASSWORD"' >> /.profile \
+    && echo 'export DOCKER_USER="$DOCKED_USER"' >> /.profile \
+    && echo 'export DOCKER_PASS="$DOCKER_PASS"' >> /.profile \
+    && echo 'export DOCKER_HOST="$DOCKER_HOST"' >> /.profile \
+    && echo 'export DIGITALOCEAN_ACCESS_TOKEN="$DIGITALOCEAN_ACCESS_TOKEN"' >> /.profile \
+    && sh /provisioning/provision-manager.sh
 }
 
 function join_node_swarm {
-    local manager-machine=$(docker-machine ls --format "{{.Name}}" | grep 'manager')
+    local managermachine=$(docker-machine ls --format "{{.Name}}" | grep 'manager')
     local machine=$1
     echo "======> $node joining swarm as worker ..."
     docker-machine ssh $machine \
     docker swarm join \
-        --token $(get_worker_token) $(getIP $manager-machine):2377 \
+        --token $(get_worker_token) $(getIP $managermachine):2377 \
     && systemctl restart docker
 }
 
@@ -44,43 +64,7 @@ function set_ufw_rules {
     && echo "y" | ufw enable
 }
 
-#set ufw rules for manager node
-set_ufw_rules $(docker-machine ls --format "{{.Name}}" | grep 'manager')
-
-echo "======> Initializing swarm manager ..."
 initSwarmManager
-
-manager-machine=$(docker-machine ls --format "{{.Name}}" | grep 'manager')
-docker-machine ssh $manager-machine \
-echo "Setting env variables" \
-&& export DB_HOST=$DB_HOST \
-&& export KAFKA_HOST=$KAFKA_HOST \
-&& export ZOOKEEPER_HOST=$ZOOKEEPER_HOST \
-&& export OKHTTP_CLIENT_TIMEOUT_SECONDS=$OKHTTP_CLIENT_TIMEOUT_SECONDS \
-&& export AIRTABLE_APP_ID=$AIRTABLE_APP_ID \
-&& export OCCASION_EXPORT_STARTING_PAGE_NUM=$OCCASION_EXPORT_STARTING_PAGE_NUM \
-&& export IF_OCCASION_EXPORT_URL=$IF_OCCASION_EXPORT_URL \
-&& export IF_AIRTABLE_CREDS=$IF_AIRTABLE_CREDS \
-&& export IF_DB_PASSWORD=$IF_DB_PASSWORD \
-&& export IF_DB_PORT=$IF_DB_PORT \
-&& export IF_DB_ROOT_PASS=$IF_DB_ROOT_PASS \
-&& export IF_DB_USERNAME=$IF_DB_USERNAME \
-&& export IF_EMAIL_CREDS=$IF_EMAIL_CREDS \
-&& export IF_EMAIL_ID=$IF_EMAIL_ID \
-&& export IF_OCCASION_CREDS=$IF_OCCASION_CREDS \
-&& export GIT_USERNAME=$GIT_USERNAME \
-&& export GIT_PASSWORD=$GIT_PASSWORD \
-&& export DOCKER_USER=$DOCKER_USER \
-&& export DOCKER_PASS=$DOCKER_PASS \
-&& export DOCKER_HOST=$DOCKER_HOST
-&& export DIGITALOCEAN_ACCESS_TOKEN=$DIGITALOCEAN_ACCESS_TOKEN
-&& echo "Cloning repo" \
-&& git clone https://$GIT_USERNAME:$GIT_PASSWORD@github.com/jhines2k7/ideafoundry-integration-docker.git
-&& cd ./ideafoundry-integration-docker
-&& echo "Setting docker credentials" \
-&& docker login --username=$DOCKER_USER --password=$DOCKER_PASS $DOCKER_HOST
-&& echo "Deploying stack" \
-&& docker deploy stack --compose-file docker-compose.yml --with-registry-auth integration
 
 # =========================================
 # Begin createperson worker nodes setup
