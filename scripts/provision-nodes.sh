@@ -19,16 +19,34 @@ function initSwarmManager {
     --advertise-addr $(getIP manager):2376
 }
 
-# set ufw rules for manager node
-echo "======> setting up firewall rules for manager ..."
-docker-machine ssh manager \
-ufw allow 22/tcp \
-&& ufw allow 2376/tcp \
-&& ufw allow 2377/tcp \
-&& ufw allow 7946/tcp \
-&& ufw allow 7946/udp \
-&& ufw allow 4789/udp \
-&& echo "y" | ufw enable
+function join_node_swarm {
+    local node = $1
+    echo "======> $node joining swarm as worker ..."
+    docker-machine ssh $node \
+    docker swarm join \
+    --token $(get_worker_token) \
+    --listen-addr $(getIP $node):2376 \
+    --advertise-addr $(getIP $node):2376 $(getIP manager):2376
+    && systemctl restart docker
+}
+
+# set ufw rules for node
+function set_ufw_rules {
+    local node = $1
+
+    echo "======> setting up firewall rules for $node ..."
+    docker-machine ssh $node \
+    ufw allow 22/tcp \
+    && ufw allow 2376/tcp \
+    && ufw allow 2377/tcp \
+    && ufw allow 7946/tcp \
+    && ufw allow 7946/udp \
+    && ufw allow 4789/udp \
+    && echo "y" | ufw enable
+}
+
+#set ufw rules for manager node
+set_ufw_rules manager
 
 echo "======> Initializing swarm manager ..."
 initSwarmManager
@@ -48,27 +66,13 @@ done
 # set ufw rules for createperson nodes
 for i in {0..3};
     do
-        echo "======> setting up firewall rules for createperson-worker-$i ..."
-        docker-machine ssh createperson-worker-$i \
-        ufw allow 22/tcp \
-        && ufw allow 2376/tcp \
-        && ufw allow 2377/tcp \
-        && ufw allow 7946/tcp \
-        && ufw allow 7946/udp \
-        && ufw allow 4789/udp \
-        && echo "y" | ufw enable
+        set_ufw_rules createperson-worker-$i
 done
 
 #join createperson worker nodes to swarm
 for i in {0..3};
     do
-        echo "======> createperson-worker-$i joining swarm as worker ..."
-        docker-machine ssh createperson-worker-$i \
-        docker swarm join \
-            --token $(get_worker_token) \
-            --listen-addr $(getIP createperson-worker-$i):2376 \
-            --advertise-addr $(getIP createperson-worker-$i):2377 $(getIP manager):2377 \
-        && systemctl restart docker
+        join_node_swarm createperson-worker-$i        
 done
 # End createperson worker nodes setup
 # =========================================
@@ -79,27 +83,13 @@ done
 # set ufw rules for 1gb worker nodes
 for i in {0..2};
     do
-        echo "======> setting up firewall rules for 1gb-worker-$i ..."
-        docker-machine ssh 1gb-worker-$i \
-        ufw allow 22/tcp \
-        && ufw allow 2376/tcp \
-        && ufw allow 2377/tcp \
-        && ufw allow 7946/tcp \
-        && ufw allow 7946/udp \
-        && ufw allow 4789/udp \
-        && echo "y" | ufw enable
+        set_ufw_rules 1gb-worker-$i        
 done
 
 #join 1gb worker nodes to swarm
 for i in {0..2};
     do
-        echo "======> 1gb-worker $i joining swarm as worker ..."
-        docker-machine ssh 1gb-worker-$i \
-        docker swarm join \
-            --token $(get_worker_token) \
-            --listen-addr $(getIP 1gb-worker-$i):2376 \
-            --advertise-addr $(getIP 1gb-worker-$i):2376 $(getIP manager):2376 \
-        && systemctl restart docker
+        join_node_swarm 1gb-worker-$i
 done
 # End 1gb worker nodes setup
 # =========================================
@@ -110,27 +100,13 @@ done
 # set ufw rules for mysql and kafka worker nodes
 for i in mysql kafka;
     do
-        echo "======> setting up firewall rules for $i ..."
-        docker-machine ssh $i \
-        ufw allow 22/tcp \
-        && ufw allow 2376/tcp \
-        && ufw allow 2377/tcp \
-        && ufw allow 7946/tcp \
-        && ufw allow 7946/udp \
-        && ufw allow 4789/udp \
-        && echo "y" | ufw enable
+        set_ufw_rules $i        
 done
 
 # join mysql and kafka worker nodes to swarm
 for i in mysql kafka;
     do
-        echo "======> $i joining swarm as worker ..."
-        docker-machine ssh $i \
-        docker swarm join \
-            --token $(get_worker_token) \
-            --listen-addr $(getIP $i):2376 \
-            --advertise-addr $(getIP $i):2376 $(getIP manager):2376 \
-        && systemctl restart docker
+        join_node_swarm $i        
 done
 
 # copy the file for creating db schema to mysql node
