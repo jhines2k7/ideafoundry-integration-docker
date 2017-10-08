@@ -57,7 +57,11 @@ for i in {0..3};
         echo "======> setting up env variables for createperson-worker-$i ..." 
         docker-machine ssh createperson-worker-$i \
         export CREATE_PERSON_NODES=4 \
-        && export CREATE_PERSON_NODE_INDEX=$i 
+        && export CREATE_PERSON_NODE_INDEX=$i \
+        && echo "Value of CREATE_PERSON_NODES: " \
+        && echo $CREATE_PERSON_NODES \
+        && echo "Value of CREATE_PERSON_NODE_INDEX: "  \
+        && echo $CREATE_PERSON_NODE_INDEX
 done
 
 # set ufw rules for createperson nodes
