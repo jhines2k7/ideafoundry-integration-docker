@@ -12,18 +12,19 @@ function getIP {
 function initSwarmManager {
   # initialize swarm mode and create a manager
   echo '============================================'
-  echo "======> Initializing first swarm manager ..."
-  docker-machine ssh manager \
+  echo "======> Initializing swarm manager ..."
+  docker-machine ssh $(docker-machine ls --format "{{.Name}}" | grep 'manager') \
   docker swarm init \
     --advertise-addr $(getIP manager)
 }
 
 function join_node_swarm {
+    local manager-machine=$(docker-machine ls --format "{{.Name}}" | grep 'manager')
     local machine=$1
     echo "======> $node joining swarm as worker ..."
     docker-machine ssh $machine \
     docker swarm join \
-        --token $(get_worker_token) $(getIP manager):2377 \
+        --token $(get_worker_token) $(getIP $manager-machine):2377 \
     && systemctl restart docker
 }
 
