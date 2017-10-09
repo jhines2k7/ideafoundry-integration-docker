@@ -17,26 +17,21 @@ function create_node {
     sh ./set-ufw-rules.sh $machine-$ID
 }
 
-function create_worker_node {
-    local machine=$1
-    local label=$2
-    local size=$3
-    local num_workers=$4
-    local ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
+local machine=$1
+local label=$2
+local size=$3
+local num_workers=$4
+local ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
 
+if [ $num_workers -gt 1 ]
+then
+    echo "Creating $num_workers nodes"
 
-    if [ $num_workers -gt 1 ]
-    then
-        echo "Creating $num_workers nodes"
-
-        for i in $(eval echo "{1..$num_workers}")
-            do
-                create_node $1 $2 $3                
-        done
-    else
-        echo "Creating $num_workers node"
-        create_node $1 $2 $3
-    fi
-}
-
-create_worker_node $1 $2 $3 $4
+    for i in $(eval echo "{1..$num_workers}")
+        do
+            create_node $1 $2 $3                
+    done
+else
+    echo "Creating $num_workers node"
+    create_node $1 $2 $3
+fi
