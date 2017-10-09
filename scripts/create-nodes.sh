@@ -78,9 +78,9 @@ function init_swarm_manager {
 
 function main {
     create_manager_node
-    create_person_worker_nodes
-    create_1gb_worker_nodes
-    create_mysql_and_kafka_nodes
+    #create_person_worker_nodes
+    #create_1gb_worker_nodes
+    #create_mysql_and_kafka_nodes
     init_swarm_manager  
     #join_person_worker_nodes_to_swarm              
     #join_1gb_worker_nodes_to_swarm              
