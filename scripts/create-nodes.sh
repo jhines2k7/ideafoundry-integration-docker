@@ -41,6 +41,7 @@ function create_node {
     sh ./set-ufw-rules.sh $machine-$ID
     
     if [ $machine -ne "manager" ]
+    then
         join_swarm $machine-$ID
     fi
 }
