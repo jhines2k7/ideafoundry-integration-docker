@@ -15,7 +15,7 @@ function create_node {
     --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
     $machine-$ID
     
-    sh ./set-ufw-rules.sh $machine
+    sh ./set-ufw-rules.sh $machine-$ID
 }
 
 #create manager node
