@@ -2,19 +2,22 @@
 
 function get_worker_token {
   # gets swarm manager token for a worker node
-  local managermachine=$(docker-machine ls --format "{{.Name}}" | grep 'manager')
-  echo $(docker-machine ssh $managermachine docker swarm join-token worker -q)
+  local manager_machine=$(docker-machine ls --format "{{.Name}}" | grep 'manager')
+  echo $(docker-machine ssh $manager_machine docker swarm join-token worker -q)
 }
 
 function getIP {
   echo $(docker-machine ip $1)
 }
 
-function initSwarmManager {
-    local managermachine=$(docker-machine ls --format "{{.Name}}" | grep 'manager')
-   echo "=======> copying provision script to manager node"
-    docker-machine scp ./scripts/provision-manager.sh $managermachine:/provisioning 
-    docker-machine ssh $managermachine \
+function init_swarm_manager {
+    local manager_machine=$(docker-machine ls --format "{{.Name}}" | grep 'manager')
+    
+    echo "=======> copying provision script to manager node"
+    
+    docker-machine scp ./scripts/provision-manager.sh $manager_machine:/provisioning 
+    
+    docker-machine ssh $manager_machine \
     && echo 'export DB_HOST="$DB_HOST"' >> /.profile \
     && echo 'export KAFKA_HOST="$KAFKA_HOST"' >> /.profile \
     && echo 'export ZOOKEEPER_HOST="$ZOOKEEPER_HOST"' >> /.profile \
@@ -40,12 +43,12 @@ function initSwarmManager {
 }
 
 function join_node_swarm {
-    local managermachine=$(docker-machine ls --format "{{.Name}}" | grep 'manager')
+    local manager_machine=$(docker-machine ls --format "{{.Name}}" | grep 'manager')
     local machine=$1
     echo "======> $node joining swarm as worker ..."
     docker-machine ssh $machine \
     docker swarm join \
-        --token $(get_worker_token) $(getIP $managermachine):2377 \
+        --token $(get_worker_token) $(getIP $manager_machine):2377 \
     && systemctl restart docker
 }
 
@@ -64,7 +67,7 @@ function set_ufw_rules {
     && echo "y" | ufw enable
 }
 
-initSwarmManager
+init_swarm_manager
 
 # =========================================
 # Begin createperson worker nodes setup
