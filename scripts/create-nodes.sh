@@ -55,11 +55,13 @@ function init_swarm_manager {
     # initialize swarm mode and create a manager
     echo "======> Initializing swarm manager ..."
     
-    local manager_machine=$(docker-machine ls --format "{{.Name}}" | grep 'manager')        
-    
+    local manager_machine=$(docker-machine ls --format "{{.Name}}" | grep 'manager')
+
+    local ip=$(docker-machine ip $manager_machine)
+
+    echo "Swarm manager machine name: $manager_machine"
     docker-machine ssh $manager_machine \
-    docker swarm init \
-        --advertise-addr $(/sbin/ip route|awk '/default/ { print $3 }')
+    docker swarm init --advertise-addr $ip
 }       
 
 #create createorder worker nodes
