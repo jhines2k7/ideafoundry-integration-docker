@@ -1,21 +1,5 @@
 #!/bin/bash
 
-#create manager node
-function create_manager_node {
-    local ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
-    
-    echo " ======> creating manager worker node"
-    
-    docker-machine create \
-    --swarm \
-    --swarm-master \
-    --driver digitalocean \
-    --digitalocean-image ubuntu-17-04-x64 \
-    --digitalocean-size 1gb \
-    --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
-    manager-$ID;
-}
-
 function create_node {
     local machine=$1
     local label=$2
@@ -30,6 +14,11 @@ function create_node {
     --digitalocean-size $size \
     --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
     $machine-$ID
+}
+
+#create manager node
+function create_manager_node {    
+    create_node manager "node.type=manager" 1gb
 }
 
 #create createperson worker nodes
@@ -91,9 +80,9 @@ function main {
     create_1gb_worker_nodes
     create_mysql_and_kafka_nodes
     init_swarm_manager  
-    join_person_worker_nodes_to_swarm              
-    join_1gb_worker_nodes_to_swarm              
-    join_mysql_and_kafka_nodes_to_swarm              
+    #join_person_worker_nodes_to_swarm              
+    #join_1gb_worker_nodes_to_swarm              
+    #join_mysql_and_kafka_nodes_to_swarm              
 }
 
 main
