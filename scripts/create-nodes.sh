@@ -1,4 +1,12 @@
 #!/bin/bash
+function join_swarm {
+    local machine=$1
+    
+    docker-machine ssh $machine \
+    docker swarm join \
+        --token your_swarm_token \
+        manager_node_ip_address:2377
+}
 
 function create_node {
     local machine=$1
