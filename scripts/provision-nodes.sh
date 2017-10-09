@@ -10,7 +10,7 @@ function getIP {
   echo $(docker-machine ip $1)
 }
 
-function init_swarm_manager {
+function provision_swarm_manager {
     local manager_machine=$(docker-machine ls --format "{{.Name}}" | grep 'manager')
     
     echo "=======> copying provision script to manager node"
@@ -67,7 +67,7 @@ function set_ufw_rules {
     && echo "y" | ufw enable
 }
 
-init_swarm_manager
+provision_swarm_manager
 
 # =========================================
 # Begin createperson worker nodes setup
