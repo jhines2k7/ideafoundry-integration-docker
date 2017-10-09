@@ -15,6 +15,9 @@ function create_node {
     --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
     $machine-$ID
     
+    echo "======> installing expect..."
+    docker-machine ssh $machine-$ID apt -y install expect
+
     sh ./set-ufw-rules.sh $machine-$ID
 }
 
