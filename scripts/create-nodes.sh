@@ -62,7 +62,6 @@ function create_mysql_and_kafka_nodes {
 
 function init_swarm_manager {
     # initialize swarm mode and create a manager
-    echo "======================================"
     echo "======> Initializing swarm manager ..."
     
     local manager_machine=$(docker-machine ls --format "{{.Name}}" | grep 'manager')        
