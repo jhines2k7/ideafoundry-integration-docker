@@ -29,9 +29,9 @@ then
 
     for i in $(eval echo "{1..$num_workers}")
         do
-            create_node $1 $2 $3                
+            create_node $machine $label $size               
     done
 else
     echo "Creating $num_workers node"
-    create_node $1 $2 $3
+    create_node $machine $label $size
 fi
