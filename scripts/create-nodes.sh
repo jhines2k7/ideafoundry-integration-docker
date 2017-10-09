@@ -37,7 +37,7 @@ function create_person_worker_nodes {
     for i in {1..4};
         do 
             create_node createperson-worker "node.type=createperson" 1gb
-        done    
+    done    
 }
 
 #create 1gb worker nodes
@@ -61,10 +61,15 @@ function create_mysql_and_kafka_nodes {
 }
 
 function init_swarm_manager {
-    local manager_machine=$(docker-machine ls --format "{{.Name}}" | grep 'manager')
-        
+    # initialize swarm mode and create a manager
+    echo "======================================"
+    echo "======> Initializing swarm manager ..."
     
-    docker-machine ssh $manager_machine \    
+    local manager_machine=$(docker-machine ls --format "{{.Name}}" | grep 'manager')        
+    
+    docker-machine ssh $manager_machine \
+    docker swarm init \
+        --advertise-addr $(/sbin/ip route|awk '/default/ { print $3 }')
 }       
 
 #create createorder worker nodes
