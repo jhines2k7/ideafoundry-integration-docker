@@ -1,11 +1,26 @@
 #!/bin/bash
+
+function get_ip {
+    echo $(docker-machine ip $1)
+}
+
+function get_manager_machine_name {
+    echo $(docker-machine ls --format "{{.Name}}" | grep 'manager')
+}
+
+function get_worker_token {
+    local manager_machine=$(get_manager_machine_name)
+    # gets swarm manager token for a worker node
+    echo $(docker-machine ssh $manager_machine docker swarm join-token worker -q)
+}
+
 function join_swarm {
-    local machine=$1
+    local manager_machine=$(get_manager_machine_name)
     
-    docker-machine ssh $machine \
+    docker-machine ssh $1 \
     docker swarm join \
-        --token your_swarm_token \
-        manager_node_ip_address:2377
+        --token $(get_worker_token) \
+        $(get_ip $manager_machine):2377
 }
 
 function create_node {
@@ -24,6 +39,10 @@ function create_node {
     $machine-$ID
  
     sh ./set-ufw-rules.sh $machine-$ID
+    
+    if [ $machine -ne "manager" ]
+        join_swarm $machine-$ID
+    fi
 }
 
 #create manager node
@@ -63,13 +82,11 @@ function init_swarm_manager {
     # initialize swarm mode and create a manager
     echo "======> Initializing swarm manager ..."
     
-    local manager_machine=$(docker-machine ls --format "{{.Name}}" | grep 'manager')
-
+    local manager_machine=$(get_manager_machine_name)
     local ip=$(docker-machine ip $manager_machine)
 
     echo "Swarm manager machine name: $manager_machine"
-    docker-machine ssh $manager_machine \
-    docker swarm init --advertise-addr $ip
+    docker-machine ssh $manager_machine docker swarm init --advertise-addr $ip
 }       
 
 #create createorder worker nodes
@@ -88,10 +105,10 @@ function init_swarm_manager {
 
 function main {
     create_manager_node
-    #create_person_worker_nodes
+    init_swarm_manager  
+    create_person_worker_nodes
     #create_1gb_worker_nodes
     #create_mysql_and_kafka_nodes
-    init_swarm_manager  
     #join_person_worker_nodes_to_swarm              
     #join_1gb_worker_nodes_to_swarm              
     #join_mysql_and_kafka_nodes_to_swarm              
