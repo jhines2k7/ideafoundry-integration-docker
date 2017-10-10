@@ -100,7 +100,7 @@ function deploy_stack {
     docker-machine ssh $manager_machine \
     docker login --username=$DOCKER_USER --password=$DOCKER_PASS \
     cd ideafoundry-integration-docker \
-    docker stack deploy --compose-file .docker-compose.yml integration    
+    docker stack deploy --compose-file .docker-compose.yml --with-registry-auth integration    
 }
 
 function set_scaling_env_variables {
