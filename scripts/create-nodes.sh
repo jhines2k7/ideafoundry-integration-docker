@@ -127,3 +127,4 @@ create_mysql_and_kafka_nodes
 sh ./provision-nodes.sh
 
 deploy_stack
+
