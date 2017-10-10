@@ -95,8 +95,12 @@ function init_swarm_manager {
 function deploy_stack {
     local manager_machine=$(get_manager_machine_name)
 
+    docker-machine ssh $manager_machine git clone https://$GIT_USERNAME:$GIT_PASSWORD@github.com:jhines2k7/ideafoundry-integration-docker.git
+    
     docker-machine ssh $manager_machine \
-    docker stack deploy --compose-file .docker-compose.yml integration
+    docker login --username=$DOCKER_USER --password=$DOCKER_PASS \
+    cd ideafoundry-integration-docker \
+    docker stack deploy --compose-file .docker-compose.yml integration    
 }
 
 function set_scaling_env_variables {
