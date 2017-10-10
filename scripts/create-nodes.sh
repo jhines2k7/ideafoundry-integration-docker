@@ -90,6 +90,12 @@ function init_swarm_manager {
     docker-machine ssh $manager_machine docker swarm init --advertise-addr $ip
 }       
 
+function deploy_stack {
+    local manager_machine=$(get_manager_machine_name)
+
+    docker-machine ssh $manager_machine \
+    docker stack deploy --compose-file docker-compose.yml integration
+}
 #create createorder worker nodes
 # echo " ======> creating createorder worker nodes"
 # for i in {0..3};
@@ -108,11 +114,9 @@ function main {
     create_manager_node
     init_swarm_manager  
     create_person_worker_nodes
-    #create_1gb_worker_nodes
-    #create_mysql_and_kafka_nodes
-    #join_person_worker_nodes_to_swarm              
-    #join_1gb_worker_nodes_to_swarm              
-    #join_mysql_and_kafka_nodes_to_swarm              
+    create_1gb_worker_nodes
+    create_mysql_and_kafka_nodes
+    deploy_stack
 }
 
 main
