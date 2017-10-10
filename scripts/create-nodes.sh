@@ -118,13 +118,12 @@ function set_scaling_env_variables {
     done       
 }
 
-function main {
-    create_manager_node
-    init_swarm_manager  
-    create_person_worker_nodes
-    create_1gb_worker_nodes
-    create_mysql_and_kafka_nodes
-    deploy_stack
-}
+create_manager_node
+init_swarm_manager
+create_person_worker_nodes
+create_1gb_worker_nodes
+create_mysql_and_kafka_nodes
 
-main
+sh ./provision-nodes.sh
+
+#deploy_stack
