@@ -96,7 +96,7 @@ function deploy_stack {
     local manager_machine=$(get_manager_machine_name)
 
     docker-machine ssh $manager_machine \
-    docker stack deploy --compose-file docker-compose.yml integration
+    docker stack deploy --compose-file .docker-compose.yml integration
 }
 
 function set_scaling_env_variables {
@@ -108,11 +108,11 @@ function set_scaling_env_variables {
             echo "======> setting scaling env variables for $machine ..."
 
             docker-machine ssh $machine \
-            echo 'export CREATE_PERSON_NODES="$num_nodes"' >> /root/.profile \
-            && echo 'export CREATE_PERSON_NODE_INDEX="$index"' >> /root/.profile \
+            echo 'export CREATE_PERSON_NODES="$num_nodes" >> /root/.profile \
+            && echo export CREATE_PERSON_NODE_INDEX="$index" >> /root/.profile \
             && source /root/.profile \
             && echo "Value of CREATE_PERSON_NODES: $CREATE_PERSON_NODES" \
-            && echo "Value of CREATE_PERSON_NODE_INDEX: $CREATE_PERSON_NODE_INDEX"  \ 
+            && echo "Value of CREATE_PERSON_NODE_INDEX: $CREATE_PERSON_NODE_INDEX"'  \ 
 
             ((index++))
     done       
@@ -126,4 +126,4 @@ create_mysql_and_kafka_nodes
 
 sh ./provision-nodes.sh
 
-deploy_stack
+#deploy_stack
