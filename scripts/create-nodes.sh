@@ -58,7 +58,7 @@ function create_person_worker_nodes {
             create_node createperson-worker "node.type=createperson" 1gb            
     done
 
-    set_scaling_env_variables createperson   
+    set_scaling_env_variables createperson 4  
 }
 
 #create 1gb worker nodes
@@ -105,6 +105,7 @@ function deploy_stack {
 
 function set_scaling_env_variables {
     local machine_type=$1
+    local num_nodes=$2
     local index=0
 
     for machine in $(docker-machine ls --format "{{.Name}}" | grep $machine_type)
