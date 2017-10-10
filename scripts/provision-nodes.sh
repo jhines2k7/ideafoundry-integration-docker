@@ -71,21 +71,7 @@ provision_swarm_manager
 
 # =========================================
 # Begin createperson worker nodes setup
-echo "======> setting env variables for createperson nodes ..."
-#set env variables for createperson nodes
-index=0
-for machine in $(docker-machine ls --format "{{.Name}}" | grep createperson);
-    do 
-        echo "======> setting up env variables for $machine ..." 
-        docker-machine ssh $machine \
-        echo "export CREATE_PERSON_NODES=4" >> /.profile \
-        && echo 'export CREATE_PERSON_NODE_INDEX="$index"' >> /.profile \
-        && source /.profile \
-        && echo "Value of CREATE_PERSON_NODES: $CREATE_PERSON_NODES" \
-        && echo "Value of CREATE_PERSON_NODE_INDEX: $CREATE_PERSON_NODE_INDEX"  \
 
-        ((index++))
-done
 
 # set ufw rules for createperson nodes
 for machine in $(docker-machine ls --format "{{.Name}}" | grep createperson);

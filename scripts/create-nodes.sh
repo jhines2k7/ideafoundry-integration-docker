@@ -55,8 +55,10 @@ function create_manager_node {
 function create_person_worker_nodes {
     for i in {1..4};
         do 
-            create_node createperson-worker "node.type=createperson" 1gb
-    done    
+            create_node createperson-worker "node.type=createperson" 1gb            
+    done
+
+    set_scaling_env_variables createperson   
 }
 
 #create 1gb worker nodes
@@ -96,19 +98,25 @@ function deploy_stack {
     docker-machine ssh $manager_machine \
     docker stack deploy --compose-file docker-compose.yml integration
 }
-#create createorder worker nodes
-# echo " ======> creating createorder worker nodes"
-# for i in {0..3};
-#     do 
-#         create_node createorder-worker-$i "node.type=createorder" 1gb
-# done
 
-#create createquestion worker nodes
-#echo " ======> creating createquestion worker nodes"
-# for i in {0..11};
-#     do 
-#         create_node createquestion-worker-$i "node.type=createquestion" 1gb
-# done
+function set_scaling_env_variables {
+    local machine_type=$1
+    local index=0
+
+    for machine in $(docker-machine ls --format "{{.Name}}" | grep $machine_type)
+        do
+            echo "======> setting scaling env variables for $machine ..."
+
+            docker-machine ssh $machine \
+            echo 'export CREATE_PERSON_NODES="$num_nodes"' >> /.profile \
+            && echo 'export CREATE_PERSON_NODE_INDEX="$index"' >> /.profile \
+            && source /.profile \
+            && echo "Value of CREATE_PERSON_NODES: $CREATE_PERSON_NODES" \
+            && echo "Value of CREATE_PERSON_NODE_INDEX: $CREATE_PERSON_NODE_INDEX"  \ 
+
+            ((index++))
+    done       
+}
 
 function main {
     create_manager_node
