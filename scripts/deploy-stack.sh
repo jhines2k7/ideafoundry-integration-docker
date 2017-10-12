@@ -1,4 +1,4 @@
-!#/bin/bash
+#!/bin/bash
 
 git clone https://$GIT_USERNAME:$GIT_PASSWORD@github.com:jhines2k7/ideafoundry-integration-docker.git
 
