@@ -53,7 +53,9 @@ function create_manager_node {
 
 #create createperson worker nodes
 function create_person_worker_nodes {
-    for i in {1..4};
+    local num_nodes=$1
+
+    for i in $(eval echo "{1..$num_nodes}")
         do 
             create_node createperson-worker "node.type=createperson" 1gb            
     done
@@ -122,10 +124,10 @@ function set_scaling_env_variables {
 
 create_manager_node
 init_swarm_manager
-create_person_worker_nodes
-create_1gb_worker_nodes
-create_mysql_and_kafka_nodes
+create_person_worker_nodes 1
+#create_1gb_worker_nodes
+#create_mysql_and_kafka_nodes
 
 sh ./provision-nodes.sh
 
-deploy_stack
+#deploy_stack
