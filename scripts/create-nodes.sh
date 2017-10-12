@@ -102,9 +102,9 @@ function deploy_stack {
     docker-machine ssh $manager_machine git clone https://$GIT_USERNAME:$GIT_PASSWORD@github.com:jhines2k7/ideafoundry-integration-docker.git
     
     docker-machine ssh $manager_machine \
-    docker login --username=$DOCKER_USER --password=$DOCKER_PASS \
-    cd ideafoundry-integration-docker \
-    docker stack deploy --compose-file docker-compose.yml --with-registry-auth integration    
+    && docker login --username=$DOCKER_USER --password=$DOCKER_PASS \
+    && cd ideafoundry-integration-docker \
+    && docker stack deploy --compose-file docker-compose.yml --with-registry-auth integration    
 }
 
 function set_scaling_env_variables {
@@ -116,8 +116,8 @@ function set_scaling_env_variables {
         do
             echo "======> setting scaling env variables for $machine ..."
 
-            docker-machine ssh $machine 'echo export "CREATE_PERSON_NODES=$num_nodes" >> /root/.profile'
-            docker-machine ssh $machine 'echo export "CREATE_PERSON_NODE_INDEX=$index" >> /root/.profile'
+            docker-machine ssh $machine 'echo "export CREATE_PERSON_NODES=$num_nodes" >> /root/.profile'
+            docker-machine ssh $machine 'echo "export CREATE_PERSON_NODE_INDEX=$index" >> /root/.profile'
             docker-machine ssh $machine echo "Value of CREATE_PERSON_NODES: $CREATE_PERSON_NODES"
             docker-machine ssh $machine echo "Value of CREATE_PERSON_NODE_INDEX: $CREATE_PERSON_NODE_INDEX"
 
