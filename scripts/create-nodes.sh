@@ -103,7 +103,7 @@ function init_swarm_manager {
 function deploy_stack {
     local manager_machine=$(get_manager_machine_name)
     
-    docker-machine ssh $manager_machine 'bash -s' < ./deploy_stack.sh
+    docker-machine ssh $manager_machine 'bash -s' < ./deploy-stack.sh
 }
 
 function set_scaling_env_variables {
@@ -121,12 +121,19 @@ function set_scaling_env_variables {
     done       
 }
 
+function copy_sql_schema {
+    local mysql_machine=$(docker-machine ls --format "{{.Name}}" | grep 'mysql')
+    
+    docker-machine ssh $mysql_machine mkdir /schemas
+    
+    docker-machine scp ./docker/data/ideafoundrybi.sql $mysql_machine:/schemas
+}
+
 create_manager_node
 init_swarm_manager
 create_person_worker_nodes 4
-#create_1gb_worker_nodes
-#create_mysql_and_kafka_nodes
-
-#bash ./provision-nodes.sh
+create_1gb_worker_nodes 1
+create_mysql_and_kafka_nodes
+copy_sql_schema
 
 #deploy_stack
