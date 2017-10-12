@@ -43,8 +43,7 @@ function create_node {
     
     if [ $machine != "manager" ]
     then
-        #join_swarm $machine-$ID
-        echo "will join swarm here"
+        join_swarm $machine-$ID
     fi
 }
 
@@ -96,17 +95,15 @@ function init_swarm_manager {
 
     echo "Swarm manager machine name: $manager_machine"
     docker-machine ssh $manager_machine docker swarm init --advertise-addr $ip
+    
+    echo "Setting environment variables for $manager_machine"
+    docker-machine ssh $manager_machine 'bash -s' < ./set-manager-env-variables.sh
 }       
 
 function deploy_stack {
     local manager_machine=$(get_manager_machine_name)
-
-    docker-machine ssh $manager_machine git clone https://$GIT_USERNAME:$GIT_PASSWORD@github.com:jhines2k7/ideafoundry-integration-docker.git
     
-    docker-machine ssh $manager_machine \
-    && docker login --username=$DOCKER_USER --password=$DOCKER_PASS \
-    && cd ideafoundry-integration-docker \
-    && docker stack deploy --compose-file docker-compose.yml --with-registry-auth integration    
+    docker-machine ssh $manager_machine 'bash -s' < ./deploy_stack.sh
 }
 
 function set_scaling_env_variables {
@@ -124,9 +121,9 @@ function set_scaling_env_variables {
     done       
 }
 
-#create_manager_node
-#init_swarm_manager
-create_person_worker_nodes 1
+create_manager_node
+init_swarm_manager
+create_person_worker_nodes 4
 #create_1gb_worker_nodes
 #create_mysql_and_kafka_nodes
 
