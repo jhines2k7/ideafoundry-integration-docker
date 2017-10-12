@@ -131,6 +131,6 @@ create_person_worker_nodes 1
 #create_1gb_worker_nodes
 #create_mysql_and_kafka_nodes
 
-sh ./provision-nodes.sh
+#sh ./provision-nodes.sh
 
 #deploy_stack
