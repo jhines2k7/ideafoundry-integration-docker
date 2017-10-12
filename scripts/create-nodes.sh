@@ -114,8 +114,8 @@ function set_scaling_env_variables {
         do
             echo "======> setting scaling env variables for $machine ..."
 
-            docker-machine ssh $machine echo 'export CREATE_PERSON_NODES="$num_nodes"' >> /root/.profile
-            docker-machine ssh $machine echo 'export CREATE_PERSON_NODE_INDEX="$index"' >> /root/.profile
+            docker-machine ssh $machine 'echo export CREATE_PERSON_NODES="$num_nodes" >> /root/.profile'
+            docker-machine ssh $machine 'echo export CREATE_PERSON_NODE_INDEX="$index" >> /root/.profile'
             docker-machine ssh $machine echo "Value of CREATE_PERSON_NODES: $CREATE_PERSON_NODES"
             docker-machine ssh $machine echo "Value of CREATE_PERSON_NODE_INDEX: $CREATE_PERSON_NODE_INDEX"
 
@@ -125,7 +125,7 @@ function set_scaling_env_variables {
 
 create_manager_node
 init_swarm_manager
-create_person_worker_nodes 1
+create_person_worker_nodes 4
 #create_1gb_worker_nodes
 #create_mysql_and_kafka_nodes
 
