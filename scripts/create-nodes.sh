@@ -118,7 +118,7 @@ function set_scaling_env_variables {
         do
             echo "======> setting scaling env variables for $machine ..."
 
-            docker-machine ssh $machine 'bash -s' < set-scaling-variables.sh $num_nodes $index            
+            docker-machine ssh $machine 'bash -s' < ./set-scaling-variables.sh $num_nodes $index            
 
             ((index++))
     done       
