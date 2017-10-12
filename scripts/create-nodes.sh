@@ -51,7 +51,6 @@ function create_node {
 function create_manager_node {    
     create_node manager "node.type=manager" 1gb
     
-    echo "Setting environment variables for $manager_machine"
     docker-machine ssh $(get_manager_machine_name) 'bash -s' < ./set-manager-env-variables.sh \
         "$DB_HOST" \
         "$KAFKA_HOST" \
