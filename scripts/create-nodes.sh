@@ -50,6 +50,9 @@ function create_node {
 #create manager node
 function create_manager_node {    
     create_node manager "node.type=manager" 1gb
+    
+    echo "Setting environment variables for $manager_machine"
+    docker-machine ssh $(get_manager_machine_name) 'bash -s' < ./set-manager-env-variables.sh
 }
 
 #create createperson worker nodes
@@ -95,9 +98,6 @@ function init_swarm_manager {
 
     echo "Swarm manager machine name: $manager_machine"
     docker-machine ssh $manager_machine docker swarm init --advertise-addr $ip
-    
-    echo "Setting environment variables for $manager_machine"
-    docker-machine ssh $manager_machine 'bash -s' < ./set-manager-env-variables.sh
 }       
 
 function deploy_stack {
@@ -130,10 +130,10 @@ function copy_sql_schema {
 }
 
 create_manager_node
-init_swarm_manager
-create_person_worker_nodes 4
-create_1gb_worker_nodes 1
-create_mysql_and_kafka_nodes
-copy_sql_schema
+#init_swarm_manager
+#create_person_worker_nodes 4
+#create_1gb_worker_nodes 1
+#create_mysql_and_kafka_nodes
+#copy_sql_schema
 
 #deploy_stack
