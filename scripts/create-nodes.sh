@@ -60,14 +60,16 @@ function create_person_worker_nodes {
             create_node createperson-worker "node.type=createperson" 1gb            
     done
 
-    set_scaling_env_variables createperson 4  
+    set_scaling_env_variables createperson $num_nodes
 }
 
 #create 1gb worker nodes
 function create_1gb_worker_nodes {
+    local num_nodes=$1
+
     echo " ======> creating 1gb worker nodes"
     
-    for i in {1..1};
+    for i in $(eval echo "{1..$num_nodes}")
         do 
             create_node 1gb-worker "node.type=1gb-worker" 1gb
     done
