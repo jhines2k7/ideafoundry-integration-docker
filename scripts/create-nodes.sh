@@ -116,8 +116,8 @@ function set_scaling_env_variables {
         do
             echo "======> setting scaling env variables for $machine ..."
 
-            docker-machine ssh $machine 'echo export CREATE_PERSON_NODES=$num_nodes >> /root/.profile'
-            docker-machine ssh $machine 'echo export CREATE_PERSON_NODE_INDEX=$index >> /root/.profile'
+            docker-machine ssh $machine echo "export CREATE_PERSON_NODES=$num_nodes" >> /root/.profile'
+            docker-machine ssh $machine echo "export CREATE_PERSON_NODE_INDEX=$index" >> /root/.profile'
             docker-machine ssh $machine echo "Value of CREATE_PERSON_NODES: $CREATE_PERSON_NODES"
             docker-machine ssh $machine echo "Value of CREATE_PERSON_NODE_INDEX: $CREATE_PERSON_NODE_INDEX"
 
