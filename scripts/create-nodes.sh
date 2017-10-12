@@ -52,27 +52,27 @@ function create_manager_node {
     create_node manager "node.type=manager" 1gb
     
     docker-machine ssh $(get_manager_machine_name) 'bash -s' < ./set-manager-env-variables.sh \
-        $DB_HOST \
-        $KAFKA_HOST \
-        $ZOOKEEPER_HOST \
-        $OKHTTP_CLIENT_TIMEOUT_SECONDS \
-        $AIRTABLE_APP_ID \
-        $OCCASION_EXPORT_STARTING_PAGE_NUM \
-        $IF_OCCASION_EXPORT_URL \
-        $IF_AIRTABLE_CREDS \
-        $IF_DB_PASSWORD \
-        $IF_DB_PORT \
-        $IF_DB_ROOT_PASS \
-        $IF_DB_USERNAME \
-        $IF_EMAIL_CREDS \
-        $IF_EMAIL_ID \
-        $IF_OCCASION_CREDS \
-        $GIT_USERNAME \
-        $GIT_PASSWORD \
-        $DOCKED_USER \
-        $DOCKER_PASS \
-        $DOCKER_HOST \
-        $DIGITALOCEAN_ACCESS_TOKEN
+        "$DB_HOST" \
+        "$KAFKA_HOST" \
+        "$ZOOKEEPER_HOST" \
+        "$OKHTTP_CLIENT_TIMEOUT_SECONDS" \
+        "$AIRTABLE_APP_ID" \
+        "$OCCASION_EXPORT_STARTING_PAGE_NUM" \
+        "$IF_OCCASION_EXPORT_URL" \
+        "$IF_AIRTABLE_CREDS" \
+        "$IF_DB_PASSWORD" \
+        "$IF_DB_PORT" \
+        "$IF_DB_ROOT_PASS" \
+        "$IF_DB_USERNAME" \
+        "$IF_EMAIL_CREDS" \
+        "$IF_EMAIL_ID" \
+        "$IF_OCCASION_CREDS" \
+        "$GIT_USERNAME" \
+        "$GIT_PASSWORD" \
+        "$DOCKED_USER" \
+        "$DOCKER_PASS" \
+        "$DOCKER_HOST" \
+        "$DIGITALOCEAN_ACCESS_TOKEN"
 }
 
 #create createperson worker nodes
