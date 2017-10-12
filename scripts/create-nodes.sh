@@ -30,6 +30,7 @@ function create_node {
     local ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
 
     echo "======> creating $machine-$ID node"
+    
     docker-machine create \
     --engine-label $label \
     --driver digitalocean \
@@ -116,8 +117,8 @@ function set_scaling_env_variables {
         do
             echo "======> setting scaling env variables for $machine ..."
 
-            docker-machine ssh $machine echo "export CREATE_PERSON_NODES=$num_nodes" >> /root/.profile'
-            docker-machine ssh $machine echo "export CREATE_PERSON_NODE_INDEX=$index" >> /root/.profile'
+            docker-machine ssh $machine 'echo "export CREATE_PERSON_NODES=\"$num_nodes\"" >> /root/.profile'
+            docker-machine ssh $machine 'echo "export CREATE_PERSON_NODE_INDEX=\"$index\"" >> /root/.profile'
             docker-machine ssh $machine echo "Value of CREATE_PERSON_NODES: $CREATE_PERSON_NODES"
             docker-machine ssh $machine echo "Value of CREATE_PERSON_NODE_INDEX: $CREATE_PERSON_NODE_INDEX"
 
@@ -131,6 +132,6 @@ create_person_worker_nodes 1
 #create_1gb_worker_nodes
 #create_mysql_and_kafka_nodes
 
-#sh ./provision-nodes.sh
+#bash ./provision-nodes.sh
 
 #deploy_stack
