@@ -5,6 +5,7 @@ argv=()
 for arg in "$@"; do
     argv[$i]="$arg"
     i=$((i + 1))
+    echo "Argument $i is $arg"
 done
 
 echo "=======> setting env variables for manager node"
