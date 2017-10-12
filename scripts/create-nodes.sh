@@ -51,9 +51,6 @@ function create_node {
 function create_manager_node {    
     create_node manager "node.type=manager" 1gb
     
-    OFS=$IFS
-    IFS=':'
-    
     docker-machine ssh $(get_manager_machine_name) 'bash -s' < ./set-manager-env-variables.sh \
         '$DB_HOST' \
         '$KAFKA_HOST' \
