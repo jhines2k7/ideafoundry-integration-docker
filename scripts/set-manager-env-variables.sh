@@ -2,6 +2,7 @@
 
 i=0
 argv=()
+
 for arg in "$@"; do
     argv[$i]="$arg"
     i=$((i + 1))
