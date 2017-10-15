@@ -69,7 +69,7 @@ function create_manager_node {
         "$IF_OCCASION_CREDS" \
         "$GIT_USERNAME" \
         "$GIT_PASSWORD" \
-        "$DOCKED_USER" \
+        "$DOCKER_USER" \
         "$DOCKER_PASS" \
         "$DOCKER_HOST" \
         "$DIGITALOCEAN_ACCESS_TOKEN"
