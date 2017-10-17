@@ -1,28 +1,28 @@
 version: '3'
 
 services:
-  legacydataexport:
-    depends_on:
-      - createperson
-    container_name: legacydataexport
-    image: ideafoundry/occasion-legacy-data-export-service:1.9.1-SNAPSHOT
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
-      replicas: 1
-      placement:
-        constraints:
-          - engine.labels.node.type==1gb-worker
-    environment:
-      - OKHTTP_CLIENT_TIMEOUT_SECONDS=${OKHTTP_CLIENT_TIMEOUT_SECONDS}
-      - OCCASION_EXPORT_STARTING_PAGE_NUM=${OCCASION_EXPORT_STARTING_PAGE_NUM}
-      - DB_HOST=${DB_HOST}
-      - KAFKA_HOST=${KAFKA_HOST}
-      - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
-      - IF_OCCASION_CREDS=${IF_OCCASION_CREDS}
+  # legacydataexport:
+  #   depends_on:
+  #     - createperson
+  #   container_name: legacydataexport
+  #   image: ideafoundry/occasion-legacy-data-export-service:1.9.1-SNAPSHOT
+  #   deploy:
+  #     restart_policy:
+  #       condition: on-failure
+  #       delay: 5s
+  #       max_attempts: 3
+  #       window: 120s
+  #     replicas: 1
+  #     placement:
+  #       constraints:
+  #         - engine.labels.node.type==1gb-worker
+  #   environment:
+  #     - OKHTTP_CLIENT_TIMEOUT_SECONDS=${OKHTTP_CLIENT_TIMEOUT_SECONDS}
+  #     - OCCASION_EXPORT_STARTING_PAGE_NUM=${OCCASION_EXPORT_STARTING_PAGE_NUM}
+  #     - DB_HOST=${DB_HOST}
+  #     - KAFKA_HOST=${KAFKA_HOST}
+  #     - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
+  #     - IF_OCCASION_CREDS=${IF_OCCASION_CREDS}
   # processorderemail:
   #   depends_on:
   #     - mailsource      
@@ -45,34 +45,34 @@ services:
   #     - KAFKA_HOST=${KAFKA_HOST}
   #     - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
   #     - IF_OCCASION_CREDS=${IF_OCCASION_CREDS}
-  createperson:
-    depends_on:
-      - kafka
-      - mysql
-    container_name: createperson
-    image: ideafoundry/create-airtable-person-service:1.5.10-SNAPSHOT
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
-      replicas: 1
-      placement:
-        constraints:
-          - engine.labels.node.type=createperson   
-    environment:
-      - OKHTTP_CLIENT_TIMEOUT_SECONDS=${OKHTTP_CLIENT_TIMEOUT_SECONDS}
-      - IF_AIRTABLE_CREDS=${IF_AIRTABLE_CREDS}
-      - AIRTABLE_APP_ID=${AIRTABLE_APP_ID}
-      - DB_HOST=${DB_HOST}
-      - KAFKA_HOST=${KAFKA_HOST}
-      - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
-      - IF_DB_PASSWORD=${IF_DB_PASSWORD}
-      - IF_DB_PORT=${IF_DB_PORT}
-      - IF_DB_USERNAME=${IF_DB_USERNAME}
-      - CREATE_PERSON_NODES=${CREATE_PERSON_NODES}
-      - CREATE_PERSON_NODE_INDEX=${CREATE_PERSON_NODE_INDEX}
+  # createperson:
+  #   depends_on:
+  #     - kafka
+  #     - mysql
+  #   container_name: createperson
+  #   image: ideafoundry/create-airtable-person-service:1.5.10-SNAPSHOT
+  #   deploy:
+  #     restart_policy:
+  #       condition: on-failure
+  #       delay: 5s
+  #       max_attempts: 3
+  #       window: 120s
+  #     replicas: 1
+  #     placement:
+  #       constraints:
+  #         - engine.labels.node.type=createperson   
+  #   environment:
+  #     - OKHTTP_CLIENT_TIMEOUT_SECONDS=${OKHTTP_CLIENT_TIMEOUT_SECONDS}
+  #     - IF_AIRTABLE_CREDS=${IF_AIRTABLE_CREDS}
+  #     - AIRTABLE_APP_ID=${AIRTABLE_APP_ID}
+  #     - DB_HOST=${DB_HOST}
+  #     - KAFKA_HOST=${KAFKA_HOST}
+  #     - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
+  #     - IF_DB_PASSWORD=${IF_DB_PASSWORD}
+  #     - IF_DB_PORT=${IF_DB_PORT}
+  #     - IF_DB_USERNAME=${IF_DB_USERNAME}
+  #     - CREATE_PERSON_NODES=${CREATE_PERSON_NODES}
+  #     - CREATE_PERSON_NODE_INDEX=${CREATE_PERSON_NODE_INDEX}
   # createorder:
   #   depends_on:
   #     - createperson
@@ -143,30 +143,30 @@ services:
   #     - IF_EMAIL_CREDS=${IF_EMAIL_CREDS}
   #     - KAFKA_HOST=${KAFKA_HOST}
   #     - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
-  mysql:
-    container_name: mysql
-    image: mysql:8.0.1
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
-      replicas: 1
-      placement:
-        constraints:
-          - node.hostname==mysql
-    volumes:
-      - db_data:/var/lib/mysql
-      - /schemas:/docker-entrypoint-initdb.d
-    restart: always
-    ports:
-      - "3306:3306"
-    environment:
-      - MYSQL_ROOT_PASSWORD=${IF_DB_ROOT_PASS}
-      - MYSQL_USER=ideafoundry
-      - MYSQL_DATABASE=ideafoundrybi
-      - MYSQL_PASSWORD=${IF_DB_PASSWORD}
+  # mysql:
+  #   container_name: mysql
+  #   image: mysql:8.0.1
+  #   deploy:
+  #     restart_policy:
+  #       condition: on-failure
+  #       delay: 5s
+  #       max_attempts: 3
+  #       window: 120s
+  #     replicas: 1
+  #     placement:
+  #       constraints:
+  #         - node.hostname==mysql
+  #   volumes:
+  #     - db_data:/var/lib/mysql
+  #     - /schemas:/docker-entrypoint-initdb.d
+  #   restart: always
+  #   ports:
+  #     - "3306:3306"
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=${IF_DB_ROOT_PASS}
+  #     - MYSQL_USER=ideafoundry
+  #     - MYSQL_DATABASE=ideafoundrybi
+  #     - MYSQL_PASSWORD=${IF_DB_PASSWORD}
   zookeeper:
     container_name: zookeeper
     image: wurstmeister/zookeeper
