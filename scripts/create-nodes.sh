@@ -155,6 +155,14 @@ function copy_sql_schema {
     docker-machine scp ./docker/data/ideafoundrybi.sql $mysql_machine:/schemas
 }
 
+function copy_compose_file {
+    local mysql_machine=$(docker-machine ls --format "{{.Name}}" | grep 'mysql')
+    
+    docker-machine ssh $mysql_machine mkdir /schemas
+    
+    docker-machine scp ../docker-compose.yml $(get_manager_machine_name):/root
+}
+
 create_manager_node
 init_swarm_manager
 #create_person_worker_nodes 4
