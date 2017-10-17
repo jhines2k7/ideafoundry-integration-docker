@@ -131,10 +131,8 @@ function init_swarm_manager {
     docker-machine ssh $manager_machine docker swarm init --advertise-addr $ip
 }       
 
-function deploy_stack {
-    local manager_machine=$(get_manager_machine_name)
-    
-    docker-machine ssh $manager_machine 'bash -s' < ./deploy-stack.sh
+function deploy_stack {    
+    docker-machine ssh $(get_manager_machine_name) 'bash -s' < ./deploy-stack.sh
 }
 
 function set_scaling_env_variables {
