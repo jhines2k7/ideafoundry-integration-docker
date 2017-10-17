@@ -51,7 +51,9 @@ function create_node {
 function create_manager_node {    
     create_node manager "node.type=manager" 1gb
     
-    docker-machine ssh $(get_manager_machine_name) \
+   ./runremote.sh \
+        ./set-manager-env-variables.sh \
+        $(get_manager_machine_name)  \
         "$DB_HOST" \
         "$KAFKA_HOST" \
         "$ZOOKEEPER_HOST" \
