@@ -39,7 +39,7 @@ function create_node {
     --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
     $machine-$ID
         
-    if [ $machine == "manager" ] && [ $? -ne 0]
+    if [ $machine == "manager" ] && [ $? -ne 0 ]
     then
         echo "There was an error creating the manager node. The script will now exit. Please try again."
         set -e
