@@ -74,8 +74,7 @@ function create_manager_node {
         "$DOCKER_USER" \
         "$DOCKER_PASS" \
         "$DOCKER_HOST" \
-        "$DIGITALOCEAN_ACCESS_TOKEN" \
-        'bash -s' < ./set-manager-env-variables.sh
+        "$DIGITALOCEAN_ACCESS_TOKEN"
 }
 
 #create createperson worker nodes
