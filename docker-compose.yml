@@ -47,7 +47,8 @@ services:
   #     - IF_OCCASION_CREDS=${IF_OCCASION_CREDS}
   createperson:
     depends_on:
-      - processorderemail      
+      - kafka
+      - mysql
     container_name: createperson
     image: ideafoundry/create-airtable-person-service:1.5.10-SNAPSHOT
     deploy:
