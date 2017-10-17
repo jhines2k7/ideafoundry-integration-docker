@@ -28,6 +28,7 @@ function create_node {
     local label=$2
     local size=$3
     local ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
+    local status
 
     echo "======> creating $machine-$ID node"
     
@@ -38,6 +39,14 @@ function create_node {
     --digitalocean-size $size \
     --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
     $machine-$ID
+    
+    status=$?
+    
+    if [ $machine != "manager" ] && [ $status -ne 0]
+    then
+        echo "There was an error creating the manager node. The script will now exit. Please try again."
+        set -e
+    fi
  
     sh ./set-ufw-rules.sh $machine-$ID
     
@@ -52,29 +61,29 @@ function create_manager_node {
     create_node manager "node.type=manager" 1gb
     
    ./runremote.sh \
-        ./set-manager-env-variables.sh \
-        $(get_manager_machine_name)  \
-        "$DB_HOST" \
-        "$KAFKA_HOST" \
-        "$ZOOKEEPER_HOST" \
-        "$OKHTTP_CLIENT_TIMEOUT_SECONDS" \
-        "$AIRTABLE_APP_ID" \
-        "$OCCASION_EXPORT_STARTING_PAGE_NUM" \
-        "$IF_OCCASION_EXPORT_URL" \
-        "$IF_AIRTABLE_CREDS" \
-        "$IF_DB_PASSWORD" \
-        "$IF_DB_PORT" \
-        "$IF_DB_ROOT_PASS" \
-        "$IF_DB_USERNAME" \
-        "$IF_EMAIL_CREDS" \
-        "$IF_EMAIL_ID" \
-        "$IF_OCCASION_CREDS" \
-        "$GIT_USERNAME" \
-        "$GIT_PASSWORD" \
-        "$DOCKER_USER" \
-        "$DOCKER_PASS" \
-        "$DOCKER_HOST" \
-        "$DIGITALOCEAN_ACCESS_TOKEN"
+       ./set-manager-env-variables.sh \
+       $(get_manager_machine_name)  \
+       "$DB_HOST" \
+       "$KAFKA_HOST" \
+       "$ZOOKEEPER_HOST" \
+       "$OKHTTP_CLIENT_TIMEOUT_SECONDS" \
+       "$AIRTABLE_APP_ID" \
+       "$OCCASION_EXPORT_STARTING_PAGE_NUM" \
+       "$IF_OCCASION_EXPORT_URL" \
+       "$IF_AIRTABLE_CREDS" \
+       "$IF_DB_PASSWORD" \
+       "$IF_DB_PORT" \
+       "$IF_DB_ROOT_PASS" \
+       "$IF_DB_USERNAME" \
+       "$IF_EMAIL_CREDS" \
+       "$IF_EMAIL_ID" \
+       "$IF_OCCASION_CREDS" \
+       "$GIT_USERNAME" \
+       "$GIT_PASSWORD" \
+       "$DOCKER_USER" \
+       "$DOCKER_PASS" \
+       "$DOCKER_HOST" \
+       "$DIGITALOCEAN_ACCESS_TOKEN"
 }
 
 #create createperson worker nodes
@@ -93,7 +102,7 @@ function create_person_worker_nodes {
 function create_1gb_worker_nodes {
     local num_nodes=$1
 
-    echo " ======> creating 1gb worker nodes"
+    echo "======> creating 1gb worker nodes"
     
     for i in $(eval echo "{1..$num_nodes}")
         do 
