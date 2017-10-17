@@ -42,7 +42,7 @@ function create_node {
     
     status=$?
     
-    if [ $machine != "manager" ] && [ $status -ne 0]
+    if [ $machine == "manager" ] && [ $status -ne 0]
     then
         echo "There was an error creating the manager node. The script will now exit. Please try again."
         set -e
@@ -112,7 +112,7 @@ function create_1gb_worker_nodes {
 
 #create kafka and mysql nodes
 function create_mysql_and_kafka_nodes {
-    echo " ======> creating mysql and kafka worker nodes"
+    echo "======> creating mysql and kafka worker nodes"
     
     for i in mysql kafka;
         do
