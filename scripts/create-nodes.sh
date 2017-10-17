@@ -86,7 +86,7 @@ function create_person_worker_nodes {
             create_node createperson-worker "node.type=createperson" 1gb            
     done
 
-    set_scaling_env_variables createperson $num_nodes
+    set_scaling_env_variables createperson 50
 }
 
 #create 1gb worker nodes
