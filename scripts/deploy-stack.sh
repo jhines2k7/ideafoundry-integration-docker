@@ -1,7 +1,5 @@
 #!/bin/bash
 
-git clone https://$GIT_USERNAME:$GIT_PASSWORD@github.com:jhines2k7/ideafoundry-integration-docker.git
-
 docker login --username=$DOCKER_USER --password=$DOCKER_PASS
 
 #cd ideafoundry-integration-docker
