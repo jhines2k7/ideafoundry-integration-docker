@@ -152,10 +152,10 @@ function copy_sql_schema {
 }
 
 create_manager_node
-#init_swarm_manager
+init_swarm_manager
 #create_person_worker_nodes 4
 #create_1gb_worker_nodes 1
 #create_mysql_and_kafka_nodes
 #copy_sql_schema
 
-#deploy_stack
+deploy_stack
