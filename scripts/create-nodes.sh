@@ -128,8 +128,15 @@ function init_swarm_manager {
     docker-machine ssh $manager_machine docker swarm init --advertise-addr $ip
 }       
 
-function deploy_stack {    
-    docker-machine ssh $(get_manager_machine_name) 'bash -s' < ./deploy-stack.sh
+function deploy_stack {
+    local manager_machine=$(get_manager_machine_name)
+    
+    docker-machine ssh $manager_machine docker login --username=$DOCKER_USER --password=$DOCKER_PASS
+    
+    #docker-machine ssh $manager_machine \
+    #    docker stack deploy \
+    #        --compose-file docker-compose.yml \
+    #        --with-registry-auth integration
 }
 
 function set_scaling_env_variables {
@@ -169,5 +176,5 @@ init_swarm_manager
 #create_1gb_worker_nodes 1
 #create_mysql_and_kafka_nodes
 #copy_sql_schema
-
+copy_compose_file
 deploy_stack
