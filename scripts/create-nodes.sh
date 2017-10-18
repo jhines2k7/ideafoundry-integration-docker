@@ -175,7 +175,7 @@ create_manager_node
 init_swarm_manager
 copy_compose_file
 #create_person_worker_nodes 4
-create_1gb_worker_nodes 1
+#create_1gb_worker_nodes 1
 create_mysql_and_kafka_nodes
 #copy_sql_schema
 deploy_stack
