@@ -39,14 +39,18 @@ function create_node {
     --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
     $machine-$ID
 
-    #check to make sure docker was properly installed
-    docker-machine ssh $machine-$ID docker
-        
-    if [ $machine == "manager" ] && [ $? -ne 0 ]
+    if [ $machine == "manager" ]
     then
-        echo "There was an error creating the manager node. The script will now exit. Remove all nodes and try again."
-        set -e
-    fi
+        #check to make sure docker was properly installed on manager node
+        echo "======> making sure docker is installed on manager node"
+        docker-machine ssh $machine-$ID docker
+
+        if [ $? -ne 0 ]
+        then
+            echo "There was an error creating the manager node. The script will now exit. Remove all nodes and try again."
+            set -e
+        fi
+    fi            
  
     sh ./set-ufw-rules.sh $machine-$ID
     

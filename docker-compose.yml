@@ -170,6 +170,8 @@ services:
   zookeeper:
     container_name: zookeeper
     image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
     deploy:
       restart_policy:
         condition: on-failure
@@ -185,6 +187,8 @@ services:
       - zookeeper
     container_name: kafka
     image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
     deploy:
       restart_policy:
         condition: on-failure
