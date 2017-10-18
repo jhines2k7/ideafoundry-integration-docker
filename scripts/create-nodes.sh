@@ -38,10 +38,13 @@ function create_node {
     --digitalocean-size $size \
     --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
     $machine-$ID
+
+    #check to make sure docker was properly installed
+    docker-machine ssh $machine-$ID docker
         
     if [ $machine == "manager" ] && [ $? -ne 0 ]
     then
-        echo "There was an error creating the manager node. The script will now exit. Please try again."
+        echo "There was an error creating the manager node. The script will now exit. Remove all nodes and try again."
         set -e
     fi
  
