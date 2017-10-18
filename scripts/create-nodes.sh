@@ -111,7 +111,8 @@ function create_1gb_worker_nodes {
 function create_mysql_and_kafka_nodes {
     echo "======> creating mysql and kafka worker nodes"
     
-    for i in mysql kafka;
+    #for i in mysql kafka;
+    for i in kafka;
         do
             create_node $i "node.type=$i" 2gb
     done
