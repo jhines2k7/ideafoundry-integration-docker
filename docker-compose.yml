@@ -155,7 +155,7 @@ services:
   #     replicas: 1
   #     placement:
   #       constraints:
-  #         - node.hostname==mysql
+  #         - engine.labels.node.type==mysql
   #   volumes:
   #     - db_data:/var/lib/mysql
   #     - /schemas:/docker-entrypoint-initdb.d
@@ -179,7 +179,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.hostname==kafka    
+          - engine.labels.node.type==kafka    
   kafka:    
     depends_on:
       - zookeeper
@@ -194,7 +194,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.hostname==kafka   
+          - engine.labels.node.type==kafka   
     environment:
       - KAFKA_ADVERTISED_HOST_NAME=${KAFKA_HOST}
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
