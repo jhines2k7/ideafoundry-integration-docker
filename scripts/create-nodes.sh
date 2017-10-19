@@ -176,9 +176,9 @@ function copy_sql_schema {
 
     local mysql_machine=$(docker-machine ls --format "{{.Name}}" | grep 'mysql')
     
-    docker-machine ssh $mysql_machine mkdir /schemas
+    docker-machine ssh $mysql_machine mkdir /root/schemas
     
-    docker-machine scp ./docker/data/ideafoundrybi.sql $mysql_machine:/schemas
+    docker-machine scp ./docker/data/ideafoundrybi.sql $mysql_machine:/root/schemas
 }
 
 function copy_compose_file {
