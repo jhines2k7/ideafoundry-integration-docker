@@ -184,7 +184,7 @@ function copy_sql_schema {
     
     docker-machine ssh $mysql_machine mkdir /schemas
     
-    docker-machine scp ../docker/data/ideafoundrybi.sql $mysql_machine:/schemas
+    docker-machine scp ./docker/data/ideafoundrybi.sql $mysql_machine:/schemas
 }
 
 function copy_compose_file {
