@@ -206,4 +206,4 @@ copy_compose_file
 create_mysql_and_kafka_nodes
 copy_sql_schema
 remove_nodes_with_failed_docker_installations
-#deploy_stack
+deploy_stack
