@@ -43,6 +43,12 @@ function create_node {
     echo "======> making sure docker is installed on $machine-$ID"
     docker-machine ssh $machine-$ID docker
 
+    file="./failed_installs.txt"
+    
+    if [ ! -e "$file" ] ; then
+        touch "$file"
+    fi
+
     if [ $? -ne 0 ]
     then
         if [ $machine == "manager" ]
@@ -52,7 +58,7 @@ function create_node {
             set -e
         else
             echo "There was an error installing docker on $machine-$ID."
-            echo "$machine-$ID" >> ./failed_installs.txt
+            echo "$machine-$ID" >> $file
         fi        
     fi           
  
