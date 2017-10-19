@@ -39,18 +39,21 @@ function create_node {
     --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
     $machine-$ID
 
-    if [ $machine == "manager" ]
-    then
-        #check to make sure docker was properly installed on manager node
-        echo "======> making sure docker is installed on manager node"
-        docker-machine ssh $machine-$ID docker
+    #check to make sure docker was properly installed on node
+    echo "======> making sure docker is installed on $machine-$ID"
+    docker-machine ssh $machine-$ID docker
 
-        if [ $? -ne 0 ]
+    if [ $? -ne 0 ]
+    then
+        if [ $machine == "manager" ]
         then
-            echo "There was an error creating the manager node. The script will now exit. Remove all nodes and try again."
+            echo "There was an error installing docker on the manager node. The script will now exit."
             set -e
-        fi
-    fi            
+        else
+            echo "There was an error installing docker on $machine-$ID."
+            echo "$machine-$ID" >> ./failed_installs.txt
+        fi        
+    fi           
  
     sh ./set-ufw-rules.sh $machine-$ID
     
@@ -178,6 +181,14 @@ function copy_compose_file {
     docker-machine scp ../docker-compose.yml $(get_manager_machine_name):/root
 }
 
+function remove_nodes_with_failed_docker_installations {
+    while read machine || [[ -n $machine ]] ; do
+        docker-machine rm -f $machine
+    done < ./failed_installs.txt
+    
+    > ./failed_installs.txt
+}
+
 create_manager_node
 init_swarm_manager
 copy_compose_file
@@ -185,4 +196,5 @@ copy_compose_file
 #create_1gb_worker_nodes 1
 create_mysql_and_kafka_nodes
 #copy_sql_schema
+remove_nodes_with_failed_docker_installations
 deploy_stack
