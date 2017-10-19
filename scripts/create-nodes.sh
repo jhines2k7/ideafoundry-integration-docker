@@ -60,9 +60,7 @@ function create_node {
             echo "There was an error installing docker on $machine-$ID."
             echo "$machine-$ID" >> $file
         fi        
-    fi
-    
-    sh ./set_env_variables $machine-$ID
+    fi           
  
     sh ./set-ufw-rules.sh $machine-$ID
     
@@ -75,14 +73,10 @@ function create_node {
 #create manager node
 function create_manager_node {    
     create_node manager "node.type=manager" 1gb
-}
-
-function set_env_variables {
-    local machine=$1
     
-    ./runremote.sh \
-       ./set-env-variables.sh \
-       $machine  \
+   ./runremote.sh \
+       ./set-manager-env-variables.sh \
+       $(get_manager_machine_name)  \
        "$DB_HOST" \
        "$KAFKA_HOST" \
        "$ZOOKEEPER_HOST" \
