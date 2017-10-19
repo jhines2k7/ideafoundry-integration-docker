@@ -179,7 +179,7 @@ function copy_sql_schema {
     
     docker-machine ssh $mysql_machine mkdir /root/schemas
     
-    docker-machine scp ./docker/data/ideafoundrybi.sql $mysql_machine:/root/schemas
+    docker-machine scp ../docker/data/ideafoundrybi.sql $mysql_machine:/root/schemas
 }
 
 function copy_compose_file {
@@ -194,9 +194,9 @@ function remove_nodes_with_failed_docker_installations {
     while read machine || [[ -n $machine ]] ; do
         docker-machine rm -f $machine
     done < ./failed_installs.txt
-    
-    > ./failed_installs.txt
 }
+
+> ./failed_installs.txt
 
 create_manager_node
 init_swarm_manager
