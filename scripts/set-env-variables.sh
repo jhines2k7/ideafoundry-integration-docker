@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "=======> setting env variables for manager node"
+echo "=======> setting env variables for node"
 
 {
     printf 'export DB_HOST="%q"\n' "$1"
