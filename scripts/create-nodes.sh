@@ -37,17 +37,17 @@ function create_node {
     --digitalocean-image ubuntu-17-04-x64 \
     --digitalocean-size $size \
     --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
-    $machine-$ID
-
-    #check to make sure docker was properly installed on node
-    echo "======> making sure docker is installed on $machine-$ID"
-    docker-machine ssh $machine-$ID docker
+    $machine-$ID    
 
     file="./failed_installs.txt"
     
     if [ ! -e "$file" ] ; then
         touch "$file"
     fi
+    
+    #check to make sure docker was properly installed on node
+    echo "======> making sure docker is installed on $machine-$ID"
+    docker-machine ssh $machine-$ID docker
 
     if [ $? -ne 0 ]
     then
