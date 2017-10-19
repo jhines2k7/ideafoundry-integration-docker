@@ -1,1 +1,2 @@
 docker/mail-source/*.jar
+scripts/failed_installs.txt
