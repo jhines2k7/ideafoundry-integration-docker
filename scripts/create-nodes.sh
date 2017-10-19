@@ -188,6 +188,8 @@ function copy_compose_file {
 }
 
 function remove_nodes_with_failed_docker_installations {
+    echo "======> removing machines with failed docker installations ..."
+    
     while read machine || [[ -n $machine ]] ; do
         docker-machine rm -f $machine
     done < ./failed_installs.txt
