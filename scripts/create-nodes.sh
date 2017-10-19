@@ -166,7 +166,7 @@ function set_scaling_env_variables {
 }
 
 function copy_sql_schema {
-    echo "======> copying compose file to manager node ..."
+    echo "======> copying sql schema file to mysql node ..."
 
     local mysql_machine=$(docker-machine ls --format "{{.Name}}" | grep 'mysql')
     
