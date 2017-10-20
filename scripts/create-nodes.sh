@@ -8,7 +8,7 @@ function get_manager_machine_name {
 
 #create manager node
 function create_manager_node {    
-    sh ./create-node.sh manager "node.type=manager" 1gb 1
+    bash ./create-node.sh manager "node.type=manager" 1gb 1
 }
 
 function set_manager_node_env_variables {
@@ -41,7 +41,7 @@ function set_manager_node_env_variables {
 function create_person_worker_nodes {
     local num_nodes=$1
 
-    sh ./create-node.sh createperson "node.type=createperson" 1gb num_nodes
+    bash ./create-node.sh createperson "node.type=createperson" 1gb num_nodes
 
     set_scaling_env_variables createperson 50
 }
@@ -52,16 +52,16 @@ function create_1gb_worker_nodes {
 
     echo "======> creating 1gb worker nodes"
     
-    sh ./create-node.sh 1gb-worker "node.type=1gb-worker" 1gb num_nodes
+    bash ./create-node.sh 1gb-worker "node.type=1gb-worker" 1gb num_nodes
 }
 
 #create kafka and mysql nodes
 function create_mysql_and_kafka_nodes {
     echo "======> creating mysql and kafka worker nodes"
     
-    sh ./create-node.sh mysql "node.type=mysql" 2gb 1
+    bash ./create-node.sh mysql "node.type=mysql" 2gb 1
     
-    sh ./create-node.sh kafka "node.type=kafka" 2gb 1
+    bash ./create-node.sh kafka "node.type=kafka" 2gb 1
 }
 
 function init_swarm_manager {
@@ -127,6 +127,6 @@ copy_compose_file
 #create_1gb_worker_nodes 1
 create_mysql_and_kafka_nodes
 
-sh ./remove-nodes-with-failed-docker-installations.sh 
+bash ./remove-nodes-with-failed-docker-installations.sh 
 
 deploy_stack
