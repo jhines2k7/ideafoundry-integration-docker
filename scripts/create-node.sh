@@ -1,20 +1,20 @@
 #!/bin/bash
 
-function get_ip {
+get_ip () {
     echo $(docker-machine ip $1)
 }
 
-function get_manager_machine_name {
+get_manager_machine_name () {
     echo $(docker-machine ls --format "{{.Name}}" | grep 'manager')
 }
 
-function get_worker_token {
+get_worker_token {
     local manager_machine=$(get_manager_machine_name)
     # gets swarm manager token for a worker node
     echo $(docker-machine ssh $manager_machine docker swarm join-token worker -q)
 }
 
-function join_swarm {
+join_swarm () {
     local manager_machine=$(get_manager_machine_name)
     
     docker-machine ssh $1 \
@@ -23,7 +23,7 @@ function join_swarm {
         $(get_ip $manager_machine):2377
 }
 
-function create_node {
+create_node () {
     local machine=$1
     local label=$2
     local size=$3
