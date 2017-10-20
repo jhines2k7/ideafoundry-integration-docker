@@ -32,8 +32,8 @@ function set_manager_node_env_variables {
        "$IF_OCCASION_CREDS" \
        "$GIT_USERNAME" \
        "$GIT_PASSWORD" \
-       "$DOCKER_USER" \
-       "$DOCKER_PASS" \
+       "$DOCKER_HUB_USER" \
+       "$DOCKER_HUB_PASS" \
        "$DOCKER_HOST" \
        "$DIGITALOCEAN_ACCESS_TOKEN"
 }
