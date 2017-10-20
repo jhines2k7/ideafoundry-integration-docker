@@ -8,8 +8,8 @@ if [[ -s $file ]] ; then
     while read machine || [[ -n $machine ]] ; do
         docker-machine rm -f $machine
     done < $file
+    
+    > $file
 else
     echo "======> there were no machines with failed docker installations ..."
 fi ;
-
-> $file
