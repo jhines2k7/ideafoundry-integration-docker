@@ -8,7 +8,7 @@ get_manager_machine_name () {
     echo $(docker-machine ls --format "{{.Name}}" | grep 'manager')
 }
 
-get_worker_token {
+get_worker_token () {
     local manager_machine=$(get_manager_machine_name)
     # gets swarm manager token for a worker node
     echo $(docker-machine ssh $manager_machine docker swarm join-token worker -q)
