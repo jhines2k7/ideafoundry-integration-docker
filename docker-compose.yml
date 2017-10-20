@@ -152,7 +152,6 @@ services:
     volumes:
       - db_data:/var/lib/mysql
       - /root/schemas:/docker-entrypoint-initdb.d
-    restart: always
     ports:
       - "3306:3306"
     environment:
