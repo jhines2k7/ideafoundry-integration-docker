@@ -51,7 +51,7 @@ create_node () {
 
     if [ $? -ne 0 ]
     then
-        if [ $machine == "manager" ]
+        if [ $machine = "manager" ]
         then
             docker-machine rm -f $machine-$ID
             
@@ -100,7 +100,7 @@ else
     create_node $machine $label $size
 fi
 
-if [ "$machine" == "mysql" ]
+if [ "$machine" = "mysql" ]
 then
     copy_sql_schema
 fi
