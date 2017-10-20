@@ -76,7 +76,7 @@ create_node () {
             
             echo "$machine-$ID" >> $file
             
-            continue
+            continue 2
         fi        
     fi
     
