@@ -151,7 +151,7 @@ function deploy_stack {
     docker-machine ssh $manager_machine \
         docker login --username=$DOCKER_USER --password=$DOCKER_PASS \
         && docker stack deploy \
-            --compose-file docker-compose.yml \
+            --compose-file ./docker-compose.yml \
             --with-registry-auth integration
 }
 
