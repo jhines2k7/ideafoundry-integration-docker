@@ -54,8 +54,10 @@ create_node () {
         if [ $machine == "manager" ]
         then
             docker-machine rm -f $machine-$ID
+            
             echo "There was an error installing docker on the manager node. The script will now exit."
-            set -e
+            
+            exit 1
         else
             echo "There was an error installing docker on $machine-$ID."
             echo "$machine-$ID" >> $file
