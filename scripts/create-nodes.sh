@@ -60,7 +60,7 @@ function create_mysql_and_kafka_nodes {
     
     sh ./create-node.sh mysql "node.type=mysql" 2gb 1
     
-    sh ./create-node.sh mysql "node.type=kafka" 2gb 1
+    sh ./create-node.sh kafka "node.type=kafka" 2gb 1
 }
 
 function init_swarm_manager {
