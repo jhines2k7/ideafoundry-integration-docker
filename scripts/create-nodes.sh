@@ -117,18 +117,6 @@ function copy_compose_file {
     docker-machine scp ../docker-compose.yml $(get_manager_machine_name):/root
 }
 
-function remove_nodes_with_failed_docker_installations {
-    if [[ -s $file ]] ; then
-        echo "======> removing machines with failed docker installations ..."
-    
-        while read machine || [[ -n $machine ]] ; do
-            docker-machine rm -f $machine
-        done < $file
-    else
-        echo "======> there were no machines with failed docker installations ..."
-    fi ;
-}
-
 > $file
 
 create_manager_node
@@ -138,5 +126,7 @@ copy_compose_file
 #create_person_worker_nodes 8
 #create_1gb_worker_nodes 1
 create_mysql_and_kafka_nodes
-remove_nodes_with_failed_docker_installations
+
+sh ./remove-nodes-with-failed-docker-installations.sh 
+
 deploy_stack
