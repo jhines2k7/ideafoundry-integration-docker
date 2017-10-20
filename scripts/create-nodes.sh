@@ -9,8 +9,10 @@ function get_manager_machine_name {
 #create manager node
 function create_manager_node {    
     sh ./create-node.sh manager "node.type=manager" 1gb 1
-    
-   ./runremote.sh \
+}
+
+function set_manager_node_env_variables {
+    ./runremote.sh \
        ./set-manager-env-variables.sh \
        $(get_manager_machine_name)  \
        "$DB_HOST" \
@@ -138,4 +140,5 @@ copy_compose_file
 create_mysql_and_kafka_nodes
 copy_sql_schema
 remove_nodes_with_failed_docker_installations
+set_manager_node_env_variables
 # deploy_stack
