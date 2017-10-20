@@ -74,10 +74,10 @@ create_node () {
         else
             echo "There was an error installing docker on $machine-$ID."
             
-            echo "$machine-$ID" >> $file
-            
-            continue 2
+            echo "$machine-$ID" >> $file            
         fi        
+        
+        continue
     fi
     
     if [ "$machine" = "mysql" ]
