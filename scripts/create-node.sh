@@ -72,6 +72,16 @@ create_node () {
     fi
 }
 
+copy_sql_schema () {
+    echo "======> copying sql schema file to mysql node ..."
+
+    local mysql_machine=$(docker-machine ls --format "{{.Name}}" | grep 'mysql')
+    
+    docker-machine ssh $mysql_machine mkdir /root/schemas
+    
+    docker-machine scp ../docker/data/ideafoundrybi.sql $mysql_machine:/root/schemas
+}
+
 machine=$1
 label=$2
 size=$3
@@ -88,4 +98,9 @@ then
 else
     echo "======> Creating $num_workers node"
     create_node $machine $label $size
+fi
+
+if [ $machine == "mysql ]
+then
+    copy_sql_schema
 fi
