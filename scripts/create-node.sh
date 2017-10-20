@@ -1,5 +1,7 @@
 #!/bin/bash
 
+file="./failed_installs.txt"
+
 get_ip () {
     echo $(docker-machine ip $1)
 }
