@@ -24,4 +24,4 @@ echo "=======> setting env variables for manager node"
     printf 'export DOCKER_PASS="%q"\n' "${19}"
     printf 'export DOCKER_HOST="%q"\n' "${20}"
     printf 'export DIGITALOCEAN_ACCESS_TOKEN="%q"\n' "${21}"
-} >> /etc/profile        
+} >> /etc/environment        
