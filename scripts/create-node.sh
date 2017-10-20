@@ -25,6 +25,16 @@ join_swarm () {
         $(get_ip $manager_machine):2377
 }
 
+copy_sql_schema () {
+    echo "======> copying sql schema file to mysql node ..."
+
+    local mysql_machine=$(docker-machine ls --format "{{.Name}}" | grep 'mysql')
+    
+    docker-machine ssh $mysql_machine mkdir /root/schemas
+    
+    docker-machine scp ../docker/data/ideafoundrybi.sql $mysql_machine:/root/schemas
+}
+
 create_node () {
     local machine=$1
     local label=$2
@@ -65,7 +75,12 @@ create_node () {
             
             continue
         fi        
-    fi           
+    fi
+    
+    if [ "$machine" = "mysql" ]
+    then
+        copy_sql_schema
+    fi
  
     sh ./set-ufw-rules.sh $machine-$ID
     
@@ -73,16 +88,6 @@ create_node () {
     then
         join_swarm $machine-$ID
     fi
-}
-
-copy_sql_schema () {
-    echo "======> copying sql schema file to mysql node ..."
-
-    local mysql_machine=$(docker-machine ls --format "{{.Name}}" | grep 'mysql')
-    
-    docker-machine ssh $mysql_machine mkdir /root/schemas
-    
-    docker-machine scp ../docker/data/ideafoundrybi.sql $mysql_machine:/root/schemas
 }
 
 machine=$1
@@ -101,9 +106,4 @@ then
 else
     echo "======> Creating $num_workers node"
     create_node $machine $label $size
-fi
-
-if [ "$machine" = "mysql" ]
-then
-    copy_sql_schema
 fi
