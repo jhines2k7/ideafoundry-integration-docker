@@ -60,7 +60,10 @@ create_node () {
             exit 1
         else
             echo "There was an error installing docker on $machine-$ID."
+            
             echo "$machine-$ID" >> $file
+            
+            continue
         fi        
     fi           
  
