@@ -139,5 +139,5 @@ copy_compose_file
 #create_1gb_worker_nodes 1
 create_mysql_and_kafka_nodes
 remove_nodes_with_failed_docker_installations
-set_manager_node_env_variables
+# set_manager_node_env_variables
 # deploy_stack
