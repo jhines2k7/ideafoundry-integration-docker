@@ -34,7 +34,6 @@ function set_manager_node_env_variables {
        "$GIT_PASSWORD" \
        "$DOCKER_HUB_USER" \
        "$DOCKER_HUB_PASSWORD" \
-       "$DOCKER_HOST" \
        "$DIGITALOCEAN_ACCESS_TOKEN"
 }
 
