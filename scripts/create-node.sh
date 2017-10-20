@@ -66,7 +66,7 @@ create_node () {
  
     sh ./set-ufw-rules.sh $machine-$ID
     
-    if [ $machine != "manager" ]
+    if [ "$machine" != "manager" ]
     then
         join_swarm $machine-$ID
     fi
@@ -100,7 +100,7 @@ else
     create_node $machine $label $size
 fi
 
-if [ $machine == "mysql" ]
+if [ "$machine" == "mysql" ]
 then
     copy_sql_schema
 fi
