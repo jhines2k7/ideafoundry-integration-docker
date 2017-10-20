@@ -151,10 +151,10 @@ function deploy_stack {
     #docker-machine ssh $manager_machine docker login --username=$DOCKER_USER --password=$DOCKER_PASS
     
     docker-machine ssh $manager_machine \
-        docker login --username=$DOCKER_USER --password=$DOCKER_PASS #\
-        #&& docker stack deploy \
-        #    --compose-file docker-compose.yml \
-        #    --with-registry-auth integration
+        # docker login --username=$DOCKER_USER --password=$DOCKER_PASS #\
+        # && docker stack deploy \
+        #     --compose-file docker-compose.yml \
+        #     --with-registry-auth integration
 }
 
 function set_scaling_env_variables {
