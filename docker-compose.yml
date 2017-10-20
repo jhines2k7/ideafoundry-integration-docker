@@ -4,7 +4,6 @@ services:
   # legacydataexport:
   #   depends_on:
   #     - createperson
-  #   container_name: legacydataexport
   #   image: ideafoundry/occasion-legacy-data-export-service:1.9.1-SNAPSHOT
   #   deploy:
   #     restart_policy:
@@ -27,7 +26,6 @@ services:
   #   depends_on:
   #     - mailsource      
   #     - mysql
-  #   container_name: processorderemail
   #   image: ideafoundry/occasion-order-email-processor-service:1.2.0.RELEASE
   #   deploy:
   #     restart_policy:
@@ -49,7 +47,6 @@ services:
   #   depends_on:
   #     - kafka
   #     - mysql
-  #   container_name: createperson
   #   image: ideafoundry/create-airtable-person-service:1.5.10-SNAPSHOT
   #   deploy:
   #     restart_policy:
@@ -76,7 +73,6 @@ services:
   # createorder:
   #   depends_on:
   #     - createperson
-  #   container_name: createorder
   #   image: ideafoundry/create-airtable-order-service:1.4.0.RELEASE
   #   deploy:
   #     restart_policy:
@@ -101,7 +97,6 @@ services:
   # createquestion:
   #   depends_on:
   #     - createorder
-  #   container_name: createquestion
   #   image: ideafoundry/create-airtable-question-service:1.6.0.RELEASE
   #   deploy:
   #     restart_policy:
@@ -126,7 +121,6 @@ services:
   # mailsource:    
   #   depends_on:
   #     - kafka    
-  #   container_name: mailsource
   #   image: ideafoundry/mail-source:1.6.0.RELEASE
   #   deploy:
   #     restart_policy:
@@ -144,7 +138,6 @@ services:
   #     - KAFKA_HOST=${KAFKA_HOST}
   #     - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
   mysql:
-    container_name: mysql
     image: mysql:8.0.1
     deploy:
       restart_policy:
@@ -168,7 +161,6 @@ services:
       - MYSQL_DATABASE=ideafoundrybi
       - MYSQL_PASSWORD=${IF_DB_PASSWORD}
   zookeeper:
-    container_name: zookeeper
     image: wurstmeister/zookeeper    
     deploy:
       restart_policy:
@@ -183,7 +175,6 @@ services:
   kafka:    
     depends_on:
       - zookeeper
-    container_name: kafka
     image: wurstmeister/kafka    
     deploy:
       restart_policy:
