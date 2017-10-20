@@ -78,7 +78,7 @@ function deploy_stack {
     local manager_machine=$(get_manager_machine_name)
         
     docker-machine ssh $manager_machine \
-        source /root/.profile \
+        # source /root/.profile \
         && docker login --username=$DOCKER_USER --password=$DOCKER_PASS \
         && docker stack deploy \
             --compose-file ./docker-compose.yml \
