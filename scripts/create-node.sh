@@ -2,21 +2,21 @@
 
 file="./failed_installs.txt"
 
-get_ip () {
+function get_ip {
     echo $(docker-machine ip $1)
 }
 
-get_manager_machine_name () {
+function get_manager_machine_name {
     echo $(docker-machine ls --format "{{.Name}}" | grep 'manager')
 }
 
-get_worker_token () {
+function get_worker_token {
     local manager_machine=$(get_manager_machine_name)
     # gets swarm manager token for a worker node
     echo $(docker-machine ssh $manager_machine docker swarm join-token worker -q)
 }
 
-join_swarm () {
+function join_swarm {
     local manager_machine=$(get_manager_machine_name)
     
     docker-machine ssh $1 \
@@ -25,7 +25,7 @@ join_swarm () {
         $(get_ip $manager_machine):2377
 }
 
-copy_sql_schema () {
+function copy_sql_schema {
     echo "======> copying sql schema file to mysql node ..."
 
     local mysql_machine=$(docker-machine ls --format "{{.Name}}" | grep 'mysql')
@@ -35,7 +35,7 @@ copy_sql_schema () {
     docker-machine scp ../docker/data/ideafoundrybi.sql $mysql_machine:/root/schemas
 }
 
-create_node () {
+function create_node {
     local machine=$1
     local label=$2
     local size=$3
@@ -68,7 +68,8 @@ create_node () {
             echo "There was an error installing docker on the manager node. The script will now exit."
             
             echo "=====> Cleaning up..."
-            sh ./remove-nodes.sh
+            
+            bash ./remove-nodes.sh
             
             exit 1
         else
@@ -85,7 +86,7 @@ create_node () {
         copy_sql_schema
     fi
  
-    sh ./set-ufw-rules.sh $machine-$ID
+    bash ./set-ufw-rules.sh $machine-$ID
     
     if [ "$machine" != "manager" ]
     then
