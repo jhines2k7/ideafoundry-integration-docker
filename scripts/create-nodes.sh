@@ -77,10 +77,9 @@ function init_swarm_manager {
 function deploy_stack {
     local manager_machine=$(get_manager_machine_name)
         
-    docker-machine ssh $manager_machine \
-        # source /root/.profile \
-        docker login --username=$DOCKER_USER --password=$DOCKER_PASS \
-        && docker stack deploy \
+    docker-machine ssh $manager_machine docker login --username=$DOCKER_USER --password=$DOCKER_PASS
+    
+    docker-machine ssh $manager_machine docker stack deploy \
             --compose-file ./docker-compose.yml \
             --with-registry-auth integration
 }
