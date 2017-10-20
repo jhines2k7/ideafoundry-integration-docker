@@ -100,7 +100,7 @@ else
     create_node $machine $label $size
 fi
 
-if [ $machine == "mysql ]
+if [ $machine == "mysql" ]
 then
     copy_sql_schema
 fi
