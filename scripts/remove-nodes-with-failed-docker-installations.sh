@@ -1,3 +1,7 @@
+#!/bin/bash
+
+file="./failed_installs.txt"
+
 if [[ -s $file ]] ; then
     echo "======> removing machines with failed docker installations ..."
 
@@ -7,3 +11,5 @@ if [[ -s $file ]] ; then
 else
     echo "======> there were no machines with failed docker installations ..."
 fi ;
+
+> $file
