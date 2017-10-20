@@ -33,7 +33,7 @@ function set_manager_node_env_variables {
        "$GIT_USERNAME" \
        "$GIT_PASSWORD" \
        "$DOCKER_HUB_USER" \
-       "$DOCKER_HUB_PASS" \
+       "$DOCKER_HUB_PASSWORD" \
        "$DOCKER_HOST" \
        "$DIGITALOCEAN_ACCESS_TOKEN"
 }
@@ -79,7 +79,7 @@ function init_swarm_manager {
 function deploy_stack {
     local manager_machine=$(get_manager_machine_name)
         
-    docker-machine ssh $manager_machine docker login --username=$DOCKER_USER --password=$DOCKER_PASS
+    docker-machine ssh $manager_machine docker login --username=$DOCKER_HUB_USER --password=$DOCKER_HUB_PASSWORD
     
     docker-machine ssh $manager_machine docker stack deploy \
             --compose-file docker-compose.yml \
@@ -134,10 +134,10 @@ function remove_nodes_with_failed_docker_installations {
 
 create_manager_node
 init_swarm_manager
+set_manager_node_env_variables
 copy_compose_file
 #create_person_worker_nodes 8
 #create_1gb_worker_nodes 1
 create_mysql_and_kafka_nodes
 remove_nodes_with_failed_docker_installations
-# set_manager_node_env_variables
-# deploy_stack
+deploy_stack
