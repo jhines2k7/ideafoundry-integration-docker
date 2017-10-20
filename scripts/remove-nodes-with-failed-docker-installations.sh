@@ -9,7 +9,6 @@ if [[ -s $file ]] ; then
         docker-machine rm -f $machine
     done < $file
     
-    > $file
 else
     echo "======> there were no machines with failed docker installations ..."
 fi ;
