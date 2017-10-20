@@ -1,5 +1,7 @@
 #!/bin/bash
 
+file="./failed_installs.txt"
+
 function get_ip {
     echo $(docker-machine ip $1)
 }
@@ -37,9 +39,7 @@ function create_node {
     --digitalocean-image ubuntu-17-04-x64 \
     --digitalocean-size $size \
     --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
-    $machine-$ID    
-
-    file="./failed_installs.txt"
+    $machine-$ID
     
     if [ ! -e "$file" ] ; then
         touch "$file"
@@ -189,14 +189,18 @@ function copy_compose_file {
 }
 
 function remove_nodes_with_failed_docker_installations {
-    echo "======> removing machines with failed docker installations ..."
+    if [[ -s $file ]] ; then
+        echo "======> removing machines with failed docker installations ..."
     
-    while read machine || [[ -n $machine ]] ; do
-        docker-machine rm -f $machine
-    done < ./failed_installs.txt
+        while read machine || [[ -n $machine ]] ; do
+            docker-machine rm -f $machine
+        done < $file
+    else
+        echo "======> there were no machines with failed docker installations ..."
+    fi ;
 }
 
-> ./failed_installs.txt
+> $file
 
 create_manager_node
 init_swarm_manager
