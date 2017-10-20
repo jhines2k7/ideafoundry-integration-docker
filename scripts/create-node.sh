@@ -72,7 +72,6 @@ local machine=$1
 local label=$2
 local size=$3
 local num_workers=$4
-local ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
 
 if [ $num_workers -gt 1 ]
 then
