@@ -158,7 +158,7 @@ services:
           - engine.labels.node.type==mysql
     volumes:
       - db_data:/var/lib/mysql
-      - /schemas:/docker-entrypoint-initdb.d
+      - /root/schemas:/docker-entrypoint-initdb.d
     restart: always
     ports:
       - "3306:3306"
