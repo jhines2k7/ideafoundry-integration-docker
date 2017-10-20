@@ -68,10 +68,10 @@ function create_node {
     fi
 }
 
-local machine=$1
-local label=$2
-local size=$3
-local num_workers=$4
+machine=$1
+label=$2
+size=$3
+num_workers=$4
 
 if [ $num_workers -gt 1 ]
 then
