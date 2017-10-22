@@ -1,3 +1,4 @@
 docker/mail-source/*.jar
 scripts/failed_installs.txt
-node_modules
+docker/mock-occasion-api/node_modules
+.idea
