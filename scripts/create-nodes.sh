@@ -117,6 +117,14 @@ function copy_compose_file {
     docker-machine scp ../docker-compose.dev.yml $(get_manager_machine_name):/root
 }
 
+function create_512mb_worker_nodes {
+    local num_nodes=$1
+
+    echo "======> creating 512mb worker nodes"
+    
+    bash ./create-node.sh 512mb-worker "node.type=512mb-worker" 512mb num_nodes
+}
+
 > $file
 
 create_manager_node
@@ -124,7 +132,8 @@ init_swarm_manager
 set_manager_node_env_variables
 copy_compose_file
 #create_person_worker_nodes 8
-#create_1gb_worker_nodes 1
+create_1gb_worker_nodes 1
+create_512mb_worker_nodes 1
 create_mysql_and_kafka_nodes
 
 bash ./remove-nodes-with-failed-docker-installations.sh 
