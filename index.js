@@ -196,14 +196,15 @@ module.exports = () => {
     let attributes = [];
 
     const data = { 
-        orders: {
+        /*orders: {
             data: [],
             links: {
                 'self': 'https://www.occsn.com/api/v1/orders?page%5Bnumber%5D=1&page%5Bsize%5D=50',
                 'next': 'https://www.occsn.com/api/v1/orders?page%5Bnumber%5D=2&page%5Bsize%5D=50',
                 'last': 'https://www.occsn.com/api/v1/orders?page%5Bnumber%5D=40&page%5Bsize%5D=50'
             }
-        },
+        },*/
+        orders: [],
         ordersWithIncludes: []                    
     }
 
@@ -222,7 +223,7 @@ module.exports = () => {
 
         let numAttributeVals = Math.floor(Math.random() * 5) + 1;
 
-        data.orders.data.push(order);
+        data.orders.push(order);
 
         let orderWithIncludes = {
                 data: [],
