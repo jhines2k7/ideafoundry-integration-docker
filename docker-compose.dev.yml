@@ -159,7 +159,9 @@ services:
       - MYSQL_DATABASE=ideafoundrybi
       - MYSQL_PASSWORD=${IF_DB_PASSWORD}
   zookeeper:
-    image: wurstmeister/zookeeper    
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
     deploy:
       restart_policy:
         condition: on-failure
@@ -173,7 +175,9 @@ services:
   kafka:    
     depends_on:
       - zookeeper
-    image: wurstmeister/kafka    
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
     deploy:
       restart_policy:
         condition: on-failure
