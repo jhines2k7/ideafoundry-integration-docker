@@ -216,8 +216,8 @@ module.exports = () => {
         customers.push(generateCustomer());
     }
     
-    for (let i = 0; i < 50; i++) {
-        let customer = customers[Math.floor(Math.random() * 40)];
+    for (let i = 0; i < 5; i++) {
+        let customer = customers[Math.floor(Math.random() * 3)];
 
         let order = generateOrder(customer);
 
