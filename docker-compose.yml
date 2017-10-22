@@ -129,7 +129,7 @@ services:
   #     replicas: 1
   #     placement:
   #       constraints:
-  #         - engine.labels.node.type==1gbworker
+  #         - engine.labels.node.type==1gb-worker
   #   environment:
   #     - IF_EMAIL_ID=${IF_EMAIL_ID}
   #     - IF_EMAIL_CREDS=${IF_EMAIL_CREDS}

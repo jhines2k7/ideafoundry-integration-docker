@@ -1,0 +1,23 @@
+{
+  "name": "ideafoundry-integration-docker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jhines2k7/ideafoundry-integration-docker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jhines2k7/ideafoundry-integration-docker/issues"
+  },
+  "homepage": "https://github.com/jhines2k7/ideafoundry-integration-docker#readme",
+  "devDependencies": {
+    "faker": "^4.1.0",
+    "json-server": "^0.12.0"
+  }
+}
