@@ -114,7 +114,7 @@ function copy_sql_schema {
 function copy_compose_file {
     echo "======> copying compose file to manager node ..."
             
-    docker-machine scp ../docker-compose.yml $(get_manager_machine_name):/root
+    docker-machine scp ../docker-compose.dev.yml $(get_manager_machine_name):/root
 }
 
 > $file
