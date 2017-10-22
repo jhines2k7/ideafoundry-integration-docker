@@ -195,29 +195,21 @@ module.exports = () => {
     let customers = [];
     let attributes = [];
 
-    const data = { 
-        /*orders: {
-            data: [],
-            links: {
-                'self': 'https://www.occsn.com/api/v1/orders?page%5Bnumber%5D=1&page%5Bsize%5D=50',
-                'next': 'https://www.occsn.com/api/v1/orders?page%5Bnumber%5D=2&page%5Bsize%5D=50',
-                'last': 'https://www.occsn.com/api/v1/orders?page%5Bnumber%5D=40&page%5Bsize%5D=50'
-            }
-        },*/
+    const data = {
         orders: [],
         ordersWithIncludes: []                    
-    }
+    };
 
     for(let i = 0; i < 25; i++) {
         attributes.push(generateAttributeValue());
     }
 
-    for(let i = 0; i < 40; i++) {
+    for(let i = 0; i < 1800; i++) {
         customers.push(generateCustomer());
     }
     
-    for (let i = 0; i < 5; i++) {
-        let customer = customers[Math.floor(Math.random() * 3)];
+    for (let i = 0; i < 2302; i++) {
+        let customer = customers[Math.floor(Math.random() * 1800)];
 
         let order = generateOrder(customer);
 
