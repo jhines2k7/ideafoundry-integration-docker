@@ -61,6 +61,7 @@ function create_node {
     docker-machine create \
     --engine-label $label \
     --driver amazonec2 \
+    --amazonec2-ami ami-36a8754c
     --amazonec2-vpc-id vpc-cef83fa9 \
     --amazonec2-subnet-id subnet-8d401ab0 \
     --amazonec2-security-group ideafoundry-integration \
