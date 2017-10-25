@@ -5,13 +5,13 @@
 echo "======> setting up firewall rules for $1 ..."
 
 docker-machine ssh $1 \
-echo '"y" | ufw --force enable \
-&& ufw default deny incoming \
-&& ufw allow 22/tcp \
-&& ufw allow 2376/tcp \
-&& ufw allow 2377/tcp \
-&& ufw allow 7946/tcp \
-&& ufw allow 7946/udp \
-&& ufw allow 4789/udp \
-&& ufw reload \
-&& systemctl restart docker'
+echo '"y" | sudo ufw --force enable \
+&& sudo ufw default deny incoming \
+&& sudo ufw allow 22/tcp \
+&& sudo ufw allow 2376/tcp \
+&& sudo ufw allow 2377/tcp \
+&& sudo ufw allow 7946/tcp \
+&& sudo ufw allow 7946/udp \
+&& sudo ufw allow 4789/udp \
+&& sudo ufw reload \
+&& sudo systemctl restart docker'
