@@ -66,19 +66,15 @@ function create_node {
         then
             docker-machine rm -f $machine-$ID                      
             
-            echo "There was an error installing docker on the manager node. The script will now exit."
+           
             
-            echo "=====> Cleaning up..."
-            
-            bash ./remove-nodes.sh
-            
-            exit 1
+            return 1
         else
             echo "There was an error installing docker on $machine-$ID."
             
             echo "$machine-$ID" >> $file
             
-            return
+            return 2
         fi                
     fi
     

@@ -14,6 +14,22 @@ function get_manager_machine_name {
 #create manager node
 function create_manager_node {    
     bash ./create-node.sh manager "node.type=manager" 1gb 1
+
+    result=$?
+
+    if [ $result eq 1 ]
+        then
+            echo "There was an error installing docker on the manager node. The script will now exit."
+            
+            echo "=====> Cleaning up..."
+        elif [ $result eq 2 ]
+            bash ./remove-nodes.sh
+
+            echo "There was an error installing docker on $machine-$ID."
+            
+            echo "$machine-$ID" >> $file
+        fi
+    fi
 }
 
 function set_manager_node_env_variables {
@@ -137,7 +153,6 @@ function copy_compose_file {
 
     echo "======> copying compose file to manager node ..."
     
-    if        
     docker-machine scp $docker_file $(get_manager_machine_name):/root
 }
 
