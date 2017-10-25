@@ -22,13 +22,15 @@ function create_manager_node {
             echo "There was an error installing docker on the manager node. The script will now exit."
             
             echo "=====> Cleaning up..."
-        elif [ $result eq 2 ]
+
             bash ./remove-nodes.sh
 
+            exit
+    elif [ $result eq 2 ]
+        then            
             echo "There was an error installing docker on $machine-$ID."
             
             echo "$machine-$ID" >> $file
-        fi
     fi
 }
 
