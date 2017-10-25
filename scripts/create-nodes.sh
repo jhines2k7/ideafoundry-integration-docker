@@ -13,9 +13,9 @@ function get_manager_machine_name {
 
 #create manager node
 function create_manager_node {    
-    bash ./create-node.sh manager "node.type=manager" 1gb 1
+    result=$(bash ./create-node.sh manager "node.type=manager" 1gb 1)
 
-    result=$?
+    echo $result
 
     if [ $result -eq 1 ]
         then
