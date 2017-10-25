@@ -130,9 +130,7 @@ function create_mysql_and_kafka_nodes {
 
     if [ $result -eq 1 ]        
         then            
-            echo "There was an error installing docker on kafka node."
-            
-            echo "$machine-$ID" >> $file
+            echo "There was an error installing docker on kafka node."            
     fi
 }
 
@@ -144,15 +142,15 @@ function init_swarm_manager {
     local ip=$(docker-machine ip $manager_machine)
 
     echo "Swarm manager machine name: $manager_machine"
-    docker-machine ssh $manager_machine docker swarm init --advertise-addr $ip
+    docker-machine ssh $manager_machine sudo docker swarm init --advertise-addr $ip
 }       
 
 function deploy_stack {
     local manager_machine=$(get_manager_machine_name)
         
-    docker-machine ssh $manager_machine docker login --username=$DOCKER_HUB_USER --password=$DOCKER_HUB_PASSWORD
+    docker-machine ssh $manager_machine sudo docker login --username=$DOCKER_HUB_USER --password=$DOCKER_HUB_PASSWORD
     
-    docker-machine ssh $manager_machine docker stack deploy \
+    docker-machine ssh $manager_machine sudo docker stack deploy \
             --compose-file docker-compose.dev.yml \
             --with-registry-auth \
             integration
@@ -178,9 +176,9 @@ function copy_sql_schema {
 
     local mysql_machine=$(docker-machine ls --format "{{.Name}}" | grep 'mysql')
     
-    docker-machine ssh $mysql_machine mkdir /root/schemas
+    docker-machine ssh $mysql_machine mkdir /home/ubuntu/schemas
     
-    docker-machine scp ../docker/data/ideafoundrybi.sql $mysql_machine:/root/schemas
+    docker-machine scp ../docker/data/ideafoundrybi.sql $mysql_machine:/home/ubuntu/schemas
 }
 
 function copy_compose_file {
@@ -193,7 +191,7 @@ function copy_compose_file {
 
     echo "======> copying compose file to manager node ..."
     
-    docker-machine scp $docker_file $(get_manager_machine_name):/root
+    docker-machine scp $docker_file $(get_manager_machine_name):/home/ubuntu
 }
 
 function create_512mb_worker_nodes {
@@ -209,9 +207,7 @@ function create_512mb_worker_nodes {
 
     if [ $result -eq 1 ]        
         then            
-            echo "There was an error installing docker on 512mb worker node."
-            
-            echo "$machine-$ID" >> $file
+            echo "There was an error installing docker on 512mb worker node."            
     fi
 }
 

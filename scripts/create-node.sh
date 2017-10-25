@@ -14,14 +14,14 @@ function get_manager_machine_name {
 function get_worker_token {
     local manager_machine=$(get_manager_machine_name)
     # gets swarm manager token for a worker node
-    echo $(docker-machine ssh $manager_machine docker swarm join-token worker -q)
+    echo $(docker-machine ssh $manager_machine sudo docker swarm join-token worker -q)
 }
 
 function join_swarm {
     local manager_machine=$(get_manager_machine_name)
     
     docker-machine ssh $1 \
-    docker swarm join \
+    sudo docker swarm join \
         --token $(get_worker_token) \
         $(get_ip $manager_machine):2377
 }
@@ -31,9 +31,9 @@ function copy_sql_schema {
 
     local mysql_machine=$(docker-machine ls --format "{{.Name}}" | grep 'mysql')
     
-    docker-machine ssh $mysql_machine mkdir /root/schemas
+    docker-machine ssh $mysql_machine mkdir /home/ubuntu/schemas
     
-    docker-machine scp ../docker/data/ideafoundrybi.sql $mysql_machine:/root/schemas
+    docker-machine scp ../docker/data/ideafoundrybi.sql $mysql_machine:/home/ubuntu/schemas
 }
 
 function create_node {
