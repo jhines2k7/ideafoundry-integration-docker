@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 file="./failed_installs.txt"
 
@@ -54,7 +53,7 @@ function create_node {
     2gb) instance_type="t2.small"
         ;;
 
-    512mb) instance_type="t2.micro"
+    512mb) instance_type="t2.nano"
         ;;
     
     esac
