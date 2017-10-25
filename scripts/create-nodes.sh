@@ -157,7 +157,8 @@ function deploy_stack {
         
     docker-machine ssh $manager_machine sudo docker login --username=$DOCKER_HUB_USER --password=$DOCKER_HUB_PASSWORD
     
-    docker-machine ssh $manager_machine sudo docker stack deploy \
+    docker-machine ssh $manager_machine source /home/ubuntu/.profile \
+            && sudo docker stack deploy \
             --compose-file /home/ubuntu/$docker_file \
             --with-registry-auth \
             integration
