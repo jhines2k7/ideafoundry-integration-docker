@@ -147,11 +147,18 @@ function init_swarm_manager {
 
 function deploy_stack {
     local manager_machine=$(get_manager_machine_name)
+
+    local docker_file="../docker-compose.yml"
+
+    if [ "$env" = "dev" ]
+    then
+        docker_file="../docker-compose.dev.yml"
+    fi
         
     docker-machine ssh $manager_machine sudo docker login --username=$DOCKER_HUB_USER --password=$DOCKER_HUB_PASSWORD
     
     docker-machine ssh $manager_machine sudo docker stack deploy \
-            --compose-file docker-compose.dev.yml \
+            --compose-file $docker_file \
             --with-registry-auth \
             integration
 }
