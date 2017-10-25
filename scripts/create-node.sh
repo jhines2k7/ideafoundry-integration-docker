@@ -63,7 +63,7 @@ function create_node {
     --driver amazonec2 \
     --amazonec2-vpc-id vpc-cef83fa9 \
     --amazonec2-subnet-id subnet-8d401ab0 \
-    --amazonec2-security-group my-docker-machine \
+    --amazonec2-security-group ideafoundry-integration \
     --amazonec2-zone e \
     --amazonec2-instance-type $instance_type \
     $machine-$ID
