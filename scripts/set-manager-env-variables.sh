@@ -23,4 +23,4 @@ echo "=======> setting env variables for manager node"
     printf 'export DOCKER_HUB_USER="%q"\n' "${18}"
     printf 'export DOCKER_HUB_PASSWORD="%q"\n' "${19}"
     printf 'export DIGITALOCEAN_ACCESS_TOKEN="%q"\n' "${21}"
-} >> /home/ubuntu/.profile        
+} >> /home/ubuntu/.bashrc        
