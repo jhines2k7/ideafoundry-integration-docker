@@ -65,15 +65,9 @@ function create_node {
         if [ $machine = "manager" ]
         then
             docker-machine rm -f $machine-$ID                      
-            
-           
-            
+                                   
             return 1
-        else
-            echo "There was an error installing docker on $machine-$ID."
-            
-            echo "$machine-$ID" >> $file
-            
+        else                        
             return 2
         fi                
     fi
