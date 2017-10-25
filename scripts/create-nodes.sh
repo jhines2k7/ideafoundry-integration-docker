@@ -13,11 +13,11 @@ function get_manager_machine_name {
 
 #create manager node
 function create_manager_node {    
-    bash ./create-node.sh manager "node.type=manager" 1gb 1
+    result=$(bash ./create-node.sh manager "node.type=manager" 1gb 1)
 
-    result=$?
+    echo $result
 
-    if [ $result eq 1 ]
+    if [ $result -eq 1 ]
         then
             echo "There was an error installing docker on the manager node. The script will now exit."
             
@@ -26,7 +26,7 @@ function create_manager_node {
             bash ./remove-nodes.sh
 
             exit
-    elif [ $result eq 2 ]
+    elif [ $result -eq 2 ]
         then            
             echo "There was an error installing docker on $machine-$ID."
             
