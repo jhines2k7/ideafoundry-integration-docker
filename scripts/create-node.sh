@@ -41,16 +41,41 @@ function create_node {
     local label=$2
     local size=$3
     local ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
+    local instance_type="t2.micro"
     
     echo "======> creating $machine-$ID node"
+
+    # t2.nano=0.5
+    # t2.micro=1
+    # t2.small=2
+
+    case "$size" in
+
+    2gb) instance_type="t2.small"
+        ;;
+
+    512mb) instance_type="t2.micro"
+        ;;
     
+    esac
+
     docker-machine create \
     --engine-label $label \
-    --driver digitalocean \
-    --digitalocean-image ubuntu-17-04-x64 \
-    --digitalocean-size $size \
-    --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
+    --driver amazonec2 \
+    --amazonec2-vpc-id vpc-cef83fa9 \
+    --amazonec2-subnet-id subnet-8d401ab0 \
+    --amazonec2-security-group my-docker-machine \
+    --amazonec2-zone e \
+    --amazonec2-instance-type $instance_type \
     $machine-$ID
+    
+    # docker-machine create \
+    # --engine-label $label \
+    # --driver digitalocean \
+    # --digitalocean-image ubuntu-17-04-x64 \
+    # --digitalocean-size $size \
+    # --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
+    # $machine-$ID
     
     if [ ! -e "$file" ] ; then
         touch "$file"
@@ -68,7 +93,7 @@ function create_node {
         else                                
             echo "$machine-$ID" >> $file
         fi
-        
+
         exit 1
     fi
     
