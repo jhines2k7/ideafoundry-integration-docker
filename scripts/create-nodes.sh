@@ -109,18 +109,18 @@ function create_1gb_worker_nodes {
 function create_mysql_and_kafka_nodes {
     echo "======> creating mysql and kafka worker nodes"
     
-    #bash ./create-node.sh mysql "node.type=mysql" 2gb 1
+    bash ./create-node.sh mysql "node.type=mysql" 2gb 1
 
-    # result=$?
+    result=$?
 
-    # echo "Result from running create_node.sh for mysql node: $result"
+    echo "Result from running create_node.sh for mysql node: $result"
 
-    # if [ $result -eq 1 ]        
-    #     then            
-    #         echo "There was an error installing docker on mysql node."
+    if [ $result -eq 1 ]        
+        then            
+            echo "There was an error installing docker on mysql node."
             
-    #         echo "$machine-$ID" >> $file
-    # fi
+            echo "$machine-$ID" >> $file
+    fi
     
     bash ./create-node.sh kafka "node.type=kafka" 2gb 1
 
@@ -224,8 +224,8 @@ create_manager_node
 init_swarm_manager
 copy_compose_file
 #create_person_worker_nodes 8
-#create_1gb_worker_nodes 1
-#create_512mb_worker_nodes 1
+create_1gb_worker_nodes 1
+create_512mb_worker_nodes 1
 create_mysql_and_kafka_nodes
 
 bash ./remove-nodes-with-failed-docker-installations.sh 
