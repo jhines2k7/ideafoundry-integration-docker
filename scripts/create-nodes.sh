@@ -137,7 +137,6 @@ function copy_compose_file {
 
     echo "======> copying compose file to manager node ..."
     
-    if        
     docker-machine scp $docker_file $(get_manager_machine_name):/root
 }
 
