@@ -64,12 +64,10 @@ function create_node {
     then
         if [ $machine = "manager" ]
         then
-            docker-machine rm -f $machine-$ID                      
-                                   
-            exit 1
-        else                        
-            exit 2
-        fi                
+            docker-machine rm -f $machine-$ID                                                         
+        else                                
+            echo "$machine-$ID" >> $file
+        exit 1
     fi
     
     if [ "$machine" = "mysql" ]

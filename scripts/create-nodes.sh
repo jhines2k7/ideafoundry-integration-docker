@@ -27,12 +27,7 @@ function create_manager_node {
 
             bash ./remove-nodes.sh
 
-            exit
-    elif [ $result -eq 2 ]
-        then            
-            echo "There was an error installing docker on $machine-$ID."
-            
-            echo "$machine-$ID" >> $file
+            exit    
     fi
 }
 
@@ -79,7 +74,16 @@ function create_person_worker_nodes {
 
     bash ./create-node.sh createperson "node.type=createperson" 1gb $num_nodes
 
-    set_scaling_env_variables createperson 50
+    result=$?
+
+    echo "Result from running create_node.sh for createperson node: $result"
+
+    if [ $result -eq 1 ]        
+        then            
+            echo "There was an error installing docker on createperson node."            
+        else
+            set_scaling_env_variables createperson 50
+    fi
 }
 
 #create 1gb worker nodes
@@ -89,6 +93,15 @@ function create_1gb_worker_nodes {
     echo "======> creating 1gb worker nodes"
     
     bash ./create-node.sh 1gb-worker "node.type=1gb-worker" 1gb $num_nodes
+
+    result=$?
+
+    echo "Result from running create_node.sh for 1gb worker node: $result"
+
+    if [ $result -eq 1 ]        
+        then            
+            echo "There was an error installing docker on 1gb worker node."                        
+    fi
 }
 
 #create kafka and mysql nodes
@@ -96,8 +109,30 @@ function create_mysql_and_kafka_nodes {
     echo "======> creating mysql and kafka worker nodes"
     
     #bash ./create-node.sh mysql "node.type=mysql" 2gb 1
+
+    # result=$?
+
+    # echo "Result from running create_node.sh for mysql node: $result"
+
+    # if [ $result -eq 1 ]        
+    #     then            
+    #         echo "There was an error installing docker on mysql node."
+            
+    #         echo "$machine-$ID" >> $file
+    # fi
     
     bash ./create-node.sh kafka "node.type=kafka" 2gb 1
+
+    result=$?
+
+    echo "Result from running create_node.sh for kafka node: $result"
+
+    if [ $result -eq 1 ]        
+        then            
+            echo "There was an error installing docker on kafka node."
+            
+            echo "$machine-$ID" >> $file
+    fi
 }
 
 function init_swarm_manager {
@@ -166,6 +201,17 @@ function create_512mb_worker_nodes {
     echo "======> creating 512mb worker nodes"
     
     bash ./create-node.sh 512mb-worker "node.type=512mb-worker" 512mb $num_nodes
+
+    result=$?
+
+    echo "Result from running create_node.sh for 512mb worker node: $result"
+
+    if [ $result -eq 1 ]        
+        then            
+            echo "There was an error installing docker on 512mb worker node."
+            
+            echo "$machine-$ID" >> $file
+    fi
 }
 
 > $file
