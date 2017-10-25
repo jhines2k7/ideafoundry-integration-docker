@@ -66,9 +66,9 @@ function create_node {
         then
             docker-machine rm -f $machine-$ID                      
                                    
-            return 1
+            exit 1
         else                        
-            return 2
+            exit 2
         fi                
     fi
     
