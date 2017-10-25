@@ -157,13 +157,11 @@ function deploy_stack {
         
     docker-machine ssh $manager_machine sudo docker login --username=$DOCKER_HUB_USER --password=$DOCKER_HUB_PASSWORD
     
-    foo=`docker-machine ssh $manager_machine bash -i << EOF 
-        source /home/ubuntu/.bashrc        
+    docker-machine ssh $manager_machine \
         sudo docker stack deploy \
         --compose-file /home/ubuntu/$docker_file \
         --with-registry-auth \
-        integration
-        EOF`
+        integration       
 }
 
 function set_scaling_env_variables {
