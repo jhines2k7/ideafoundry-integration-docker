@@ -63,10 +63,12 @@ function create_node {
     if [ $? -ne 0 ]
     then
         if [ $machine = "manager" ]
-        then
+            then
             docker-machine rm -f $machine-$ID                                                         
         else                                
             echo "$machine-$ID" >> $file
+        fi
+        
         exit 1
     fi
     

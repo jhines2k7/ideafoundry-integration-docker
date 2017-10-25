@@ -1,6 +1,7 @@
 #!/bin/bash
 
 file="./failed_installs.txt"
+
 env=$1
 
 function get_ip {
