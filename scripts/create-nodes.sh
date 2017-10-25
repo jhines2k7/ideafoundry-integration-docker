@@ -1,6 +1,11 @@
 #!/bin/bash
 
 file="./failed_installs.txt"
+env=$1
+
+function get_ip {
+    echo $(docker-machine ip $1)
+}
 
 function get_manager_machine_name {
     echo $(docker-machine ls --format "{{.Name}}" | grep 'manager')
@@ -12,12 +17,23 @@ function create_manager_node {
 }
 
 function set_manager_node_env_variables {
+    kafka_host="kafka"
+    zookeeper_host="zookeeper"
+
+    if [ "$env" = "dev" ]
+    then
+        kafka_machine_ip=$(get_ip $(docker-machine ls --format "{{.Name}}" | grep 'kafka'))
+
+        kafka_host=$kafka_machine_ip
+        zookeeper_host=$kafka_machine_ip
+    fi
+
     ./runremote.sh \
        ./set-manager-env-variables.sh \
        $(get_manager_machine_name)  \
        "$DB_HOST" \
-       "$KAFKA_HOST" \
-       "$ZOOKEEPER_HOST" \
+       "$kafka_host" \
+       "$zookeeper_host" \
        "$OKHTTP_CLIENT_TIMEOUT_SECONDS" \
        "$AIRTABLE_APP_ID" \
        "$OCCASION_EXPORT_STARTING_PAGE_NUM" \
@@ -112,9 +128,17 @@ function copy_sql_schema {
 }
 
 function copy_compose_file {
+    docker_file="../docker-compose.yml"
+
+    if [ "$env" = "dev" ]
+    then
+        docker_file="../docker-compose.dev.yml"
+    fi
+
     echo "======> copying compose file to manager node ..."
-            
-    docker-machine scp ../docker-compose.dev.yml $(get_manager_machine_name):/root
+    
+    if        
+    docker-machine scp $docker_file $(get_manager_machine_name):/root
 }
 
 function create_512mb_worker_nodes {
@@ -129,7 +153,6 @@ function create_512mb_worker_nodes {
 
 create_manager_node
 init_swarm_manager
-set_manager_node_env_variables
 copy_compose_file
 #create_person_worker_nodes 8
 create_1gb_worker_nodes 1
@@ -138,4 +161,5 @@ create_mysql_and_kafka_nodes
 
 bash ./remove-nodes-with-failed-docker-installations.sh 
 
+set_manager_node_env_variables
 deploy_stack
