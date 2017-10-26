@@ -117,9 +117,7 @@ function create_mysql_and_kafka_nodes {
 
     if [ $result -eq 1 ]        
         then            
-            echo "There was an error installing docker on mysql node."
-            
-            echo "$machine-$ID" >> $file
+            echo "There was an error installing docker on mysql node."            
     fi
     
     bash ./create-node.sh kafka "node.type=kafka" 2gb 1
