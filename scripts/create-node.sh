@@ -64,7 +64,7 @@ function create_node {
     --amazonec2-ami ami-36a8754c \
     --amazonec2-vpc-id vpc-cef83fa9 \
     --amazonec2-subnet-id subnet-8d401ab0 \
-    --amazonec2-security-group ideafoundry-integration \
+    --amazonec2-security-group ideafoundry-integration-dev \
     --amazonec2-zone e \
     --amazonec2-instance-type $instance_type \
     $machine-$ID
