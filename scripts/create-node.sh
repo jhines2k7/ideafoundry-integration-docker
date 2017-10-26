@@ -1,6 +1,6 @@
 #!/bin/bash
 
-file="./failed_installs.txt"
+failed_installs_file="./failed_installs.txt"
 
 function get_ip {
     echo $(docker-machine ip $1)
@@ -77,8 +77,8 @@ function create_node {
     # --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
     # $machine-$ID
     
-    if [ ! -e "$file" ] ; then
-        touch "$file"
+    if [ ! -e "$failed_installs_file" ] ; then
+        touch "$failed_installs_file"
     fi
     
     #check to make sure docker was properly installed on node
@@ -91,7 +91,7 @@ function create_node {
             then
             docker-machine rm -f $machine-$ID                                                         
         else                                
-            echo "$machine-$ID" >> $file
+            echo "$machine-$ID" >> $failed_installs_file
         fi
 
         exit 1
