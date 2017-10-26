@@ -1,6 +1,6 @@
 #!/bin/bash
 
-file="./failed_installs.txt"
+failed_installs_file="./failed_installs.txt"
 
 env=$1
 
@@ -217,7 +217,7 @@ function create_512mb_worker_nodes {
     fi
 }
 
-> $file
+> $failed_installs_file
 
 create_manager_node
 init_swarm_manager
