@@ -32,7 +32,7 @@ function copy_sql_schema {
     
     docker-machine ssh $mysql_machine mkdir /home/ubuntu/schemas
     
-    docker-machine scp ../docker/data/ideafoundrybi.sql $mysql_machine:/home/ubuntu/schemas
+    docker-machine scp ../docker/db/ideafoundry.sql $mysql_machine:/home/ubuntu/schemas
 }
 
 function create_node {
