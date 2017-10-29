@@ -28,7 +28,7 @@ services:
     depends_on:
       - kafka
       - mysql    
-    image: ideafoundry/person-sink:1.0.0.RELEASE
+    image: ideafoundry/person-sink:1.1.0.RELEASE
     deploy:
       restart_policy:
         condition: on-failure
