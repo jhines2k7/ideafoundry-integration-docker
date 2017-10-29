@@ -3,7 +3,7 @@ const server = jsonServer.create();
 const router = jsonServer.router();
 const middlewares = jsonServer.defaults();
 
-let mockData = require('./index');
+let mockData = require('./mockData');
 
 const mocked = mockData();
 const orders = mocked.orders
