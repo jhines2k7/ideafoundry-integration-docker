@@ -81,10 +81,8 @@ function create_person_worker_nodes {
 
     if [ $result -eq 1 ]        
         then            
-            echo "There was an error installing docker on createperson node."            
-        else
-            set_scaling_env_variables createperson 50
-    fi
+            echo "There was an error installing docker on createperson node."                                
+    fi    
 }
 
 #create 1gb worker nodes
@@ -225,4 +223,7 @@ create_kafka_node
 bash ./remove-nodes-with-failed-docker-installations.sh 
 
 set_manager_node_env_variables
+
+set_scaling_env_variables createperson 50
+
 deploy_stack
