@@ -134,6 +134,8 @@ function create_mysql_node {
         then            
             echo "There was an error installing docker on mysql node."            
     fi
+
+    copy_sql_schema
 }
 
 function init_swarm_manager {
@@ -188,7 +190,7 @@ function copy_sql_schema {
     
     docker-machine ssh $mysql_machine mkdir /home/ubuntu/schemas
     
-    docker-machine scp ../docker/data/ideafoundrybi.sql $mysql_machine:/home/ubuntu/schemas
+    docker-machine scp ../docker/db/ideafoundry.sql $mysql_machine:/home/ubuntu/schemas
 }
 
 function copy_compose_file {
