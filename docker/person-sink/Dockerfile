@@ -1,0 +1,5 @@
+FROM java:8
+VOLUME /tmp
+ADD ../jdbc-sink-kafka-10-1.2.0.RELEASE.jar app.jar
+RUN bash -c 'touch /app.jar'
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar", "--server.host=0", "--spring.cloud.stream.bindings.input.destination=createperson", "--spring.cloud.stream.kafka.binder.zkNodes=${ZOOKEEPER_HOST}", "--spring.cloud.stream.kafka.binder.brokers=${KAFKA_HOST}","--jdbc.table-name=person","--spring.datasource.password=${IF_DB_PASSWORD}","--spring.datasource.url=${DB_HOST}:${IF_DB_PORT}/ideafoundry","--spring.datasource.username=ideafoundry","--jdbc.columns=id,first_name,last_name,record_id,created_at,updated_at,email,zip,address,city,phone","spring.cloud.stream.bindings.input.group=createperson-group","--spring.cloud.stream.kafka.binder.autoAddPartitions=true","--spring.cloud.stream.instanceCount=${NUM_NODES}","--spring.cloud.stream.instanceIndex=${NODE_INDEX}"]
