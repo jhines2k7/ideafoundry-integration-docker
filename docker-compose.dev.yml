@@ -79,7 +79,7 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=${IF_DB_ROOT_PASS}
       - MYSQL_USER=ideafoundry
-      - MYSQL_DATABASE=ideafoundrybi
+      - MYSQL_DATABASE=ideafoundry
       - MYSQL_PASSWORD=${IF_DB_PASSWORD}
   zookeeper:
     image: wurstmeister/zookeeper
