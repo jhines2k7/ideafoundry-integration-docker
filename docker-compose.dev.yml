@@ -40,8 +40,8 @@ services:
         constraints:
           - engine.labels.node.type==createperson
     environment:
-      - NUM_NODES=${NUM_NODES}
-      - NODE_INDEX=${NODE_INDEX}
+      - NUM_NODES=50
+      - NODE_INDEX=1
       - IF_DB_PORT=${IF_DB_PORT}
       - IF_DB_PASSWORD=${IF_DB_PASSWORD}
       - DB_HOST=${DB_HOST}
