@@ -1,4 +1,6 @@
 #!/bin/bash
 
-echo "sudo export NUM_NODES=$1" >> /etc/environment
-echo "sudo export NODE_INDEX=$2" >> /etc/environment
+{
+    printf 'export NUM_NODES="%q"\n' "$1"
+    printf 'export NODE_INDEX="%q"\n' "$2"
+} | sudo tee -a /etc/environment > /dev/null
