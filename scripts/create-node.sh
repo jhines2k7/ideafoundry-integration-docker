@@ -117,14 +117,15 @@ machine=$1
 label=$2
 size=$3
 num_workers=$4
+starting_idx=$5
 
 if [ $num_workers -gt 1 ]
 then
     echo "======> Creating $num_workers nodes"
 
-    for i in $(eval echo "{1..$num_workers}")
+    for $starting_idx in $(eval echo "{$starting_idx..$num_workers}")
         do
-            create_node $machine $label $size $i               
+            create_node $machine $label $size $starting_idx
     done
 else
     echo "======> Creating $num_workers node"
