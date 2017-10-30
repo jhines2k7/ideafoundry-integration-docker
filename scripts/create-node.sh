@@ -113,6 +113,8 @@ function create_node {
         
         if echo "$machine" | grep --quiet "create"
         then
+            echo "======> Setting scaling variables for $machine-$idx worker node"
+
             bash ./set_scaling_env_variables.sh $machine-$idx $num_workers $idx
         fi
     fi
