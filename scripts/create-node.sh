@@ -68,7 +68,7 @@ function create_node {
     --amazonec2-security-group ideafoundry-integration-dev \
     --amazonec2-zone e \
     --amazonec2-instance-type $instance_type \
-    $machine-$idx
+    $machine-node-$idx
     
     # docker-machine create \
     # --engine-label $label \
@@ -83,18 +83,18 @@ function create_node {
     fi
     
     #check to make sure docker was properly installed on node
-    echo "======> making sure docker is installed on $machine-$ID"
-    docker-machine ssh $machine-$idx docker
+    echo "======> making sure docker is installed on $machine-node-$idx"
+    docker-machine ssh $machine-node-$idx docker
 
     if [ $? -ne 0 ]
     then
         if [ $machine = "manager" ]
             then
-            docker-machine rm -f $machine-$idx  
+            docker-machine rm -f $machine-node-$idx  
 
             exit 1                                                       
         else                                
-            echo "$machine-$idx" >> $failed_installs_file
+            echo "$machine-node-$idx" >> $failed_installs_file
         fi
 
         continue        
@@ -105,15 +105,15 @@ function create_node {
         copy_sql_schema
     fi
  
-    bash ./set-ufw-rules.sh $machine-$idx
+    bash ./set-ufw-rules.sh $machine-node-$idx
     
     if [ "$machine" != "manager" ]
     then
-        join_swarm $machine-$idx
+        join_swarm $machine-node-$idx
         
         if echo "$machine" | grep --quiet "create"
         then
-            echo "======> Setting scaling variables for $machine-$idx worker node"
+            echo "======> Setting scaling variables for $$machine-node-$idx"
 
             bash ./set_scaling_env_variables.sh $machine-$idx $num_workers $idx
         fi
