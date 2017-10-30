@@ -110,6 +110,11 @@ function create_node {
     if [ "$machine" != "manager" ]
     then
         join_swarm $machine-$idx
+        
+        if echo "$machine" | grep --quiet "create"
+        then
+            bash ./set_scaling_env_variables.sh $machine-$idx $num_workers $idx
+        fi
     fi
 }
 
