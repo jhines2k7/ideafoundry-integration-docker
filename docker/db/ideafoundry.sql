@@ -5,7 +5,10 @@ USE ideafoundry;
 CREATE TABLE person(
    id varchar(255) not null primary key,
    email varchar(255),
+   address varchar(255),
    zip varchar(255),
+   city varchar(255),
+   phone varchar(255),
    first_name varchar(255),
    last_name varchar(255),
    full_name varchar(255),
