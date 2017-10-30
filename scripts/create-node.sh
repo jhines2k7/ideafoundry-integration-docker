@@ -39,10 +39,11 @@ function create_node {
     local machine=$1
     local label=$2
     local size=$3
-    local ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
+    local idx=$4
+    #local ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
     local instance_type="t2.micro"
     
-    echo "======> creating $machine-$ID node"
+    echo "======> creating $machine-$idx node"
 
     # t2.nano=0.5
     # t2.micro=1
@@ -67,7 +68,7 @@ function create_node {
     --amazonec2-security-group ideafoundry-integration-dev \
     --amazonec2-zone e \
     --amazonec2-instance-type $instance_type \
-    $machine-$ID
+    $machine-$idx
     
     # docker-machine create \
     # --engine-label $label \
@@ -75,7 +76,7 @@ function create_node {
     # --digitalocean-image ubuntu-17-04-x64 \
     # --digitalocean-size $size \
     # --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
-    # $machine-$ID
+    # $machine-$idx
     
     if [ ! -e "$failed_installs_file" ] ; then
         touch "$failed_installs_file"
@@ -83,17 +84,17 @@ function create_node {
     
     #check to make sure docker was properly installed on node
     echo "======> making sure docker is installed on $machine-$ID"
-    docker-machine ssh $machine-$ID docker
+    docker-machine ssh $machine-$idx docker
 
     if [ $? -ne 0 ]
     then
         if [ $machine = "manager" ]
             then
-            docker-machine rm -f $machine-$ID  
+            docker-machine rm -f $machine-$idx  
 
             exit 1                                                       
         else                                
-            echo "$machine-$ID" >> $failed_installs_file
+            echo "$machine-$idx" >> $failed_installs_file
         fi
 
         continue        
@@ -104,11 +105,11 @@ function create_node {
         copy_sql_schema
     fi
  
-    bash ./set-ufw-rules.sh $machine-$ID
+    bash ./set-ufw-rules.sh $machine-$idx
     
     if [ "$machine" != "manager" ]
     then
-        join_swarm $machine-$ID
+        join_swarm $machine-$idx
     fi
 }
 
@@ -123,9 +124,9 @@ then
 
     for i in $(eval echo "{1..$num_workers}")
         do
-            create_node $machine $label $size               
+            create_node $machine $label $size $i               
     done
 else
     echo "======> Creating $num_workers node"
-    create_node $machine $label $size
+    create_node $machine $label $size 1
 fi
