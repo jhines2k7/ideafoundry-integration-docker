@@ -226,6 +226,6 @@ bash ./remove-nodes-with-failed-docker-installations.sh
 
 set_manager_node_env_variables
 
-set_scaling_env_variables createperson 50
+set_scaling_env_variables createperson 4
 
 deploy_stack
