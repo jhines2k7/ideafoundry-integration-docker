@@ -166,21 +166,6 @@ function deploy_stack {
         integration       
 }
 
-function set_scaling_env_variables {
-    local machine_type=$1
-    local num_nodes=$2
-    local index=0
-
-    for machine in $(docker-machine ls --format "{{.Name}}" | grep $machine_type)
-        do
-            echo "======> setting scaling env variables for $machine ..."
-
-            docker-machine ssh $machine 'bash -s' < ./set-scaling-variables.sh $num_nodes $index            
-
-            ((index++))
-    done       
-}
-
 function copy_compose_file {
     docker_file="../docker-compose.yml"
 
