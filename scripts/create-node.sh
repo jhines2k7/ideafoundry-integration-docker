@@ -76,7 +76,7 @@ function create_node {
     # --digitalocean-image ubuntu-17-04-x64 \
     # --digitalocean-size $size \
     # --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
-    # $machine-$idx
+    # $machine-node-$idx
     
     if [ ! -e "$failed_installs_file" ] ; then
         touch "$failed_installs_file"
@@ -113,9 +113,9 @@ function create_node {
         
         if echo "$machine" | grep --quiet "create"
         then
-            echo "======> Setting scaling variables for $$machine-node-$idx"
+            echo "======> Setting scaling variables for $machine-node-$idx"
 
-            bash ./set_scaling_env_variables.sh $machine-$idx $num_workers $idx
+            bash ./set_scaling_env_variables.sh $machine-node-$idx $num_workers $idx
         fi
     fi
 }
@@ -125,13 +125,16 @@ label=$2
 size=$3
 num_workers=$4
 starting_idx=$5
+idx=$starting_idx
 
 if [ $num_workers -gt 1 ]
 then
     echo "======> Creating $num_workers nodes"
 
     while [ "$starting_idx" -le "$num_workers" ]; do
-        create_node $machine $label $size $starting_idx
+        create_node $machine $label $size $idx
+
+        ((idx++))
     done
 else
     echo "======> Creating $num_workers node"
