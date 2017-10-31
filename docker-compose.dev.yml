@@ -42,6 +42,7 @@ services:
     environment:
       - IF_DB_PORT=${IF_DB_PORT}
       - IF_DB_PASSWORD=${IF_DB_PASSWORD}
+      - IF_DB_USERNAME=${IF_DB_USERNAME}
       - DB_HOST=${DB_HOST}
       - KAFKA_HOST=${KAFKA_HOST}
       - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
