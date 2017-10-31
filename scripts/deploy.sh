@@ -83,7 +83,7 @@ function create_person_worker_nodes {
 
     if [ $result -eq 1 ]        
         then            
-            echo "There was an error installing docker on createperson node."                                
+            echo "There was an error creating a createperson node."                                
     fi    
 }
 

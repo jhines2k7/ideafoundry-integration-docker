@@ -134,6 +134,8 @@ then
         create_node $machine $label $size $starting_idx
 
         ((starting_idx++))
+
+        echo "======> starting_idx: $starting_idx"
     done
 else
     echo "======> Creating $num_workers node"
