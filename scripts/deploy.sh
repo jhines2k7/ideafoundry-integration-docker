@@ -192,7 +192,7 @@ function create_512mb_worker_nodes {
 
     if [ $result -eq 1 ]        
         then            
-            echo "There was an error installing docker on 512mb worker node."            
+            echo "There was an error creating 512mb worker node."            
     fi
 }
 
