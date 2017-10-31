@@ -125,16 +125,16 @@ label=$2
 size=$3
 num_workers=$4
 starting_idx=$5
-idx=$starting_idx
+index=$starting_idx
 
 if [ $num_workers -gt 1 ]
 then
     echo "======> Creating $num_workers nodes"
 
     while [ "$starting_idx" -le "$num_workers" ]; do
-        create_node $machine $label $size $idx
+        create_node $machine $label $size $index
 
-        ((idx++))
+        ((index++))
     done
 else
     echo "======> Creating $num_workers node"
