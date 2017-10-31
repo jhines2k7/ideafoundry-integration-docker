@@ -42,7 +42,7 @@ function create_node {
     local ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
     local instance_type="t2.micro"
     
-    echo "======> creating $machine-node-$ID"
+    echo "======> creating $machine-$ID"
 
     # t2.nano=0.5
     # t2.micro=1
@@ -67,7 +67,7 @@ function create_node {
     --amazonec2-security-group ideafoundry-integration-dev \
     --amazonec2-zone e \
     --amazonec2-instance-type $instance_type \
-    $machine-node-$ID
+    $machine-$ID
     
     # docker-machine create \
     # --engine-label $label \
@@ -75,25 +75,25 @@ function create_node {
     # --digitalocean-image ubuntu-17-04-x64 \
     # --digitalocean-size $size \
     # --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
-    # $machine-node-$ID
+    # $machine-$ID
     
     if [ ! -e "$failed_installs_file" ] ; then
         touch "$failed_installs_file"
     fi
     
     #check to make sure docker was properly installed on node
-    echo "======> making sure docker is installed on $machine-node-$ID"
-    docker-machine ssh $machine-node-$ID docker
+    echo "======> making sure docker is installed on $machine-$ID"
+    docker-machine ssh $machine-$ID docker
 
     if [ $? -ne 0 ]
     then
         if [ $machine = "manager" ]
             then
-            docker-machine rm -f $machine-node-$ID  
+            docker-machine rm -f $machine-$ID  
 
             exit 1                                                       
         else                                
-            echo "$machine-node-$ID" >> $failed_installs_file
+            echo "$machine-$ID" >> $failed_installs_file
         fi
 
         continue        
@@ -104,17 +104,17 @@ function create_node {
         copy_sql_schema
     fi
  
-    bash ./set-ufw-rules.sh $machine-node-$ID
+    bash ./set-ufw-rules.sh $machine-$ID
     
     if [ "$machine" != "manager" ]
     then
-        join_swarm $machine-node-$ID
+        join_swarm $machine-$ID
         
         if echo "$machine" | grep --quiet "create"
         then
-            echo "======> Setting scaling variables for $machine-node-$ID"
+            echo "======> Setting scaling variables for $machine-$ID"
 
-            bash ./set_scaling_env_variables.sh $machine-node-$ID $num_workers $idx
+            bash ./set_scaling_env_variables.sh $machine-$ID $num_workers $idx
         fi
     fi
 }
