@@ -6,7 +6,7 @@ services:
       - personsink
       - kafka
       - mockoccasionapi
-    image: ideafoundry/occasion-legacy-data-export-service:1.16.1-SNAPSHOT
+    image: ideafoundry/occasion-legacy-data-export-service:1.18.1-SNAPSHOT
     deploy:
       restart_policy:
         condition: on-failure
@@ -39,6 +39,28 @@ services:
   #     placement:
   #       constraints:
   #         - engine.labels.node.type==createperson
+  #   environment:
+  #     - IF_DB_PORT=${IF_DB_PORT}
+  #     - IF_DB_PASSWORD=${IF_DB_PASSWORD}
+  #     - IF_DB_USERNAME=${IF_DB_USERNAME}
+  #     - DB_HOST=${DB_HOST}
+  #     - KAFKA_HOST=${KAFKA_HOST}
+  #     - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
+  # ordersink:    
+  #   depends_on:
+  #     - kafka
+  #     - mysql    
+  #   image: ideafoundry/create-airtable-order-service:1.9.10-SNAPSHOT
+  #   deploy:
+  #     restart_policy:
+  #       condition: on-failure
+  #       delay: 5s
+  #       max_attempts: 3
+  #       window: 120s
+  #     replicas: 4
+  #     placement:
+  #       constraints:
+  #         - engine.labels.node.type==createorder
   #   environment:
   #     - IF_DB_PORT=${IF_DB_PORT}
   #     - IF_DB_PASSWORD=${IF_DB_PASSWORD}
