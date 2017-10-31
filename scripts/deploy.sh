@@ -14,7 +14,7 @@ function get_manager_machine_name {
 
 #create manager node
 function create_manager_node {    
-    bash ./create-node.sh manager "node.type=manager" 1gb 1
+    bash ./create-node.sh manager "node.type=manager" 1gb
 
     result=$?
 
@@ -75,7 +75,7 @@ function set_manager_node_env_variables {
 function create_person_worker_nodes {
     local num_nodes=$1
 
-    bash ./create-node.sh createperson "node.type=createperson" 1gb $num_nodes 1
+    bash ./create-node.sh createperson "node.type=createperson" 1gb $num_nodes
 
     result=$?
 
@@ -91,7 +91,7 @@ function create_person_worker_nodes {
 function create_order_worker_nodes {
     local num_nodes=$1
 
-    bash ./create-node.sh createorder "node.type=createorder" 1gb $num_nodes 1
+    bash ./create-node.sh createorder "node.type=createorder" 1gb $num_nodes
 
     result=$?
 
@@ -109,7 +109,7 @@ function create_1gb_worker_nodes {
 
     echo "======> creating 1gb worker nodes"
     
-    bash ./create-node.sh 1gb "node.type=1gb" 1gb $num_nodes 1
+    bash ./create-node.sh 1gb "node.type=1gb" 1gb $num_nodes
 
     result=$?
 
@@ -125,7 +125,7 @@ function create_1gb_worker_nodes {
 function create_kafka_node {
     echo "======> creating kafka worker node"
 
-    bash ./create-node.sh kafka "node.type=kafka" 2gb 1
+    bash ./create-node.sh kafka "node.type=kafka" 2gb
 
     result=$?
 
@@ -140,7 +140,7 @@ function create_kafka_node {
 function create_mysql_node {
     echo "======> creating mysql worker node"
     
-    bash ./create-node.sh mysql "node.type=mysql" 2gb 1
+    bash ./create-node.sh mysql "node.type=mysql" 2gb
 
     result=$?
 
@@ -200,7 +200,7 @@ function create_512mb_worker_nodes {
 
     echo "======> creating 512mb worker nodes"
     
-    bash ./create-node.sh 512mb "node.type=512mb" 512mb $num_nodes 1
+    bash ./create-node.sh 512mb "node.type=512mb" 512mb $num_nodes
 
     result=$?
 
