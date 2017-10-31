@@ -130,7 +130,7 @@ if [ $num_workers -gt 1 ]
 then
     echo "======> Creating $num_workers nodes"
 
-    for $starting_idx in $(eval echo "{$starting_idx..$num_workers}")
+    while [ "$starting_idx" -le "$num_workers" ]; do
         do
             create_node $machine $label $size $starting_idx
     done
