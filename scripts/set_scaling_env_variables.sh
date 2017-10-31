@@ -1,6 +1,6 @@
-local machine=$1
-local num_nodes=$2
-local idx=$3
+machine=$1
+num_nodes=$2
+idx=$3
 
 echo "======> setting scaling env variables for $machine ..."
 
