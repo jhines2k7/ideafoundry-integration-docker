@@ -131,8 +131,7 @@ then
     echo "======> Creating $num_workers nodes"
 
     while [ "$starting_idx" -le "$num_workers" ]; do
-        do
-            create_node $machine $label $size $starting_idx
+        create_node $machine $label $size $starting_idx
     done
 else
     echo "======> Creating $num_workers node"
