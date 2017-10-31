@@ -17,21 +17,25 @@ CREATE TABLE person(
    updated_at varchar(255)
 )ENGINE=InnoDB;
 
-CREATE TABLE order(
+CREATE TABLE `order`(
    id varchar(255) not null primary key,
    person_id varchar(255),
+   record_id int(11),
+   gift_card_amount double,
+   coupon_amount double,
+   outstanding_balance double,
+   subtotal double,
+   total double,
+   coupon_description varchar(255),
+   tax_percentage double,
    payment_status varchar(255),
    status varchar(255),
    balance double,
    price double,
-   coupon_amount double,
-   coupon_description varchar(255),
    description varchar(255),
    verification_code varchar(255),
-   record_id int(11),
    quantity int(11),
    tax double,
-   tax_percentage double,
    created_at varchar(255),
    updated_at varchar(255),
    FOREIGN KEY fk_person_id(person_id) REFERENCES person(id) ON UPDATE CASCADE ON DELETE RESTRICT

@@ -43,7 +43,7 @@ function create_node {
     #local ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
     local instance_type="t2.micro"
     
-    echo "======> creating $machine-$idx node"
+    echo "======> creating $machine-node-$idx node"
 
     # t2.nano=0.5
     # t2.micro=1
