@@ -51,7 +51,7 @@ CREATE TABLE question(
    created_at varchar(255),
    updated_at varchar(255),
    FOREIGN KEY fk_question_person_id(person_id) REFERENCES person(id) ON UPDATE CASCADE ON DELETE RESTRICT,
-   FOREIGN KEY fk_question_order_id(order_id) REFERENCES order(id) ON UPDATE CASCADE ON DELETE RESTRICT
+   FOREIGN KEY fk_question_order_id(order_id) REFERENCES ideafoundry.order(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )ENGINE=InnoDB;
 
 CREATE TABLE occurence(
@@ -65,5 +65,5 @@ CREATE TABLE occurence(
    starts_at varchar(255),
    time_slot_id varchar(255),
    updated_at varchar(255),
-   FOREIGN KEY fk_occurrence_order_id(order_id) REFERENCES order(id) ON UPDATE CASCADE ON DELETE RESTRICT
+   FOREIGN KEY fk_occurrence_order_id(order_id) REFERENCES ideafoundry.order(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )ENGINE=InnoDB;

@@ -87,21 +87,37 @@ function create_person_worker_nodes {
     fi    
 }
 
+#create createorder worker nodes
+function create_order_worker_nodes {
+    local num_nodes=$1
+
+    bash ./create-node.sh createorder "node.type=createorder" 1gb $num_nodes 1
+
+    result=$?
+
+    echo "Result from running create_node.sh for createorder node: $result"
+
+    if [ $result -eq 1 ]        
+        then            
+            echo "There was an error creating a createorder node."                                
+    fi    
+}
+
 #create 1gb worker nodes
 function create_1gb_worker_nodes {
     local num_nodes=$1
 
     echo "======> creating 1gb worker nodes"
     
-    bash ./create-node.sh 1gb-worker "node.type=1gb-worker" 1gb $num_nodes 1
+    bash ./create-node.sh 1gb "node.type=1gb" 1gb $num_nodes 1
 
     result=$?
 
-    echo "Result from running create_node.sh for 1gb worker node: $result"
+    echo "Result from running create_node.sh for 1gb node: $result"
 
     if [ $result -eq 1 ]        
         then            
-            echo "There was an error installing docker on 1gb worker node."                        
+            echo "There was an error creating a 1gb node."                        
     fi
 }
 
@@ -117,7 +133,7 @@ function create_kafka_node {
 
     if [ $result -eq 1 ]        
         then            
-            echo "There was an error installing docker on kafka node."            
+            echo "There was an error creating a kafka node."            
     fi
 }
 
@@ -132,7 +148,7 @@ function create_mysql_node {
 
     if [ $result -eq 1 ]        
         then            
-            echo "There was an error installing docker on mysql node."            
+            echo "There was an error creating a mysql node."            
     fi
 }
 
@@ -184,7 +200,7 @@ function create_512mb_worker_nodes {
 
     echo "======> creating 512mb worker nodes"
     
-    bash ./create-node.sh 512mb-worker "node.type=512mb-worker" 512mb $num_nodes 1
+    bash ./create-node.sh 512mb "node.type=512mb" 512mb $num_nodes 1
 
     result=$?
 
@@ -192,7 +208,7 @@ function create_512mb_worker_nodes {
 
     if [ $result -eq 1 ]        
         then            
-            echo "There was an error creating 512mb worker node."            
+            echo "There was an error creating a 512mb worker node."            
     fi
 }
 
@@ -202,6 +218,7 @@ create_manager_node
 init_swarm_manager
 copy_compose_file
 create_person_worker_nodes 4
+create_order_worker_nodes 4
 create_1gb_worker_nodes 1
 create_512mb_worker_nodes 1
 create_mysql_node

@@ -16,7 +16,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - engine.labels.node.type==1gb-worker
+          - engine.labels.node.type==1gb
     environment:
       - OKHTTP_CLIENT_TIMEOUT_SECONDS=${OKHTTP_CLIENT_TIMEOUT_SECONDS}
       - OCCASION_EXPORT_STARTING_PAGE_NUM=${OCCASION_EXPORT_STARTING_PAGE_NUM}
@@ -58,7 +58,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - engine.labels.node.type==512mb-worker
+          - engine.labels.node.type==512mb
   mysql:
     image: mysql:8.0.1
     deploy:
