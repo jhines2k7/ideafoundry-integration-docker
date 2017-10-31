@@ -43,7 +43,7 @@ function create_node {
     #local ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
     local instance_type="t2.micro"
     
-    echo "======> creating $machine-node-$idx"
+    echo "======> creating $machine-node-$idx node"
 
     # t2.nano=0.5
     # t2.micro=1
@@ -125,16 +125,15 @@ label=$2
 size=$3
 num_workers=$4
 starting_idx=$5
-index=$starting_idx
 
 if [ $num_workers -gt 1 ]
 then
     echo "======> Creating $num_workers nodes"
 
     while [ "$starting_idx" -le "$num_workers" ]; do
-        create_node $machine $label $size $index
+        create_node $machine $label $size $starting_idx
 
-        ((index++))
+        ((starting_idx++))
     done
 else
     echo "======> Creating $num_workers node"
