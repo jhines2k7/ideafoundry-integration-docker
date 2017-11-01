@@ -221,11 +221,15 @@ copy_compose_file
 # create_order_worker_nodes 4
 create_1gb_worker_nodes 1
 create_512mb_worker_nodes 1
-# create_mysql_node
+create_mysql_node
 create_kafka_node
 
-bash ./remove-nodes-with-failed-docker-installations.sh 
+bash ./remove-nodes-with-failed-docker-installations.sh
+
+# recreate_critcal_nodes
 
 set_manager_node_env_variables
 
 deploy_stack
+
+docker-machine ls
