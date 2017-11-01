@@ -54,7 +54,7 @@ CREATE TABLE question(
    FOREIGN KEY fk_question_order_id(order_id) REFERENCES occasion_order(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )ENGINE=InnoDB;
 
-CREATE TABLE occurence(
+CREATE TABLE occurrence(
    id varchar(255) not null primary key,
    order_id varchar(255),
    closes_at varchar(255),
@@ -66,4 +66,20 @@ CREATE TABLE occurence(
    time_slot_id varchar(255),
    updated_at varchar(255),
    FOREIGN KEY fk_occurrence_order_id(order_id) REFERENCES occasion_order(id) ON UPDATE CASCADE ON DELETE RESTRICT
+)ENGINE=InnoDB;
+
+create table order_question(
+  order_id varchar(255),
+  question_id varchar(255),
+  CONSTRAINT order_question_pk PRIMARY KEY (order_id, question_id),
+  CONSTRAINT fk_order FOREIGN KEY (order_id) REFERENCES occasion_order (id),
+  CONSTRAINT fk_question FOREIGN KEY (question_id) REFERENCES question (id)
+)ENGINE=InnoDB;
+
+create table person_question(
+  person_id varchar(255),
+  question_id varchar(255),
+  CONSTRAINT person_question_pk PRIMARY KEY (person_id, question_id),
+  CONSTRAINT fk_person FOREIGN KEY (person_id) REFERENCES person (id),
+  CONSTRAINT fk_question FOREIGN KEY (question_id) REFERENCES question (id)
 )ENGINE=InnoDB;

@@ -135,8 +135,8 @@ function create_kafka_node {
         then            
             echo "There was an error creating a kafka node."            
     fi
-# }
-# 
+}
+ 
 function create_mysql_node {
     echo "======> creating mysql worker node"
     
