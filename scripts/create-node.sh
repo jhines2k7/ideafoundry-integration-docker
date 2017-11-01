@@ -99,10 +99,10 @@ function create_node {
         continue        
     fi
     
-    # if [ "$machine" = "mysql" ]
-    # then
-    #     copy_sql_schema
-    # fi
+    if [ "$machine" = "mysql" ]
+    then
+        copy_sql_schema
+    fi
  
     bash ./set-ufw-rules.sh $machine-$ID
     
