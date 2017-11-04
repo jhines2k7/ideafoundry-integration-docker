@@ -45,16 +45,20 @@ services:
   #     - DB_HOST=${DB_HOST}
   #     - KAFKA_HOST=${KAFKA_HOST}
   #     - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
-  # mockoccasionapi:
-  #   image: ideafoundry/mock-occasion-api:1.1.0
-  #   depends_on: 
-  #     - kafka
-  #     - IF_DB_PORT=${IF_DB_PORT}
-  #     - IF_DB_PASSWORD=${IF_DB_PASSWORD}
-  #     - IF_DB_USERNAME=${IF_DB_USERNAME}
-  #     - DB_HOST=${DB_HOST}
-  #     - KAFKA_HOST=${KAFKA_HOST}
-  #     - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
+  mockoccasionapi:
+    image: ideafoundry/mock-occasion-api:1.1.0
+    depends_on: 
+      - kafka
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      replicas: 1
+      placement:
+        constraints:
+          - engine.labels.node.type==512mb
   # ordersink:    
   #   depends_on:
   #     - kafka
