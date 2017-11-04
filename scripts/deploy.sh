@@ -83,7 +83,23 @@ function create_person_worker_nodes {
 
     if [ $result -eq 1 ]        
         then            
-            echo "There was an error installing docker on createperson node."                                
+            echo "There was an error creating a createperson node."                                
+    fi    
+}
+
+#create createorder worker nodes
+function create_order_worker_nodes {
+    local num_nodes=$1
+
+    bash ./create-node.sh createorder "node.type=createorder" 1gb $num_nodes
+
+    result=$?
+
+    echo "Result from running create_node.sh for createorder node: $result"
+
+    if [ $result -eq 1 ]        
+        then            
+            echo "There was an error creating a createorder node."                                
     fi    
 }
 
@@ -93,15 +109,15 @@ function create_1gb_worker_nodes {
 
     echo "======> creating 1gb worker nodes"
     
-    bash ./create-node.sh 1gb-worker "node.type=1gb-worker" 1gb $num_nodes
+    bash ./create-node.sh 1gb "node.type=1gb" 1gb $num_nodes
 
     result=$?
 
-    echo "Result from running create_node.sh for 1gb worker node: $result"
+    echo "Result from running create_node.sh for 1gb node: $result"
 
     if [ $result -eq 1 ]        
         then            
-            echo "There was an error installing docker on 1gb worker node."                        
+            echo "There was an error creating a 1gb node."                        
     fi
 }
 
@@ -117,10 +133,10 @@ function create_kafka_node {
 
     if [ $result -eq 1 ]        
         then            
-            echo "There was an error installing docker on kafka node."            
+            echo "There was an error creating a kafka node."            
     fi
 }
-
+ 
 function create_mysql_node {
     echo "======> creating mysql worker node"
     
@@ -132,7 +148,7 @@ function create_mysql_node {
 
     if [ $result -eq 1 ]        
         then            
-            echo "There was an error installing docker on mysql node."            
+            echo "There was an error creating a mysql node."            
     fi
 }
 
@@ -166,21 +182,6 @@ function deploy_stack {
         integration       
 }
 
-function set_scaling_env_variables {
-    local machine_type=$1
-    local num_nodes=$2
-    local index=0
-
-    for machine in $(docker-machine ls --format "{{.Name}}" | grep $machine_type)
-        do
-            echo "======> setting scaling env variables for $machine ..."
-
-            docker-machine ssh $machine 'bash -s' < ./set-scaling-variables.sh $num_nodes $index            
-
-            ((index++))
-    done       
-}
-
 function copy_compose_file {
     docker_file="../docker-compose.yml"
 
@@ -199,7 +200,7 @@ function create_512mb_worker_nodes {
 
     echo "======> creating 512mb worker nodes"
     
-    bash ./create-node.sh 512mb-worker "node.type=512mb-worker" 512mb $num_nodes
+    bash ./create-node.sh 512mb "node.type=512mb" 512mb $num_nodes
 
     result=$?
 
@@ -207,7 +208,7 @@ function create_512mb_worker_nodes {
 
     if [ $result -eq 1 ]        
         then            
-            echo "There was an error installing docker on 512mb worker node."            
+            echo "There was an error creating a 512mb worker node."            
     fi
 }
 
@@ -216,16 +217,19 @@ function create_512mb_worker_nodes {
 create_manager_node
 init_swarm_manager
 copy_compose_file
-create_person_worker_nodes 4
-create_1gb_worker_nodes 1
-create_512mb_worker_nodes 1
+# create_person_worker_nodes 4
+# create_order_worker_nodes 4
+# create_1gb_worker_nodes 1
+# create_512mb_worker_nodes 1
 create_mysql_node
 create_kafka_node
 
-bash ./remove-nodes-with-failed-docker-installations.sh 
+bash ./remove-nodes-with-failed-docker-installations.sh
+
+# recreate_critcal_nodes
 
 set_manager_node_env_variables
 
-set_scaling_env_variables createperson 50
-
 deploy_stack
+
+docker-machine ls

@@ -42,7 +42,7 @@ function create_node {
     local ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
     local instance_type="t2.micro"
     
-    echo "======> creating $machine-$ID node"
+    echo "======> creating $machine-$ID"
 
     # t2.nano=0.5
     # t2.micro=1
@@ -109,6 +109,13 @@ function create_node {
     if [ "$machine" != "manager" ]
     then
         join_swarm $machine-$ID
+        
+        if echo "$machine" | grep --quiet "create"
+        then
+            echo "======> Setting scaling variables for $machine-$ID"
+
+            bash ./set_scaling_env_variables.sh $machine-$ID $num_workers $idx
+        fi
     fi
 }
 
@@ -121,9 +128,9 @@ if [ $num_workers -gt 1 ]
 then
     echo "======> Creating $num_workers nodes"
 
-    for i in $(eval echo "{1..$num_workers}")
+    for i in $(eval echo "{1..$num_workers}")      
         do
-            create_node $machine $label $size               
+            create_node $machine $label $size                
     done
 else
     echo "======> Creating $num_workers node"

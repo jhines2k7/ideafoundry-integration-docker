@@ -6,7 +6,7 @@ services:
   #     - personsink
   #     - kafka
   #     - mockoccasionapi
-  #   image: ideafoundry/occasion-legacy-data-export-service:1.14.1-SNAPSHOT
+  #   image: ideafoundry/occasion-legacy-data-export-service:1.19.1-SNAPSHOT
   #   deploy:
   #     restart_policy:
   #       condition: on-failure
@@ -16,7 +16,7 @@ services:
   #     replicas: 1
   #     placement:
   #       constraints:
-  #         - engine.labels.node.type==1gb-worker
+  #         - engine.labels.node.type==1gb
   #   environment:
   #     - OKHTTP_CLIENT_TIMEOUT_SECONDS=${OKHTTP_CLIENT_TIMEOUT_SECONDS}
   #     - OCCASION_EXPORT_STARTING_PAGE_NUM=${OCCASION_EXPORT_STARTING_PAGE_NUM}
@@ -35,13 +35,11 @@ services:
   #       delay: 5s
   #       max_attempts: 3
   #       window: 120s
-  #     replicas: 1
+  #     replicas: 4
   #     placement:
   #       constraints:
   #         - engine.labels.node.type==createperson
   #   environment:
-  #     - NUM_NODES=50
-  #     - NODE_INDEX=1
   #     - IF_DB_PORT=${IF_DB_PORT}
   #     - IF_DB_PASSWORD=${IF_DB_PASSWORD}
   #     - DB_HOST=${DB_HOST}
@@ -51,6 +49,17 @@ services:
   #   image: ideafoundry/mock-occasion-api:1.1.0
   #   depends_on: 
   #     - kafka
+  #     - IF_DB_PORT=${IF_DB_PORT}
+  #     - IF_DB_PASSWORD=${IF_DB_PASSWORD}
+  #     - IF_DB_USERNAME=${IF_DB_USERNAME}
+  #     - DB_HOST=${DB_HOST}
+  #     - KAFKA_HOST=${KAFKA_HOST}
+  #     - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
+  # ordersink:    
+  #   depends_on:
+  #     - kafka
+  #     - mysql    
+  #   image: ideafoundry/create-airtable-order-service:1.9.10-SNAPSHOT
   #   deploy:
   #     restart_policy:
   #       condition: on-failure
@@ -61,28 +70,28 @@ services:
   #     placement:
   #       constraints:
   #         - engine.labels.node.type==512mb-worker
-  # mysql:
-  #   image: mysql:8.0.1
-  #   deploy:
-  #     restart_policy:
-  #       condition: on-failure
-  #       delay: 5s
-  #       max_attempts: 3
-  #       window: 120s
-  #     replicas: 1
-  #     placement:
-  #       constraints:
-  #         - engine.labels.node.type==mysql
-  #   volumes:
-  #     - db_data:/var/lib/mysql
-  #     - /home/ubuntu/schemas:/docker-entrypoint-initdb.d
-  #   ports:
-  #     - "3306:3306"
-  #   environment:
-  #     - MYSQL_ROOT_PASSWORD=${IF_DB_ROOT_PASS}
-  #     - MYSQL_USER=ideafoundry
-  #     - MYSQL_DATABASE=ideafoundry
-  #     - MYSQL_PASSWORD=${IF_DB_PASSWORD}
+  mysql:
+    image: mysql:8.0.1
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      replicas: 1
+      placement:
+        constraints:
+          - engine.labels.node.type==mysql
+    volumes:
+      - db_data:/var/lib/mysql
+      - /home/ubuntu/schemas:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${IF_DB_ROOT_PASS}
+      - MYSQL_USER=ideafoundry
+      - MYSQL_DATABASE=ideafoundry
+      - MYSQL_PASSWORD=${IF_DB_PASSWORD}
   zookeeper:
     image: wurstmeister/zookeeper
     ports:
