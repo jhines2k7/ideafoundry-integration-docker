@@ -87,22 +87,6 @@ function create_person_worker_nodes {
     fi    
 }
 
-#create createorder worker nodes
-function create_order_worker_nodes {
-    local num_nodes=$1
-
-    bash ./create-node.sh createorder "node.type=createorder" 1gb $num_nodes
-
-    result=$?
-
-    echo "Result from running create_node.sh for createorder node: $result"
-
-    if [ $result -eq 1 ]        
-        then            
-            echo "There was an error creating a createorder node."                                
-    fi    
-}
-
 #create 1gb worker nodes
 function create_1gb_worker_nodes {
     local num_nodes=$1
@@ -217,11 +201,10 @@ function create_512mb_worker_nodes {
 create_manager_node
 init_swarm_manager
 copy_compose_file
-# create_person_worker_nodes 4
-# create_order_worker_nodes 4
-create_1gb_worker_nodes 1
-create_512mb_worker_nodes 1
-create_mysql_node
+# create_person_worker_nodes 5
+# create_1gb_worker_nodes 1
+# create_512mb_worker_nodes 1
+# create_mysql_node
 create_kafka_node
 
 bash ./remove-nodes-with-failed-docker-installations.sh
