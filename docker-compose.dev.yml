@@ -40,9 +40,10 @@ services:
         constraints:
           - engine.labels.node.type==createperson
     environment:
-      - IF_DB_PORT=${IF_DB_PORT}
-      - IF_DB_PASSWORD=${IF_DB_PASSWORD}
       - DB_HOST=${DB_HOST}
+      - IF_DB_PORT=${IF_DB_PORT}
+      - IF_DB_USERNAME=${IF_DB_USERNAME}
+      - IF_DB_PASSWORD=${IF_DB_PASSWORD}
       - KAFKA_HOST=${KAFKA_HOST}
       - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
   mockoccasionapi:
