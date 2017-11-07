@@ -92,12 +92,12 @@ function create_node {
             then
             docker-machine rm -f $machine-$ID  
 
-            return 2
+            exit 2
         else                                
             echo "$machine-$ID" >> $failed_installs_file
         fi
 
-        return 1        
+        exit 1        
     fi
     
     # if [ "$machine" = "mysql" ]
