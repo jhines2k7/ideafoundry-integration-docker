@@ -50,6 +50,7 @@ function set_manager_node_env_variables {
        "$mysql_host" \
        "$kafka_host" \
        "$zookeeper_host" \
+       "$INSTANCE_COUNT"
        "$OKHTTP_CLIENT_TIMEOUT_SECONDS" \
        "$AIRTABLE_APP_ID" \
        "$OCCASION_EXPORT_STARTING_PAGE_NUM" \
