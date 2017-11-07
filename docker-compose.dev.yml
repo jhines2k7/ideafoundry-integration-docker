@@ -40,6 +40,7 @@ services:
   #       constraints:
   #         - engine.labels.node.type==createperson
   #   environment:
+  #     - INSTANCE_COUNT=${INSTANCE_COUNT}
   #     - DB_HOST=${DB_HOST}
   #     - IF_DB_PORT=${IF_DB_PORT}
   #     - IF_DB_USERNAME=${IF_DB_USERNAME}
