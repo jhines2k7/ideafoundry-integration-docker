@@ -123,6 +123,7 @@ machine=$1
 label=$2
 size=$3
 num_workers=$4
+index=0
 
 if [ $num_workers -gt 1 ]
 then
@@ -130,7 +131,8 @@ then
 
     for i in $(eval echo "{1..$num_workers}")      
         do
-            create_node $machine $label $size                
+            create_node $machine $label $size $index
+	    ((index++))                
     done
 else
     echo "======> Creating $num_workers node"
