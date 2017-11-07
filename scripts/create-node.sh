@@ -88,11 +88,11 @@ function create_node {
 
     if [ $? -ne 0 ]
     then
-        if [ $machine = "manager" ]
+        if [ $machine = "manager" ] || [ $machine = "mysql" ] || [ $machine = "kafka" ]
             then
             docker-machine rm -f $machine-$ID  
 
-            exit 1                                                       
+            exit 2
         else                                
             echo "$machine-$ID" >> $failed_installs_file
         fi
@@ -134,9 +134,9 @@ then
         do
             create_node $machine $label $size $index
 
-            if [ $? -ne 0 ]
+            if [ $? -eq 2 ]
             then
-                echo "=====> There was an error creating $machine node"
+                exit 1
             fi
 
             ((index++))                
