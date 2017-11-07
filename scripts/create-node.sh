@@ -39,6 +39,7 @@ function create_node {
     local machine=$1
     local label=$2
     local size=$3
+    local idx=$4
     local ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
     local instance_type="t2.micro"
     
@@ -132,7 +133,7 @@ then
     for i in $(eval echo "{1..$num_workers}")      
         do
             create_node $machine $label $size $index
-	    ((index++))                
+            ((index++))                
     done
 else
     echo "======> Creating $num_workers node"
