@@ -97,7 +97,7 @@ function create_node {
             echo "$machine-$ID" >> $failed_installs_file
         fi
 
-        continue        
+        exit 1        
     fi
     
     # if [ "$machine" = "mysql" ]
@@ -133,6 +133,12 @@ then
     for i in $(eval echo "{1..$num_workers}")      
         do
             create_node $machine $label $size $index
+
+            if [ $? -ne 0 ]
+            then
+                echo "=====> There was an error creating $machine node"
+            fi
+
             ((index++))                
     done
 else
