@@ -18,17 +18,15 @@ function create_manager_node {
 
     result=$?
 
-    echo "Result from running create_node.sh for manager node: $result"
-
     if [ $result -eq 1 ]
-        then
-            echo "There was an error installing docker on the manager node. The script will now exit."
-            
-            echo "=====> Cleaning up..."
+    then
+        echo "There was an error installing docker on the manager node. The script will now exit."
+        
+        echo "=====> Cleaning up..."
 
-            bash ./remove-nodes.sh
+        bash ./remove-nodes.sh
 
-            exit    
+        exit    
     fi
 }
 
@@ -76,15 +74,6 @@ function create_person_worker_nodes {
     local num_nodes=$1
 
     bash ./create-node.sh createperson "node.type=createperson" 1gb $num_nodes
-
-    result=$?
-
-    echo "Result from running create_node.sh for createperson node: $result"
-
-    if [ $result -eq 1 ]        
-        then            
-            echo "There was an error creating a createperson node."                                
-    fi    
 }
 
 #create 1gb worker nodes
@@ -94,15 +83,6 @@ function create_1gb_worker_nodes {
     echo "======> creating 1gb worker nodes"
     
     bash ./create-node.sh 1gb "node.type=1gb" 1gb $num_nodes
-
-    result=$?
-
-    echo "Result from running create_node.sh for 1gb node: $result"
-
-    if [ $result -eq 1 ]        
-        then            
-            echo "There was an error creating a 1gb node."                        
-    fi
 }
 
 #create kafka and mysql nodes
@@ -113,11 +93,15 @@ function create_kafka_node {
 
     result=$?
 
-    echo "Result from running create_node.sh for kafka node: $result"
+    if [ $result -eq 1 ]
+    then
+        echo "There was an error installing docker on the mysql node. The script will now exit."
+        
+        echo "=====> Cleaning up..."
 
-    if [ $result -eq 1 ]        
-        then            
-            echo "There was an error creating a kafka node."            
+        bash ./remove-nodes.sh
+
+        exit    
     fi
 }
  
@@ -128,11 +112,15 @@ function create_mysql_node {
 
     result=$?
 
-    echo "Result from running create_node.sh for mysql node: $result"
+    if [ $result -eq 1 ]
+    then
+        echo "There was an error installing docker on the mysql node. The script will now exit."
+        
+        echo "=====> Cleaning up..."
 
-    if [ $result -eq 1 ]        
-        then            
-            echo "There was an error creating a mysql node."            
+        bash ./remove-nodes.sh
+
+        exit    
     fi
 }
 
@@ -185,15 +173,6 @@ function create_512mb_worker_nodes {
     echo "======> creating 512mb worker nodes"
     
     bash ./create-node.sh 512mb "node.type=512mb" 512mb $num_nodes
-
-    result=$?
-
-    echo "Result from running create_node.sh for 512mb worker node: $result"
-
-    if [ $result -eq 1 ]        
-        then            
-            echo "There was an error creating a 512mb worker node."            
-    fi
 }
 
 > $failed_installs_file
