@@ -26,7 +26,7 @@ function create_manager_node {
 
         bash ./remove-nodes.sh
 
-        exit    
+        exit 1   
     fi
 }
 
@@ -95,13 +95,13 @@ function create_kafka_node {
 
     if [ $result -eq 1 ]
     then
-        echo "There was an error installing docker on the mysql node. The script will now exit."
+        echo "There was an error installing docker on the kafka node. The script will now exit."
         
         echo "=====> Cleaning up..."
 
         bash ./remove-nodes.sh
 
-        exit    
+        exit 1
     fi
 }
  
@@ -120,7 +120,7 @@ function create_mysql_node {
 
         bash ./remove-nodes.sh
 
-        exit    
+        exit 1   
     fi
 }
 
