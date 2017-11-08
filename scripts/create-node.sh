@@ -89,9 +89,7 @@ function create_node {
     if [ $? -ne 0 ]
     then
         if [ $machine = "manager" ] || [ $machine = "mysql" ] || [ $machine = "kafka" ]
-            then
-            docker-machine rm -f $machine-$ID  
-
+        then
             exit 2
         else                                
             echo "$machine-$ID" >> $failed_installs_file
