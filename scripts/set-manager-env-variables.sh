@@ -23,5 +23,4 @@ echo "=======> setting env variables for manager node"
     printf 'DOCKER_HUB_USER="%q"\n' "${18}"
     printf 'DOCKER_HUB_PASSWORD="%q"\n' "${19}"
     printf 'DIGITALOCEAN_ACCESS_TOKEN="%q"\n' "${20}"
-    printf 'INSTANCE_COUNT="%q"\n' "${21}"
 } | sudo tee -a /etc/environment > /dev/null
