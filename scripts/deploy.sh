@@ -49,8 +49,7 @@ function set_manager_node_env_variables {
        $(get_manager_machine_name)  \
        "$mysql_host" \
        "$kafka_host" \
-       "$zookeeper_host" \
-       "$INSTANCE_COUNT" \
+       "$zookeeper_host" \       
        "$OKHTTP_CLIENT_TIMEOUT_SECONDS" \
        "$AIRTABLE_APP_ID" \
        "$OCCASION_EXPORT_STARTING_PAGE_NUM" \
@@ -67,7 +66,8 @@ function set_manager_node_env_variables {
        "$GIT_PASSWORD" \
        "$DOCKER_HUB_USER" \
        "$DOCKER_HUB_PASSWORD" \
-       "$DIGITALOCEAN_ACCESS_TOKEN"
+       "$DIGITALOCEAN_ACCESS_TOKEN" \
+       "$INSTANCE_COUNT" \
 }
 
 #create createperson worker nodes
