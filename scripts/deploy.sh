@@ -49,7 +49,7 @@ function set_manager_node_env_variables {
        $(get_manager_machine_name)  \
        "$mysql_host" \
        "$kafka_host" \
-       "$zookeeper_host" \       
+       "$zookeeper_host" \
        "$OKHTTP_CLIENT_TIMEOUT_SECONDS" \
        "$AIRTABLE_APP_ID" \
        "$OCCASION_EXPORT_STARTING_PAGE_NUM" \
