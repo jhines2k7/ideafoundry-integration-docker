@@ -66,8 +66,7 @@ function set_manager_node_env_variables {
        "$GIT_PASSWORD" \
        "$DOCKER_HUB_USER" \
        "$DOCKER_HUB_PASSWORD" \
-       "$DIGITALOCEAN_ACCESS_TOKEN" \
-       "$INSTANCE_COUNT"
+       "$DIGITALOCEAN_ACCESS_TOKEN"
 }
 
 #create createperson worker nodes
