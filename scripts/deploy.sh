@@ -184,8 +184,8 @@ copy_compose_file
 create_kafka_node
 create_mysql_node
 # create_person_worker_nodes 5
-# create_1gb_worker_nodes 1
-# create_512mb_worker_nodes 1
+create_1gb_worker_nodes 1
+create_512mb_worker_nodes 1
 
 bash ./remove-nodes-with-failed-docker-installations.sh
 
