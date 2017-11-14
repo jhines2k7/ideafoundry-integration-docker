@@ -35,7 +35,7 @@ services:
         delay: 5s
         max_attempts: 3
         window: 120s
-      replicas: ${INSTANCE_COUNT}
+      replicas: 10
       placement:
         constraints:
           - engine.labels.node.type==createperson
