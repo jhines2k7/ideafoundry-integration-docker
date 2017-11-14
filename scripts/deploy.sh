@@ -18,7 +18,7 @@ function create_manager_node {
 
     result=$?
 
-    if [ $result -eq 0 ]
+    if [ $result -ne 0 ]
     then
         echo "There was an error installing docker on the manager node. The script will now exit."
         
@@ -94,7 +94,7 @@ function create_kafka_node {
 
     result=$?
 
-    if [ $result -eq 0 ]
+    if [ $result -ne 0 ]
     then
         echo "There was an error installing docker on the kafka node. The script will now exit."
         
@@ -113,7 +113,7 @@ function create_mysql_node {
 
     result=$?
 
-    if [ $result -eq 0 ]
+    if [ $result -ne 0 ]
     then
         echo "There was an error installing docker on the mysql node. The script will now exit."
         
