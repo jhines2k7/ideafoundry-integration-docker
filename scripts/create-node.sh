@@ -96,7 +96,7 @@ function create_node {
             echo "$machine-$ID" >> $failed_installs_file
         fi
 
-        exit 1        
+        return 1        
     fi
     
     if [ "$machine" = "mysql" ]
