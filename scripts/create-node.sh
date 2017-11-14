@@ -124,11 +124,6 @@ then
         do
             create_node $machine $index
 
-            if [ $? -eq 2 ]
-            then
-                exit 1
-            fi
-
             ((index++))                
     done
 else
