@@ -113,7 +113,7 @@ function create_node {
        then
            echo "======> Setting scaling variables for $machine-$ID"
     
-           bash ./set_scaling_env_variables.sh $machine-$ID $num_workers $idx
+           bash ./set-scaling-env-variables.sh $machine-$ID $num_workers $idx
        fi
     fi
 }
