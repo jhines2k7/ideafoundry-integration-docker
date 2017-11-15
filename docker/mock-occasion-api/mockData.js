@@ -121,7 +121,7 @@ function generateCustomer(id) {
     }
 }
 
-function generateOrder(customer) {    
+function generateOrder(customer, id) {    
     let verificationCode = randomString(6, '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ');
 
     let orderId = randomString(8, '0123456789abcdefghijklmnopqrstuvwxyz');
@@ -136,7 +136,8 @@ function generateOrder(customer) {
         id: orderId, 
         type: 'orders',
         attributes: {
-            'record_id': Math.floor(Math.random() * 899999) + 100000,
+            // 'record_id': Math.floor(Math.random() * 899999) + 100000,
+            'record_id': id,
             'coupon_amount': null,
             'created_at': date,
             'description': faker.commerce.productName(),
@@ -209,10 +210,10 @@ module.exports = () => {
         customers.push(generateCustomer(i));
     }
     
-    for (let i = 0; i < 6000; i++) {
+    for (let i = 1; i <= 6000; i++) {
         let customer = customers[Math.floor(Math.random() * 4000)];
 
-        let order = generateOrder(customer);
+        let order = generateOrder(customer, id);
 
         let numAttributeVals = Math.floor(Math.random() * 5) + 1;
 
