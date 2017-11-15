@@ -62,7 +62,7 @@ function generateAttributeValue() {
     }
 }
 
-function generateCustomer() {
+function generateCustomer(id) {
     let customerId = randomString(8, '0123456789abcdefghijklmnopqrstuvwxyz');
 
     let date = randomDate(new Date(2014, 0, 1), new Date());
@@ -71,7 +71,8 @@ function generateCustomer() {
         'id': customerId,
         'type': 'customers',
         'attributes': {
-            'record_id': Math.floor(Math.random() * 89999) + 10000,
+            // 'record_id': Math.floor(Math.random() * 89999) + 10000,
+            'record_id': id,
             'address': faker.address.streetAddress(),
             'city': faker.address.city(),
             'created_at': date,
@@ -205,7 +206,7 @@ module.exports = () => {
     }
 
     for(let i = 0; i < 4000; i++) {
-        customers.push(generateCustomer());
+        customers.push(generateCustomer(i));
     }
     
     for (let i = 0; i < 6000; i++) {
