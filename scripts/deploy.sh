@@ -152,7 +152,9 @@ function deploy_stack {
         sudo docker stack deploy \
         --compose-file /home/ubuntu/$docker_file \
         --with-registry-auth \
-        integration       
+        integration
+
+    scale_createperson_nodes       
 }
 
 function copy_compose_file {
@@ -174,6 +176,12 @@ function create_512mb_worker_nodes {
     echo "======> creating 512mb worker nodes"
     
     bash ./create-node.sh 512mb $num_nodes
+}
+
+function scale_createperson_nodes {
+    local manager_machine=$(get_manager_machine_name)
+    
+    docker-machine ssh $manager_machine sudo docker service scale integration_personsink=$INSTANCE_COUNT 
 }
 
 > $failed_installs_file
