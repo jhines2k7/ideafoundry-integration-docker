@@ -48,7 +48,7 @@ services:
       - KAFKA_HOST=${KAFKA_HOST}
       - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
   mockoccasionapi:
-    image: ideafoundry/mock-occasion-api:2.2.0
+    image: ideafoundry/mock-occasion-api:2.2.1
     depends_on: 
       - kafka
     deploy:

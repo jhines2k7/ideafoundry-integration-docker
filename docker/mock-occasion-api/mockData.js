@@ -213,7 +213,7 @@ module.exports = () => {
     for (let i = 1; i <= 6000; i++) {
         let customer = customers[Math.floor(Math.random() * 4000)];
 
-        let order = generateOrder(customer, id);
+        let order = generateOrder(customer, i);
 
         let numAttributeVals = Math.floor(Math.random() * 5) + 1;
 
