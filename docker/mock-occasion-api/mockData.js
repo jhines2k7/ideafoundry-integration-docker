@@ -200,16 +200,16 @@ module.exports = () => {
         ordersWithIncludes: []                    
     };
 
-    for(let i = 0; i < 25; i++) {
+    for(let i = 0; i < 75; i++) {
         attributes.push(generateAttributeValue());
     }
 
-    for(let i = 0; i < 1800; i++) {
+    for(let i = 0; i < 4000; i++) {
         customers.push(generateCustomer());
     }
     
-    for (let i = 0; i < 2302; i++) {
-        let customer = customers[Math.floor(Math.random() * 1800)];
+    for (let i = 0; i < 6000; i++) {
+        let customer = customers[Math.floor(Math.random() * 4000)];
 
         let order = generateOrder(customer);
 
@@ -227,7 +227,7 @@ module.exports = () => {
         orderWithIncludes.included.push(customer);
 
         for(let j = 0; j < numAttributeVals; j++) {
-           orderWithIncludes.included.push(attributes[Math.floor(Math.random() * 25)]);            
+           orderWithIncludes.included.push(attributes[Math.floor(Math.random() * 75)]);            
         }
         
         orderWithIncludes.included.push(generateOccurence());
