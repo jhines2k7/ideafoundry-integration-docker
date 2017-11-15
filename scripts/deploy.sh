@@ -154,7 +154,7 @@ function deploy_stack {
         --with-registry-auth \
         integration
 
-    scale_createperson_nodes       
+    # scale_createperson_nodes       
 }
 
 function copy_compose_file {
