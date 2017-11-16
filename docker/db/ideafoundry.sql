@@ -18,7 +18,7 @@ CREATE TABLE person(
 
 CREATE TABLE occasion_order(
     id int(11) not null primary key,
-    person_id varchar(255),
+    person_id int(11),
     gift_card_amount double,
     coupon_amount double,
     outstanding_balance double,
