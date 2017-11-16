@@ -71,46 +71,46 @@ create table question_answer(
     question_id int(11),
     answer_id int(11),
     CONSTRAINT question_answer_pk PRIMARY KEY (question_id, answer_id),
-    CONSTRAINT fk_answer FOREIGN KEY (answer_id) REFERENCES answer (id),
-    CONSTRAINT fk_question FOREIGN KEY (question_id) REFERENCES question (id)
+    CONSTRAINT fk_question_answer_answer FOREIGN KEY (answer_id) REFERENCES answer (id),
+    CONSTRAINT fk_question_answer_question FOREIGN KEY (question_id) REFERENCES question (id)
 )ENGINE=InnoDB;
 
 create table order_question(
     order_id int(11),
     question_id int(11),
     CONSTRAINT order_question_pk PRIMARY KEY (order_id, question_id),
-    CONSTRAINT fk_order FOREIGN KEY (order_id) REFERENCES occasion_order (id),
-    CONSTRAINT fk_question FOREIGN KEY (question_id) REFERENCES question (id)
+    CONSTRAINT fk_order_question_order FOREIGN KEY (order_id) REFERENCES occasion_order (id),
+    CONSTRAINT fk_order_question_question FOREIGN KEY (question_id) REFERENCES question (id)
 )ENGINE=InnoDB;
 
 create table order_answer(
     order_id int(11),
     answer_id int(11),
     CONSTRAINT order_answer_pk PRIMARY KEY (order_id, answer_id),
-    CONSTRAINT fk_order FOREIGN KEY (order_id) REFERENCES occasion_order (id),
-    CONSTRAINT fk_answer FOREIGN KEY (answer_id) REFERENCES answer (id)
+    CONSTRAINT fk_order_answer_order FOREIGN KEY (order_id) REFERENCES occasion_order (id),
+    CONSTRAINT fk_order_answer_answer FOREIGN KEY (answer_id) REFERENCES answer (id)
 )ENGINE=InnoDB;
 
 create table person_question(
     person_id int(11),
     question_id int(11),
     CONSTRAINT person_question_pk PRIMARY KEY (person_id, question_id),
-    CONSTRAINT fk_person FOREIGN KEY (person_id) REFERENCES person (id),
-    CONSTRAINT fk_question FOREIGN KEY (question_id) REFERENCES question (id)
+    CONSTRAINT fk_person_question_person FOREIGN KEY (person_id) REFERENCES person (id),
+    CONSTRAINT fk_person_question_question FOREIGN KEY (question_id) REFERENCES question (id)
 )ENGINE=InnoDB;
 
 create table person_answer(
     person_id int(11),
     answer_id int(11),
     CONSTRAINT person_answer_pk PRIMARY KEY (person_id, answer_id),
-    CONSTRAINT fk_person FOREIGN KEY (person_id) REFERENCES person (id),
-    CONSTRAINT fk_answer FOREIGN KEY (answer_id) REFERENCES answer (id)
+    CONSTRAINT fk_person_answer_person FOREIGN KEY (person_id) REFERENCES person (id),
+    CONSTRAINT fk_person_answer_answer FOREIGN KEY (answer_id) REFERENCES answer (id)
 )ENGINE=InnoDB;
 
 create table person_occurrence(
     person_id int(11),
     occurrence_id int(11),
     CONSTRAINT person_occurrence_pk PRIMARY KEY (person_id, occurrence_id),
-    CONSTRAINT fk_person FOREIGN KEY (person_id) REFERENCES person (id),
-    CONSTRAINT fk_occurrence FOREIGN KEY (occurrence_id) REFERENCES occurrence (id)
+    CONSTRAINT fk_person_occurrence_person FOREIGN KEY (person_id) REFERENCES person (id),
+    CONSTRAINT fk_person_occurrence_occurrence FOREIGN KEY (occurrence_id) REFERENCES occurrence (id)
 )ENGINE=InnoDB;
