@@ -4,6 +4,7 @@ USE ideafoundry;
  
 CREATE TABLE person(
     id int(11) not null primary key,
+    occasion_id varchar(255),
     email varchar(255),
     address varchar(255),
     zip varchar(255),
@@ -18,6 +19,7 @@ CREATE TABLE person(
 
 CREATE TABLE occasion_order(
     id int(11) not null primary key,
+    occasion_id varchar(255),
     person_id int(11),
     gift_card_amount double,
     coupon_amount double,
@@ -41,6 +43,7 @@ CREATE TABLE occasion_order(
 
 CREATE TABLE question(
     id int(11) not null primary key,
+    occasion_id varchar(255),
     question longtext,
     created_at varchar(255),
     updated_at varchar(255)
@@ -48,6 +51,7 @@ CREATE TABLE question(
 
 CREATE TABLE answer(
     id int(11) not null primary key,
+    occasion_id varchar(255),
     answer longtext,
     created_at varchar(255),
     updated_at varchar(255)
@@ -55,6 +59,7 @@ CREATE TABLE answer(
 
 CREATE TABLE occurrence(
     id int(11) not null primary key,
+    occasion_id varchar(255),
     order_id int(11),
     closes_at varchar(255),
     created_at varchar(255),
