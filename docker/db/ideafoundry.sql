@@ -114,3 +114,19 @@ create table person_occurrence(
     CONSTRAINT fk_person_occurrence_person FOREIGN KEY (person_id) REFERENCES person (id),
     CONSTRAINT fk_person_occurrence_occurrence FOREIGN KEY (occurrence_id) REFERENCES occurrence (id)
 )ENGINE=InnoDB;
+
+create table occurrence_question(
+    occurrence_id int(11),
+    question_id int(11),
+    CONSTRAINT occurrence_question_pk PRIMARY KEY (occurrence_id, question_id),
+    CONSTRAINT fk_occurrence_question_occurrence FOREIGN KEY (occurrence_id) REFERENCES occurrence (id),
+    CONSTRAINT fk_occurrence_question_question FOREIGN KEY (question_id) REFERENCES question (id)
+)ENGINE=InnoDB;
+
+create table occurrence_answer(
+    occurrence_id int(11),
+    answer_id int(11),
+    CONSTRAINT occurrence_answer_pk PRIMARY KEY (occurrence_id, answer_id),
+    CONSTRAINT fk_occurrence_answer_occurrence FOREIGN KEY (occurrence_id) REFERENCES occurrence (id),
+    CONSTRAINT fk_occurrence_answer_answer FOREIGN KEY (answer_id) REFERENCES answer (id)
+)ENGINE=InnoDB;
