@@ -61,6 +61,7 @@ CREATE TABLE occurrence(
     id int(11) not null primary key,
     occasion_id varchar(255),
     order_id int(11),
+    duration int(11),
     closes_at varchar(255),
     created_at varchar(255),
     ends_at varchar(255),
