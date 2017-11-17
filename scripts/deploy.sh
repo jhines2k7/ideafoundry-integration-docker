@@ -179,6 +179,8 @@ function create_512mb_worker_nodes {
 }
 
 function scale_createperson_nodes {
+    echo "======> scaling createperson nodes to $INSTANCE_COUNT"
+
     local manager_machine=$(get_manager_machine_name)
     
     docker-machine ssh $manager_machine sudo docker service scale integration_personsink=$INSTANCE_COUNT 
