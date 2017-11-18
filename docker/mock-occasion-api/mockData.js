@@ -40,6 +40,18 @@ function generateOccurence() {
     }
 }
 
+function generateAttributeAnswers() {
+    "use strict";
+
+    let answers = [];
+
+    for(let i = 0; i < 200; i++) {
+        answers.push(faker.hacker.phrase());
+    }
+
+    return answers;
+}
+
 function generateAttributeValue() {
     let date = randomDate(new Date(2014, 0, 1), new Date());
     let attributeId = randomString(8, '0123456789abcdefghijklmnopqrstuvwxyz');
@@ -52,7 +64,7 @@ function generateAttributeValue() {
             "attribute_title": faker.hacker.phrase(),
             "created_at": date,
             "updated_at": date,
-            "value": faker.hacker.phrase()
+            "value": ""
         },
         "relationships": {
             "attr": {},
@@ -202,7 +214,9 @@ module.exports = () => {
         ordersWithIncludes: []                    
     };
 
-    for(let i = 0; i < 75; i++) {
+    let answers = generateAttributeAnswers();
+
+    for(let i = 0; i < 50; i++) {
         attributes.push(generateAttributeValue());
     }
 
@@ -228,8 +242,12 @@ module.exports = () => {
         orderWithIncludes.data.push(order);
         orderWithIncludes.included.push(customer);
 
+        let attribute = attributes[Math.floor(Math.random() * 50)];
+
+        attribute.attributes.value = answers[Math.floor(Math.random() * 200)];
+
         for(let j = 0; j < numAttributeVals; j++) {
-           orderWithIncludes.included.push(attributes[Math.floor(Math.random() * 75)]);            
+           orderWithIncludes.included.push(attribute);
         }
         
         orderWithIncludes.included.push(generateOccurence());
