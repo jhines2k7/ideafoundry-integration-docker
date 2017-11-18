@@ -2,4 +2,3 @@ docker/**/*.jar
 scripts/failed_installs.txt
 docker/mock-occasion-api/node_modules
 .idea
-.idea/workspace.xml
