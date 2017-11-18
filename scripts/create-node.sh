@@ -37,9 +37,7 @@ function copy_sql_schema {
 
 function create_node {
     local machine=$1
-    local label=$2
-    local size=$3
-    local idx=$4
+    local idx=$2
     local ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
     local instance_type="t2.micro"
     
@@ -49,9 +47,12 @@ function create_node {
     # t2.micro=1
     # t2.small=2
 
-    case "$size" in
+    case "$machine" in
 
-    2gb) instance_type="t2.small"
+    mysql) instance_type="t2.small"
+        ;;
+
+    kafka) instance_type="t2.small"
         ;;
 
     512mb) instance_type="t2.nano"
@@ -60,7 +61,7 @@ function create_node {
     esac
 
     docker-machine create \
-    --engine-label $label \
+    --engine-label "node.type=$machine" \
     --driver amazonec2 \
     --amazonec2-ami ami-36a8754c \
     --amazonec2-vpc-id vpc-cef83fa9 \
@@ -95,7 +96,7 @@ function create_node {
             echo "$machine-$ID" >> $failed_installs_file
         fi
 
-        exit 1        
+        return 1        
     fi
     
     if [ "$machine" = "mysql" ]
@@ -107,21 +108,12 @@ function create_node {
     
     if [ "$machine" != "manager" ]
     then
-        join_swarm $machine-$ID
-        
-    #    if echo "$machine" | grep --quiet "create"
-    #    then
-    #        echo "======> Setting scaling variables for $machine-$ID"
-    #
-    #        bash ./set_scaling_env_variables.sh $machine-$ID $num_workers $idx
-    #    fi
+        join_swarm $machine-$ID       
     fi
 }
 
 machine=$1
-label=$2
-size=$3
-num_workers=$4
+num_workers=$2
 index=0
 
 if [ $num_workers -gt 1 ]
@@ -130,16 +122,11 @@ then
 
     for i in $(eval echo "{1..$num_workers}")      
         do
-            create_node $machine $label $size $index
-
-            if [ $? -eq 2 ]
-            then
-                exit 1
-            fi
+            create_node $machine $index
 
             ((index++))                
     done
 else
     echo "======> Creating $num_workers node"
-    create_node $machine $label $size
+    create_node $machine
 fi

@@ -40,18 +40,7 @@ function generateOccurence() {
     }
 }
 
-function generateAttributeAnswers() {
-    "use strict";
-    let answers = [];
-
-    for(let i = 0; i < 75; i++) {
-        answers.push(faker.hacker.phrase());
-    }
-
-    return answers;
-}
-
-function generateAttributeValue(answer) {
+function generateAttributeValue() {
     let date = randomDate(new Date(2014, 0, 1), new Date());
     let attributeId = randomString(8, '0123456789abcdefghijklmnopqrstuvwxyz');
 
@@ -63,7 +52,7 @@ function generateAttributeValue(answer) {
             "attribute_title": faker.hacker.phrase(),
             "created_at": date,
             "updated_at": date,
-            "value": answer
+            "value": faker.hacker.phrase()
         },
         "relationships": {
             "attr": {},
@@ -73,7 +62,7 @@ function generateAttributeValue(answer) {
     }
 }
 
-function generateCustomer() {
+function generateCustomer(id) {
     let customerId = randomString(8, '0123456789abcdefghijklmnopqrstuvwxyz');
 
     let date = randomDate(new Date(2014, 0, 1), new Date());
@@ -82,7 +71,8 @@ function generateCustomer() {
         'id': customerId,
         'type': 'customers',
         'attributes': {
-            'record_id': Math.floor(Math.random() * 89999) + 10000,
+            // 'record_id': Math.floor(Math.random() * 89999) + 10000,
+            'record_id': id,
             'address': faker.address.streetAddress(),
             'city': faker.address.city(),
             'created_at': date,
@@ -131,7 +121,7 @@ function generateCustomer() {
     }
 }
 
-function generateOrder(customer) {    
+function generateOrder(customer, id) {    
     let verificationCode = randomString(6, '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ');
 
     let orderId = randomString(8, '0123456789abcdefghijklmnopqrstuvwxyz');
@@ -146,7 +136,8 @@ function generateOrder(customer) {
         id: orderId, 
         type: 'orders',
         attributes: {
-            'record_id': Math.floor(Math.random() * 899999) + 100000,
+            // 'record_id': Math.floor(Math.random() * 899999) + 100000,
+            'record_id': id,
             'coupon_amount': null,
             'created_at': date,
             'description': faker.commerce.productName(),
@@ -211,23 +202,18 @@ module.exports = () => {
         ordersWithIncludes: []                    
     };
 
-    let answers = generateAttributeAnswers();
-
-    let answer = answers[Math.floor(Math.random)]
-
-    for(let i = 0; i < 25; i++) {
-
+    for(let i = 0; i < 75; i++) {
         attributes.push(generateAttributeValue());
     }
 
-    for(let i = 0; i < 1800; i++) {
-        customers.push(generateCustomer());
+    for(let i = 1; i <= 4000; i++) {
+        customers.push(generateCustomer(i));
     }
     
-    for (let i = 0; i < 2302; i++) {
-        let customer = customers[Math.floor(Math.random() * 1800)];
+    for (let i = 1; i <= 6000; i++) {
+        let customer = customers[Math.floor(Math.random() * 4000)];
 
-        let order = generateOrder(customer);
+        let order = generateOrder(customer, i);
 
         let numAttributeVals = Math.floor(Math.random() * 5) + 1;
 
@@ -243,7 +229,7 @@ module.exports = () => {
         orderWithIncludes.included.push(customer);
 
         for(let j = 0; j < numAttributeVals; j++) {
-           orderWithIncludes.included.push(attributes[Math.floor(Math.random() * 25)]);            
+           orderWithIncludes.included.push(attributes[Math.floor(Math.random() * 75)]);            
         }
         
         orderWithIncludes.included.push(generateOccurence());

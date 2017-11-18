@@ -14,11 +14,11 @@ function get_manager_machine_name {
 
 #create manager node
 function create_manager_node {    
-    bash ./create-node.sh manager "node.type=manager" 1gb 1
+    bash ./create-node.sh manager 1
 
     result=$?
 
-    if [ $result -eq 1 ]
+    if [ $result -ne 0 ]
     then
         echo "There was an error installing docker on the manager node. The script will now exit."
         
@@ -66,14 +66,15 @@ function set_manager_node_env_variables {
        "$GIT_PASSWORD" \
        "$DOCKER_HUB_USER" \
        "$DOCKER_HUB_PASSWORD" \
-       "$DIGITALOCEAN_ACCESS_TOKEN"
+       "$DIGITALOCEAN_ACCESS_TOKEN" \
+       "$INSTANCE_COUNT"
 }
 
 #create createperson worker nodes
 function create_person_worker_nodes {
     local num_nodes=$1
 
-    bash ./create-node.sh createperson "node.type=createperson" 1gb $num_nodes
+    bash ./create-node.sh createperson $num_nodes
 }
 
 #create 1gb worker nodes
@@ -82,18 +83,18 @@ function create_1gb_worker_nodes {
 
     echo "======> creating 1gb worker nodes"
     
-    bash ./create-node.sh 1gb "node.type=1gb" 1gb $num_nodes
+    bash ./create-node.sh 1gb $num_nodes
 }
 
 #create kafka and mysql nodes
 function create_kafka_node {
     echo "======> creating kafka worker node"
 
-    bash ./create-node.sh kafka "node.type=kafka" 2gb 1
+    bash ./create-node.sh kafka 1
 
     result=$?
 
-    if [ $result -eq 1 ]
+    if [ $result -ne 0 ]
     then
         echo "There was an error installing docker on the kafka node. The script will now exit."
         
@@ -108,11 +109,11 @@ function create_kafka_node {
 function create_mysql_node {
     echo "======> creating mysql worker node"
     
-    bash ./create-node.sh mysql "node.type=mysql" 2gb 1
+    bash ./create-node.sh mysql 1
 
     result=$?
 
-    if [ $result -eq 1 ]
+    if [ $result -ne 0 ]
     then
         echo "There was an error installing docker on the mysql node. The script will now exit."
         
@@ -151,7 +152,9 @@ function deploy_stack {
         sudo docker stack deploy \
         --compose-file /home/ubuntu/$docker_file \
         --with-registry-auth \
-        integration       
+        integration
+
+    scale_createperson_nodes       
 }
 
 function copy_compose_file {
@@ -172,7 +175,15 @@ function create_512mb_worker_nodes {
 
     echo "======> creating 512mb worker nodes"
     
-    bash ./create-node.sh 512mb "node.type=512mb" 512mb $num_nodes
+    bash ./create-node.sh 512mb $num_nodes
+}
+
+function scale_createperson_nodes {
+    echo "======> scaling createperson nodes to $INSTANCE_COUNT"
+
+    local manager_machine=$(get_manager_machine_name)
+    
+    docker-machine ssh $manager_machine sudo docker service scale integration_personsink=$INSTANCE_COUNT 
 }
 
 > $failed_installs_file
@@ -182,7 +193,7 @@ init_swarm_manager
 copy_compose_file
 create_kafka_node
 create_mysql_node
-# create_person_worker_nodes 5
+create_person_worker_nodes $INSTANCE_COUNT
 create_1gb_worker_nodes 1
 create_512mb_worker_nodes 1
 
