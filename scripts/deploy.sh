@@ -74,7 +74,7 @@ function set_manager_node_env_variables {
 function create_person_worker_nodes {
     local num_nodes=$1
 
-    bash ./create-node.sh createperson $num_nodes
+    bash ./create-node.sh createperson $num_nodes $env
 }
 
 #create 1gb worker nodes
@@ -83,14 +83,14 @@ function create_1gb_worker_nodes {
 
     echo "======> creating 1gb worker nodes"
     
-    bash ./create-node.sh 1gb $num_nodes
+    bash ./create-node.sh 1gb $num_nodes $env
 }
 
 #create kafka and mysql nodes
 function create_kafka_node {
     echo "======> creating kafka worker node"
 
-    bash ./create-node.sh kafka 1
+    bash ./create-node.sh kafka 1 $env
 
     result=$?
 
@@ -109,7 +109,7 @@ function create_kafka_node {
 function create_mysql_node {
     echo "======> creating mysql worker node"
     
-    bash ./create-node.sh mysql 1
+    bash ./create-node.sh mysql 1 env
 
     result=$?
 
@@ -173,7 +173,7 @@ function create_512mb_worker_nodes {
 
     echo "======> creating 512mb worker nodes"
     
-    bash ./create-node.sh 512mb $num_nodes
+    bash ./create-node.sh 512mb $num_nodes $env
 }
 
 function scale_createperson_nodes {
