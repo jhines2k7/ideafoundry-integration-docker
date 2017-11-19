@@ -6,10 +6,10 @@ padStart.shim();
 function generateOccurence() {
     let date = randomDate(new Date(2014, 0, 1), new Date());
     let occurrenceId = randomString(8, '0123456789abcdefghijklmnopqrstuvwxyz');
-    
+
     let durationTimes = [120, 60];
     let duration = durationTimes[Math.floor(Math.random() * 2)];
-    
+
     let year = Math.floor(Math.random() * 4) + 2014;
     let month = Math.floor(Math.random() * 12) + 1;
     let day = Math.floor(Math.random() * 28) + 1;
@@ -40,19 +40,31 @@ function generateOccurence() {
     }
 }
 
-function generateAttributeAnswers() {
+function generateAnswers() {
     "use strict";
 
     let answers = [];
 
-    for(let i = 0; i < 200; i++) {
+    for (let i = 0; i < 150; i++) {
         answers.push(faker.hacker.phrase());
     }
 
     return answers;
 }
 
-function generateAttributeValue() {
+function generateQuestions() {
+    "use strict";
+
+    let questions = [];
+
+    for (let i = 0; i < 50; i++) {
+        questions.push(faker.hacker.phrase());
+    }
+
+    return questions;
+}
+
+function generateAttributeValue(question, answer) {
     let date = randomDate(new Date(2014, 0, 1), new Date());
     let attributeId = randomString(8, '0123456789abcdefghijklmnopqrstuvwxyz');
 
@@ -61,10 +73,10 @@ function generateAttributeValue() {
         "type": "attribute_values",
         "attributes": {
             "record_id": Math.floor(Math.random() * 8999999) + 1000000,
-            "attribute_title": faker.hacker.phrase(),
+            "attribute_title": question,
             "created_at": date,
             "updated_at": date,
-            "value": ""
+            "value": answer
         },
         "relationships": {
             "attr": {},
@@ -79,7 +91,7 @@ function generateCustomer(id) {
 
     let date = randomDate(new Date(2014, 0, 1), new Date());
 
-    return {        
+    return {
         'id': customerId,
         'type': 'customers',
         'attributes': {
@@ -129,23 +141,23 @@ function generateCustomer(id) {
         },
         links: {
             self: `https://www.occsn.com/api/v1/customers/${customerId}`
-        }        
+        }
     }
 }
 
-function generateOrder(customer, id) {    
+function generateOrder(customer, id) {
     let verificationCode = randomString(6, '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ');
 
     let orderId = randomString(8, '0123456789abcdefghijklmnopqrstuvwxyz');
 
-    let sessionIdentifier = `${randomString(5, '0123456789abcdefghijklmnopqrstuvwxyz')}-${randomString(13, '0123456789')}` 
+    let sessionIdentifier = `${randomString(5, '0123456789abcdefghijklmnopqrstuvwxyz')}-${randomString(13, '0123456789')}`
 
     let date = randomDate(new Date(2014, 0, 1), new Date());
 
     let outstandingBalance = balance = total = subtotal = price = (Math.floor(Math.random() * 200) + 50).toFixed(1).toString();
 
-    return { 
-        id: orderId, 
+    return {
+        id: orderId,
         type: 'orders',
         attributes: {
             // 'record_id': Math.floor(Math.random() * 899999) + 100000,
@@ -154,7 +166,7 @@ function generateOrder(customer, id) {
             'created_at': date,
             'description': faker.commerce.productName(),
             'gift_card_amount': null,
-            'outstanding_balance': outstandingBalance,                
+            'outstanding_balance': outstandingBalance,
             'price': price,
             'quantity': 1,
             'status': 'booked',
@@ -195,9 +207,9 @@ function generateOrder(customer, id) {
 
 function randomString(length, chars) {
     var result = '';
-    
+
     for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
-    
+
     return result;
 }
 
@@ -211,19 +223,27 @@ module.exports = () => {
 
     const data = {
         orders: [],
-        ordersWithIncludes: []                    
+        ordersWithIncludes: []
     };
 
-    let answers = generateAttributeAnswers();
+    let answers = generateAnswers();
 
-    for(let i = 0; i < 50; i++) {
-        attributes.push(generateAttributeValue());
+    let questions = generateQuestions();
+
+    let totalPossibleQuestionsAndAnswers = answers.length * questions.length;
+
+    for (let i = 0; i < totalPossibleQuestionsAndAnswers; i++) {
+        let question = questions[Math.floor(Math.random() * questions.length)];
+
+        let answer = answers[Math.floor(Math.random() * answers.length)];
+
+        attributes.push(generateAttributeValue(question, answer));
     }
 
-    for(let i = 1; i <= 4000; i++) {
+    for (let i = 1; i <= 4000; i++) {
         customers.push(generateCustomer(i));
     }
-    
+
     for (let i = 1; i <= 6000; i++) {
         let customer = customers[Math.floor(Math.random() * 4000)];
 
@@ -234,26 +254,24 @@ module.exports = () => {
         data.orders.push(order);
 
         let orderWithIncludes = {
-                data: [],
-                included: [],
-                links: {}
-            };
+            data: [],
+            included: [],
+            links: {}
+        };
 
         orderWithIncludes.data.push(order);
         orderWithIncludes.included.push(customer);
 
-        let attribute = attributes[Math.floor(Math.random() * 50)];
+        for (let j = 0; j < numAttributeVals; j++) {
+            let attribute = attributes[Math.floor(Math.random() * totalPossibleQuestionsAndAnswers)];
 
-        attribute.attributes.value = answers[Math.floor(Math.random() * 200)];
-
-        for(let j = 0; j < numAttributeVals; j++) {
-           orderWithIncludes.included.push(attribute);
+            orderWithIncludes.included.push(attribute);
         }
-        
+
         orderWithIncludes.included.push(generateOccurence());
 
-        data.ordersWithIncludes.push(orderWithIncludes);        
+        data.ordersWithIncludes.push(orderWithIncludes);
     }
-    
+
     return data
-}
+};
