@@ -14,7 +14,7 @@ function get_manager_machine_name {
 
 #create manager node
 function create_manager_node {    
-    bash ./create-node.sh manager 1
+    bash ./create-node.sh manager 1 $env
 
     result=$?
 
@@ -153,8 +153,6 @@ function deploy_stack {
         --compose-file /home/ubuntu/$docker_file \
         --with-registry-auth \
         integration
-
-    scale_createperson_nodes       
 }
 
 function copy_compose_file {
@@ -193,9 +191,13 @@ init_swarm_manager
 copy_compose_file
 create_kafka_node
 create_mysql_node
-#create_person_worker_nodes $INSTANCE_COUNT
+create_person_worker_nodes $INSTANCE_COUNT
 create_1gb_worker_nodes 1
-create_512mb_worker_nodes 1
+
+if [ "$env" = "dev" ]
+then
+    create_512mb_worker_nodes 1
+fi
 
 bash ./remove-nodes-with-failed-docker-installations.sh
 
@@ -204,5 +206,7 @@ bash ./remove-nodes-with-failed-docker-installations.sh
 set_manager_node_env_variables
 
 deploy_stack
+
+scale_createperson_nodes
 
 docker-machine ls

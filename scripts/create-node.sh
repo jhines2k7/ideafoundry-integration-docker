@@ -40,6 +40,7 @@ function create_node {
     local idx=$2
     local ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
     local instance_type="t2.micro"
+    local size="1gb"
     
     echo "======> creating $machine-$ID"
 
@@ -49,10 +50,14 @@ function create_node {
 
     case "$machine" in
 
-    mysql) instance_type="t2.small"
+    mysql)
+        instance_type="t2.small"
+        size="2gb"
         ;;
 
-    kafka) instance_type="t2.small"
+    kafka)
+        instance_type="t2.small"
+        size="2gb"
         ;;
 
     512mb) instance_type="t2.nano"
@@ -60,24 +65,27 @@ function create_node {
     
     esac
 
-    docker-machine create \
-    --engine-label "node.type=$machine" \
-    --driver amazonec2 \
-    --amazonec2-ami ami-36a8754c \
-    --amazonec2-vpc-id vpc-cef83fa9 \
-    --amazonec2-subnet-id subnet-8d401ab0 \
-    --amazonec2-security-group ideafoundry-integration-dev \
-    --amazonec2-zone e \
-    --amazonec2-instance-type $instance_type \
-    $machine-$ID
-    
-    # docker-machine create \
-    # --engine-label $label \
-    # --driver digitalocean \
-    # --digitalocean-image ubuntu-17-04-x64 \
-    # --digitalocean-size $size \
-    # --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
-    # $machine-$ID
+    if [ $env = "dev" ]
+    then
+        docker-machine create \
+        --engine-label "node.type=$machine" \
+        --driver amazonec2 \
+        --amazonec2-ami ami-36a8754c \
+        --amazonec2-vpc-id vpc-cef83fa9 \
+        --amazonec2-subnet-id subnet-8d401ab0 \
+        --amazonec2-security-group ideafoundry-integration-dev \
+        --amazonec2-zone e \
+        --amazonec2-instance-type $instance_type \
+        $machine-$ID
+    else
+         docker-machine create \
+         --engine-label "node.type=$machine" \
+         --driver digitalocean \
+         --digitalocean-image ubuntu-17-04-x64 \
+         --digitalocean-size $size \
+         --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
+         $machine-$ID
+    fi
     
     if [ ! -e "$failed_installs_file" ] ; then
         touch "$failed_installs_file"
@@ -114,6 +122,7 @@ function create_node {
 
 machine=$1
 num_workers=$2
+env=$3
 index=0
 
 if [ $num_workers -gt 1 ]
@@ -122,7 +131,7 @@ then
 
     for i in $(eval echo "{1..$num_workers}")      
         do
-            create_node $machine $index
+            create_node $machine $index $env
 
             ((index++))                
     done
