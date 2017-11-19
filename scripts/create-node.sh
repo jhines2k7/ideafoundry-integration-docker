@@ -72,6 +72,8 @@ function create_node {
 
     if [ $env = "dev" ]
     then
+        echo "======> launching $instance_type AWS instance..."
+
         docker-machine create \
         --engine-label "node.type=$machine" \
         --driver amazonec2 \
@@ -83,6 +85,8 @@ function create_node {
         --amazonec2-instance-type $instance_type \
         $machine-$ID
     else
+        echo "======> launching $size Digital Ocean instance..."
+
          docker-machine create \
          --engine-label "node.type=$machine" \
          --driver digitalocean \
