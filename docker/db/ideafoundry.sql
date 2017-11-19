@@ -45,13 +45,6 @@ CREATE TABLE question(
     id int(11) not null primary key,
     occasion_id varchar(255),
     question longtext,
-    created_at varchar(255),
-    updated_at varchar(255)
-)ENGINE=InnoDB;
-
-CREATE TABLE answer(
-    id int(11) not null primary key,
-    occasion_id varchar(255),
     answer longtext,
     created_at varchar(255),
     updated_at varchar(255)
@@ -73,14 +66,6 @@ CREATE TABLE occurrence(
     FOREIGN KEY fk_order_id(order_id) REFERENCES occasion_order(id) ON UPDATE CASCADE ON DELETE RESTRICT
 )ENGINE=InnoDB;
 
-create table question_answer(
-    question_id int(11),
-    answer_id int(11),
-    CONSTRAINT question_answer_pk PRIMARY KEY (question_id, answer_id),
-    CONSTRAINT fk_question_answer_answer FOREIGN KEY (answer_id) REFERENCES answer (id),
-    CONSTRAINT fk_question_answer_question FOREIGN KEY (question_id) REFERENCES question (id)
-)ENGINE=InnoDB;
-
 create table order_question(
     order_id int(11),
     question_id int(11),
@@ -89,28 +74,12 @@ create table order_question(
     CONSTRAINT fk_order_question_question FOREIGN KEY (question_id) REFERENCES question (id)
 )ENGINE=InnoDB;
 
-create table order_answer(
-    order_id int(11),
-    answer_id int(11),
-    CONSTRAINT order_answer_pk PRIMARY KEY (order_id, answer_id),
-    CONSTRAINT fk_order_answer_order FOREIGN KEY (order_id) REFERENCES occasion_order (id),
-    CONSTRAINT fk_order_answer_answer FOREIGN KEY (answer_id) REFERENCES answer (id)
-)ENGINE=InnoDB;
-
 create table person_question(
     person_id int(11),
     question_id int(11),
     CONSTRAINT person_question_pk PRIMARY KEY (person_id, question_id),
     CONSTRAINT fk_person_question_person FOREIGN KEY (person_id) REFERENCES person (id),
     CONSTRAINT fk_person_question_question FOREIGN KEY (question_id) REFERENCES question (id)
-)ENGINE=InnoDB;
-
-create table person_answer(
-    person_id int(11),
-    answer_id int(11),
-    CONSTRAINT person_answer_pk PRIMARY KEY (person_id, answer_id),
-    CONSTRAINT fk_person_answer_person FOREIGN KEY (person_id) REFERENCES person (id),
-    CONSTRAINT fk_person_answer_answer FOREIGN KEY (answer_id) REFERENCES answer (id)
 )ENGINE=InnoDB;
 
 create table person_occurrence(
@@ -127,12 +96,4 @@ create table occurrence_question(
     CONSTRAINT occurrence_question_pk PRIMARY KEY (occurrence_id, question_id),
     CONSTRAINT fk_occurrence_question_occurrence FOREIGN KEY (occurrence_id) REFERENCES occurrence (id),
     CONSTRAINT fk_occurrence_question_question FOREIGN KEY (question_id) REFERENCES question (id)
-)ENGINE=InnoDB;
-
-create table occurrence_answer(
-    occurrence_id int(11),
-    answer_id int(11),
-    CONSTRAINT occurrence_answer_pk PRIMARY KEY (occurrence_id, answer_id),
-    CONSTRAINT fk_occurrence_answer_occurrence FOREIGN KEY (occurrence_id) REFERENCES occurrence (id),
-    CONSTRAINT fk_occurrence_answer_answer FOREIGN KEY (answer_id) REFERENCES answer (id)
 )ENGINE=InnoDB;
