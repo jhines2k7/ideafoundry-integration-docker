@@ -31,6 +31,11 @@ function copy_sql_schema {
     local mysql_machine=$(docker-machine ls --format "{{.Name}}" | grep 'mysql')
     
     docker-machine ssh $mysql_machine mkdir /home/ubuntu/schemas
+
+    if [ $? -ne 0 ]
+    then
+        exit 1
+    fi
     
     docker-machine scp ../docker/db/ideafoundry.sql $mysql_machine:/home/ubuntu/schemas
 }
@@ -110,6 +115,11 @@ function create_node {
     if [ "$machine" = "mysql" ]
     then
         copy_sql_schema
+
+        if [ $? -ne 0 ]
+        then
+            exit 2
+        fi
     fi
  
     bash ./set-ufw-rules.sh $machine-$ID
