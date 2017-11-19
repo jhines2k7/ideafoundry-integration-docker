@@ -45,7 +45,7 @@ function generateAnswers() {
 
     let answers = [];
 
-    for (let i = 0; i < 150; i++) {
+    for (let i = 0; i < 100; i++) {
         answers.push(faker.hacker.phrase());
     }
 
@@ -57,7 +57,7 @@ function generateQuestions() {
 
     let questions = [];
 
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 30; i++) {
         questions.push(faker.hacker.phrase());
     }
 
