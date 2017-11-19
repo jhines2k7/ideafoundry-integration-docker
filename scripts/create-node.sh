@@ -42,7 +42,7 @@ function copy_sql_schema {
 
 function create_node {
     local machine=$1
-    local idx=$2
+    local env=$2
     local ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
     local instance_type="t2.micro"
     local size="1gb"
@@ -141,11 +141,11 @@ then
 
     for i in $(eval echo "{1..$num_workers}")      
         do
-            create_node $machine $index $env
+            create_node $machine $env
 
             ((index++))                
     done
 else
     echo "======> Creating $num_workers node"
-    create_node $machine
+    create_node $machine $env
 fi
