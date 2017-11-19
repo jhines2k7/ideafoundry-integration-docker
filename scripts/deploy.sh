@@ -2,7 +2,7 @@
 
 failed_installs_file="./failed_installs.txt"
 
-env=$1
+ENV=$1
 
 function get_ip {
     echo $(docker-machine ip $1)
@@ -13,8 +13,8 @@ function get_manager_machine_name {
 }
 
 #create manager node
-function create_manager_node {    
-    bash ./create-node.sh manager 1 $env
+function create_manager_node {
+    bash ./create-node.sh manager 1 $ENV
 
     result=$?
 
@@ -35,7 +35,7 @@ function set_manager_node_env_variables {
     zookeeper_host="zookeeper"
     mysql_host="mysql"
 
-    if [ "$env" = "dev" ]
+    if [ "$ENV" = "dev" ]
     then
         kafka_machine_ip=$(get_ip $(docker-machine ls --format "{{.Name}}" | grep 'kafka'))
         mysql_host=$(get_ip $(docker-machine ls --format "{{.Name}}" | grep 'mysql'))
@@ -45,7 +45,7 @@ function set_manager_node_env_variables {
     fi
 
     ./runremote.sh \
-       ./set-manager-env-variables.sh \
+       ./set-manager-ENV-variables.sh \
        $(get_manager_machine_name)  \
        "$mysql_host" \
        "$kafka_host" \
@@ -74,7 +74,7 @@ function set_manager_node_env_variables {
 function create_person_worker_nodes {
     local num_nodes=$1
 
-    bash ./create-node.sh createperson $num_nodes $env
+    bash ./create-node.sh createperson $num_nodes $ENV
 }
 
 #create 1gb worker nodes
@@ -83,14 +83,14 @@ function create_1gb_worker_nodes {
 
     echo "======> creating 1gb worker nodes"
     
-    bash ./create-node.sh 1gb $num_nodes $env
+    bash ./create-node.sh 1gb $num_nodes $ENV
 }
 
 #create kafka and mysql nodes
 function create_kafka_node {
     echo "======> creating kafka worker node"
 
-    bash ./create-node.sh kafka 1 $env
+    bash ./create-node.sh kafka 1 $ENV
 
     result=$?
 
@@ -109,7 +109,7 @@ function create_kafka_node {
 function create_mysql_node {
     echo "======> creating mysql worker node"
     
-    bash ./create-node.sh mysql 1 env
+    bash ./create-node.sh mysql 1 $ENV
 
     result=$?
 
@@ -141,7 +141,7 @@ function deploy_stack {
 
     local docker_file="docker-compose.yml"
 
-    if [ "$env" = "dev" ]
+    if [ "$ENV" = "dev" ]
     then
         docker_file="docker-compose.dev.yml"
     fi
@@ -158,7 +158,7 @@ function deploy_stack {
 function copy_compose_file {
     docker_file="../docker-compose.yml"
 
-    if [ "$env" = "dev" ]
+    if [ "$ENV" = "dev" ]
     then
         docker_file="../docker-compose.dev.yml"
     fi
@@ -173,7 +173,7 @@ function create_512mb_worker_nodes {
 
     echo "======> creating 512mb worker nodes"
     
-    bash ./create-node.sh 512mb $num_nodes $env
+    bash ./create-node.sh 512mb $num_nodes $ENV
 }
 
 function scale_createperson_nodes {
@@ -194,7 +194,7 @@ create_mysql_node
 create_person_worker_nodes $INSTANCE_COUNT
 create_1gb_worker_nodes 1
 
-if [ "$env" = "dev" ]
+if [ "$ENV" = "dev" ]
 then
     create_512mb_worker_nodes 1
 fi

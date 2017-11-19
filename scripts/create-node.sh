@@ -132,7 +132,7 @@ function create_node {
 
 machine=$1
 num_workers=$2
-env=$3
+ENV=$3
 index=0
 
 if [ $num_workers -gt 1 ]
@@ -141,11 +141,11 @@ then
 
     for i in $(eval echo "{1..$num_workers}")      
         do
-            create_node $machine $env
+            create_node $machine $ENV
 
             ((index++))                
     done
 else
     echo "======> Creating $num_workers node"
-    create_node $machine $env
+    create_node $machine $ENV
 fi
