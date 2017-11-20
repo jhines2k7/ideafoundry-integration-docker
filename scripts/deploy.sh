@@ -43,6 +43,7 @@ function set_manager_node_env_variables {
         # kafka_host=$kafka_machine_ip
         # zookeeper_host=$kafka_machine_ip
 
+        mysql_host="mysql"
         kafka_host="kafka"
         zookeeper_host="zookeeper"
     fi
@@ -218,4 +219,4 @@ set_manager_node_env_variables
 
 # scale_createperson_nodes
 
-docker-machine ls
+# docker-machine ls
