@@ -45,7 +45,7 @@ function set_manager_node_env_variables {
     fi
 
     ./runremote.sh \
-       ./set-manager-ENV-variables.sh \
+       ./set-manager-env-variables.sh \
        $(get_manager_machine_name)  \
        "$mysql_host" \
        "$kafka_host" \
