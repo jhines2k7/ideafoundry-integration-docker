@@ -140,32 +140,36 @@ function deploy_stack {
     local manager_machine=$(get_manager_machine_name)
 
     local docker_file="docker-compose.yml"
+    local directory=/home
 
     if [ "$ENV" = "dev" ]
     then
         docker_file="docker-compose.dev.yml"
+        directory=/home/ubuntu
     fi
         
     docker-machine ssh $manager_machine sudo docker login --username=$DOCKER_HUB_USER --password=$DOCKER_HUB_PASSWORD
     
     docker-machine ssh $manager_machine \
         sudo docker stack deploy \
-        --compose-file /home/ubuntu/$docker_file \
+        --compose-file $directory/$docker_file \
         --with-registry-auth \
         integration
 }
 
 function copy_compose_file {
-    docker_file="../docker-compose.yml"
+    local docker_file="../docker-compose.yml"
+    local directory=/home
 
     if [ "$ENV" = "dev" ]
     then
         docker_file="../docker-compose.dev.yml"
+        directory=/home/ubuntu
     fi
 
     echo "======> copying compose file to manager node ..."
     
-    docker-machine scp $docker_file $(get_manager_machine_name):/home/ubuntu
+    docker-machine scp $docker_file $(get_manager_machine_name):$directory
 }
 
 function create_512mb_worker_nodes {
@@ -186,7 +190,7 @@ function scale_createperson_nodes {
 
 > $failed_installs_file
 
-bash ./remove_all_nodes.sh
+bash ./remove-all-nodes.sh
 
 create_manager_node
 init_swarm_manager
