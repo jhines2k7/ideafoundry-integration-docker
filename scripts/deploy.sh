@@ -40,8 +40,11 @@ function set_manager_node_env_variables {
         kafka_machine_ip=$(get_ip $(docker-machine ls --format "{{.Name}}" | grep 'kafka'))
         mysql_host=$(get_ip $(docker-machine ls --format "{{.Name}}" | grep 'mysql'))
 
-        kafka_host=$kafka_machine_ip
-        zookeeper_host=$kafka_machine_ip
+        # kafka_host=$kafka_machine_ip
+        # zookeeper_host=$kafka_machine_ip
+
+        kafka_host="kafka"
+        zookeeper_host="zookeeper"
     fi
 
     ./runremote.sh \
