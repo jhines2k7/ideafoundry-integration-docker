@@ -29,15 +29,21 @@ function copy_sql_schema {
     echo "======> copying sql schema file to mysql node ..."
 
     local mysql_machine=$(docker-machine ls --format "{{.Name}}" | grep 'mysql')
-    
-    docker-machine ssh $mysql_machine mkdir /home/ubuntu/schemas
+    local sql_directory=/schemas
+
+    if [ $env = "dev" ]
+    then
+        sql_directory=/home/ubuntu/schemas
+    fi
+
+    docker-machine ssh $mysql_machine mkdir $sql_directory
 
     if [ $? -ne 0 ]
     then
         exit 1
     fi
     
-    docker-machine scp ../docker/db/ideafoundry.sql $mysql_machine:/home/ubuntu/schemas
+    docker-machine scp ../docker/db/ideafoundry.sql $mysql_machine:$sql_directory
 }
 
 function create_node {
