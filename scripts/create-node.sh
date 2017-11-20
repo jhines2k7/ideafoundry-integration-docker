@@ -31,7 +31,7 @@ function copy_sql_schema {
     local mysql_machine=$(docker-machine ls --format "{{.Name}}" | grep 'mysql')
     local sql_directory=/schemas
 
-    if [ $env = "dev" ]
+    if [ "$env" = "dev" ]
     then
         sql_directory=/home/ubuntu/schemas
     fi
@@ -76,7 +76,7 @@ function create_node {
     
     esac
 
-    if [ $env = "dev" ]
+    if [ "$env" = "dev" ]
     then
         echo "======> launching $instance_type AWS instance..."
 
