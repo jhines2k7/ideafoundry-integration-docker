@@ -24,7 +24,7 @@ function create_manager_node {
         
         echo "=====> Cleaning up..."
 
-        bash ./remove-nodes.sh
+        bash ./remove_all_nodes.sh
 
         exit 1   
     fi
@@ -100,7 +100,7 @@ function create_kafka_node {
         
         echo "=====> Cleaning up..."
 
-        bash ./remove-nodes.sh
+        bash ./remove_all_nodes.sh
 
         exit 1
     fi
@@ -119,7 +119,7 @@ function create_mysql_node {
         
         echo "=====> Cleaning up..."
 
-        bash ./remove-nodes.sh
+        bash ./remove_all_nodes.sh
 
         exit 1   
     fi
@@ -185,6 +185,8 @@ function scale_createperson_nodes {
 }
 
 > $failed_installs_file
+
+bash ./remove_all_nodes.sh
 
 create_manager_node
 init_swarm_manager
