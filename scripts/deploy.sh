@@ -148,7 +148,7 @@ function deploy_stack {
 
     if [ "$ENV" = "dev" ]
     then
-        docker_file="docker-compose.dev.yml"
+#        docker_file="docker-compose.dev.yml"
         directory=/home/ubuntu
     fi
         
@@ -167,7 +167,7 @@ function copy_compose_file {
 
     if [ "$ENV" = "dev" ]
     then
-        docker_file="../docker-compose.dev.yml"
+#        docker_file="../docker-compose.dev.yml"
         directory=/home/ubuntu
     fi
 

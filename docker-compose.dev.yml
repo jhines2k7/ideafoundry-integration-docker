@@ -47,20 +47,20 @@ services:
       - IF_DB_PASSWORD=${IF_DB_PASSWORD}
       - KAFKA_HOST=${KAFKA_HOST}
       - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
-  # mockoccasionapi:
-  #   image: ideafoundry/mock-occasion-api:2.4.3
-  #   depends_on: 
-  #     - kafka
-  #   deploy:
-  #     restart_policy:
-  #       condition: on-failure
-  #       delay: 5s
-  #       max_attempts: 3
-  #       window: 120s
-  #     replicas: 1
-  #     placement:
-  #       constraints:
-  #         - engine.labels.node.type==512mb
+   mockoccasionapi:
+     image: ideafoundry/mock-occasion-api:2.4.3
+     depends_on:
+       - kafka
+     deploy:
+       restart_policy:
+         condition: on-failure
+         delay: 5s
+         max_attempts: 3
+         window: 120s
+       replicas: 1
+       placement:
+         constraints:
+           - engine.labels.node.type==512mb
   mysql:
     image: mysql:8.0.1
     deploy:
@@ -85,9 +85,8 @@ services:
       - MYSQL_PASSWORD=${IF_DB_PASSWORD}
   zookeeper:
     image: wurstmeister/zookeeper
-    expose:
-      - "2181"
-      # - "2181:2181"
+    ports:
+      - "2181:2181"
     deploy:
       restart_policy:
         condition: on-failure
@@ -102,9 +101,8 @@ services:
     depends_on:
       - zookeeper
     image: wurstmeister/kafka
-    expose:
-      - "9092"
-      # - "9092:9092"
+    ports:
+      - "9092:9092"
     deploy:
       restart_policy:
         condition: on-failure

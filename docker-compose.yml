@@ -60,7 +60,7 @@ services:
         constraints:
           - engine.labels.node.type==mysql
     volumes:
-      - /schemas:/docker-entrypoint-initdb.d
+      - /home/ubuntu/schemas:/docker-entrypoint-initdb.d
       - db_data:/var/lib/mysql
     ports:
       - "3306:3306"
@@ -71,7 +71,7 @@ services:
       - MYSQL_PASSWORD=${IF_DB_PASSWORD}
   zookeeper:
     image: wurstmeister/zookeeper
-    ports:
+    expose:
       - "2181"
     deploy:
       restart_policy:
@@ -87,7 +87,7 @@ services:
     depends_on:
       - zookeeper
     image: wurstmeister/kafka
-    ports:
+    expose:
       - "9092"
     deploy:
       restart_policy:
