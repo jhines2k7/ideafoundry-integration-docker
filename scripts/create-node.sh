@@ -52,6 +52,8 @@ function create_node {
     local ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
     local instance_type="t2.micro"
     local size="1gb"
+    local vpc_id="vpc-cef83fa9"
+    local security_group="ideafoundry-integration"
     
     echo "======> creating $machine-$ID"
 
@@ -78,15 +80,17 @@ function create_node {
 
     if [ "$env" = "dev" ]
     then
+        security_group="ideafoundry-integration-dev"
+
         echo "======> launching $instance_type AWS instance..."
 
         docker-machine create \
         --engine-label "node.type=$machine" \
         --driver amazonec2 \
         --amazonec2-ami ami-36a8754c \
-        --amazonec2-vpc-id vpc-cef83fa9 \
+        --amazonec2-vpc-id $vpc_id \
         --amazonec2-subnet-id subnet-8d401ab0 \
-        --amazonec2-security-group ideafoundry-integration-dev \
+        --amazonec2-security-group $security_group \
         --amazonec2-zone e \
         --amazonec2-instance-type $instance_type \
         $machine-$ID
