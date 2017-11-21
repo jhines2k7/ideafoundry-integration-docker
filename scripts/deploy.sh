@@ -37,15 +37,11 @@ function set_manager_node_env_variables {
 
     if [ "$ENV" = "dev" ]
     then
-#        kafka_machine_ip=$(get_ip $(docker-machine ls --format "{{.Name}}" | grep 'kafka'))
-#        mysql_host=$(get_ip $(docker-machine ls --format "{{.Name}}" | grep 'mysql'))
-#
-#        kafka_host=$kafka_machine_ip
-#        zookeeper_host=$kafka_machine_ip
+        kafka_machine_ip=$(get_ip $(docker-machine ls --format "{{.Name}}" | grep 'kafka'))
+        mysql_host=$(get_ip $(docker-machine ls --format "{{.Name}}" | grep 'mysql'))
 
-        mysql_host="mysql"
-        kafka_host="kafka"
-        zookeeper_host="zookeeper"
+        kafka_host=$kafka_machine_ip
+        zookeeper_host=$kafka_machine_ip
     fi
 
     ./runremote.sh \
@@ -148,7 +144,7 @@ function deploy_stack {
 
     if [ "$ENV" = "dev" ]
     then
-#        docker_file="docker-compose.dev.yml"
+        docker_file="docker-compose.dev.yml"
         directory=/home/ubuntu
     fi
         
@@ -167,7 +163,7 @@ function copy_compose_file {
 
     if [ "$ENV" = "dev" ]
     then
-#        docker_file="../docker-compose.dev.yml"
+        docker_file="../docker-compose.dev.yml"
         directory=/home/ubuntu
     fi
 
