@@ -197,26 +197,24 @@ function scale_createperson_nodes {
 bash ./remove-all-nodes.sh
 
 create_manager_node
-# init_swarm_manager
-# copy_compose_file
-# create_kafka_node
-# create_mysql_node
-# create_person_worker_nodes $INSTANCE_COUNT
-# create_1gb_worker_nodes 1
+init_swarm_manager
+copy_compose_file
+create_kafka_node
+create_mysql_node
+create_person_worker_nodes $INSTANCE_COUNT
+create_1gb_worker_nodes 1
 
-# if [ "$ENV" = "dev" ]
-# then
-#     create_512mb_worker_nodes 1
-# fi
+#if [ "$ENV" = "dev" ]
+#then
+# create_512mb_worker_nodes 1
+#fi
 
-# bash ./remove-nodes-with-failed-docker-installations.sh
-
-# recreate_critcal_nodes
+bash ./remove-nodes-with-failed-docker-installations.sh
 
 set_manager_node_env_variables
 
-# deploy_stack
+deploy_stack
 
-# scale_createperson_nodes
+scale_createperson_nodes
 
-# docker-machine ls
+docker-machine ls
