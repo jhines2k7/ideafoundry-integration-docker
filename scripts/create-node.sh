@@ -38,7 +38,6 @@ function copy_sql_schema {
     if [ "$ENV" = "dev" ]
     then
         sql_directory=/home/ubuntu/schemas
-#        sql_directory=/schemas
     fi
 
     docker-machine ssh $mysql_machine mkdir $sql_directory

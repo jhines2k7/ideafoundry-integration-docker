@@ -140,26 +140,26 @@ function deploy_stack {
     local manager_machine=$(get_manager_machine_name)
 
     local docker_file="docker-compose.yml"
-    local directory=/home
+    local directory=/
 
     if [ "$ENV" = "dev" ]
     then
         docker_file="docker-compose.dev.yml"
-        directory=/home/ubuntu
+        directory=/home/ubuntu/
     fi
         
     docker-machine ssh $manager_machine sudo docker login --username=$DOCKER_HUB_USER --password=$DOCKER_HUB_PASSWORD
     
     docker-machine ssh $manager_machine \
         sudo docker stack deploy \
-        --compose-file $directory/$docker_file \
+        --compose-file $directory$docker_file \
         --with-registry-auth \
         integration
 }
 
 function copy_compose_file {
     local docker_file="../docker-compose.yml"
-    local directory=/home
+    local directory=/
 
     if [ "$ENV" = "dev" ]
     then
@@ -211,6 +211,6 @@ set_manager_node_env_variables
 
 deploy_stack
 
-scale_createperson_nodes
+# scale_createperson_nodes
 
 docker-machine ls
