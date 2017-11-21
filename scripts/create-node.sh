@@ -1,6 +1,10 @@
 #!/bin/bash
 
 failed_installs_file="./failed_installs.txt"
+machine=$1
+num_workers=$2
+ENV=$3
+index=0
 
 function get_ip {
     echo $(docker-machine ip $1)
@@ -31,9 +35,10 @@ function copy_sql_schema {
     local mysql_machine=$(docker-machine ls --format "{{.Name}}" | grep 'mysql')
     local sql_directory=/schemas
 
-    if [ "$env" = "dev" ]
+    if [ "$ENV" = "dev" ]
     then
-        sql_directory=/home/ubuntu/schemas
+#        sql_directory=/home/ubuntu/schemas
+        sql_directory=/schemas
     fi
 
     docker-machine ssh $mysql_machine mkdir $sql_directory
@@ -48,7 +53,6 @@ function copy_sql_schema {
 
 function create_node {
     local machine=$1
-    local env=$2
     local ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
     local instance_type="t2.micro"
     local size="1gb"
@@ -78,9 +82,9 @@ function create_node {
     
     esac
 
-    if [ "$env" = "dev" ]
+    if [ "$ENV" = "dev" ]
     then
-        security_group="ideafoundry-integration-dev"
+#        security_group="ideafoundry-integration-dev"
 
         echo "======> launching $instance_type AWS instance..."
 
@@ -144,22 +148,17 @@ function create_node {
     fi
 }
 
-machine=$1
-num_workers=$2
-ENV=$3
-index=0
-
 if [ $num_workers -gt 1 ]
 then
     echo "======> Creating $num_workers nodes"
 
     for i in $(eval echo "{1..$num_workers}")      
         do
-            create_node $machine $ENV
+            create_node $machine
 
             ((index++))                
     done
 else
     echo "======> Creating $num_workers node"
-    create_node $machine $ENV
+    create_node $machine
 fi
