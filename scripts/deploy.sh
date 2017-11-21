@@ -31,9 +31,9 @@ function create_manager_node {
 }
 
 function set_manager_node_env_variables {
-    kafka_host="kafka"
-    zookeeper_host="zookeeper"
-    mysql_host="mysql"
+    local kafka_host="kafka"
+    local zookeeper_host="zookeeper"
+    local mysql_host="mysql"
 
     if [ "$ENV" = "dev" ]
     then
