@@ -4,7 +4,6 @@ failed_installs_file="./failed_installs.txt"
 machine=$1
 num_workers=$2
 ENV=$3
-index=0
 
 function get_ip {
     echo $(docker-machine ip $1)
@@ -146,6 +145,8 @@ function create_node {
         join_swarm $machine-$ID       
     fi
 }
+
+index=0
 
 if [ $num_workers -gt 1 ]
 then
