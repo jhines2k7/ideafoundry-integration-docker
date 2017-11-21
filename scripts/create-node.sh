@@ -37,8 +37,8 @@ function copy_sql_schema {
 
     if [ "$ENV" = "dev" ]
     then
-#        sql_directory=/home/ubuntu/schemas
-        sql_directory=/schemas
+        sql_directory=/home/ubuntu/schemas
+#        sql_directory=/schemas
     fi
 
     docker-machine ssh $mysql_machine mkdir $sql_directory
@@ -84,7 +84,7 @@ function create_node {
 
     if [ "$ENV" = "dev" ]
     then
-#        security_group="ideafoundry-integration-dev"
+        security_group="ideafoundry-integration-dev"
 
         echo "======> launching $instance_type AWS instance..."
 
