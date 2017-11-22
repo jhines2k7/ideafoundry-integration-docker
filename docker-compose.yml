@@ -28,7 +28,7 @@ services:
     depends_on:
       - kafka
       - mysql
-    image: ideafoundry/create-airtable-person-service:1.21.11-SNAPSHOT
+    image: ideafoundry/create-airtable-person-service:1.22.11-SNAPSHOT
     deploy:
       restart_policy:
         condition: on-failure
