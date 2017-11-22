@@ -4,6 +4,7 @@ failed_installs_file="./failed_installs.txt"
 machine=$1
 num_workers=$2
 ENV=$3
+PROVIDER=$4
 
 function get_ip {
     echo $(docker-machine ip $1)
@@ -80,9 +81,12 @@ function create_node {
     
     esac
 
-    if [ "$ENV" = "dev" ]
+    if [ "$PROVIDER" = "aws" ]
     then
-        security_group="ideafoundry-integration-dev"
+        if [ "$ENV" = "dev" ]
+        then
+            security_group="ideafoundry-integration-dev"
+        fi
 
         echo "======> launching $instance_type AWS instance..."
 

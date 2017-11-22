@@ -3,6 +3,7 @@
 failed_installs_file="./failed_installs.txt"
 
 ENV=$1
+PROVIDER=$2
 
 function get_ip {
     echo $(docker-machine ip $1)
@@ -14,7 +15,7 @@ function get_manager_machine_name {
 
 #create manager node
 function create_manager_node {
-    bash ./create-node.sh manager 1 $ENV
+    bash ./create-node.sh manager 1 $ENV $PROVIDER
 
     result=$?
 
@@ -74,7 +75,7 @@ function set_manager_node_env_variables {
 function create_person_worker_nodes {
     local num_nodes=$1
 
-    bash ./create-node.sh createperson $num_nodes $ENV
+    bash ./create-node.sh createperson $num_nodes $ENV $PROVIDER
 }
 
 #create 1gb worker nodes
@@ -83,14 +84,14 @@ function create_1gb_worker_nodes {
 
     echo "======> creating 1gb worker nodes"
     
-    bash ./create-node.sh 1gb $num_nodes $ENV
+    bash ./create-node.sh 1gb $num_nodes $ENV $PROVIDER
 }
 
 #create kafka and mysql nodes
 function create_kafka_node {
     echo "======> creating kafka worker node"
 
-    bash ./create-node.sh kafka 1 $ENV
+    bash ./create-node.sh kafka 1 $ENV $PROVIDER
 
     result=$?
 
@@ -109,7 +110,7 @@ function create_kafka_node {
 function create_mysql_node {
     echo "======> creating mysql worker node"
     
-    bash ./create-node.sh mysql 1 $ENV
+    bash ./create-node.sh mysql 1 $ENV $PROVIDER
 
     result=$?
 
@@ -177,7 +178,7 @@ function create_512mb_worker_nodes {
 
     echo "======> creating 512mb worker nodes"
     
-    bash ./create-node.sh 512mb $num_nodes $ENV
+    bash ./create-node.sh 512mb $num_nodes $ENV $PROVIDER
 }
 
 function scale_createperson_nodes {
@@ -197,7 +198,7 @@ init_swarm_manager
 copy_compose_file
 create_kafka_node
 create_mysql_node
-#create_person_worker_nodes $INSTANCE_COUNT
+create_person_worker_nodes $INSTANCE_COUNT
 create_1gb_worker_nodes 1
 
 #if [ "$ENV" = "dev" ]
