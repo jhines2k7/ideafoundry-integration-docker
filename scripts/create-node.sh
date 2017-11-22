@@ -1,7 +1,7 @@
 #!/bin/bash
 
 failed_installs_file="./failed_installs.txt"
-machine=$1
+node_type=$1
 num_workers=$2
 ENV=$3
 PROVIDER=$4
@@ -51,20 +51,21 @@ function copy_sql_schema {
 }
 
 function create_node {
-    local machine=$1
+    local node_type=$1
     local ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
     local instance_type="t2.micro"
     local size="1gb"
     local vpc_id="vpc-cef83fa9"
     local security_group="ideafoundry-integration"
+    local machine_id
     
-    echo "======> creating $machine-$ID"
+    echo "======> creating $machine_id"
 
     # t2.nano=0.5
     # t2.micro=1
     # t2.small=2
 
-    case "$machine" in
+    case "$node_type" in
 
     mysql)
         instance_type="t2.small"
@@ -91,7 +92,7 @@ function create_node {
         echo "======> launching $instance_type AWS instance..."
 
         docker-machine create \
-        --engine-label "node.type=$machine" \
+        --engine-label "node.type=$node_type" \
         --driver amazonec2 \
         --amazonec2-ami ami-36a8754c \
         --amazonec2-vpc-id $vpc_id \
@@ -99,17 +100,17 @@ function create_node {
         --amazonec2-security-group $security_group \
         --amazonec2-zone e \
         --amazonec2-instance-type $instance_type \
-        $machine-$ID
+        $machine_id
     else
         echo "======> launching $size Digital Ocean instance..."
 
          docker-machine create \
-         --engine-label "node.type=$machine" \
+         --engine-label "node.type=$node_type" \
          --driver digitalocean \
          --digitalocean-image ubuntu-17-04-x64 \
          --digitalocean-size $size \
          --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
-         $machine-$ID
+         $machine_id
     fi
     
     if [ ! -e "$failed_installs_file" ] ; then
@@ -117,22 +118,22 @@ function create_node {
     fi
     
     #check to make sure docker was properly installed on node
-    echo "======> making sure docker is installed on $machine-$ID"
-    docker-machine ssh $machine-$ID docker
+    echo "======> making sure docker is installed on $machine_id"
+    docker-machine ssh $machine_id docker
 
     if [ $? -ne 0 ]
     then
-        if [ $machine = "manager" ] || [ $machine = "mysql" ] || [ $machine = "kafka" ]
+        if [ $node_type = "manager" ] || [ $node_type = "mysql" ] || [ $node_type = "kafka" ]
         then
             exit 2
         else                                
-            echo "$machine-$ID" >> $failed_installs_file
+            echo "$machine_id" >> $failed_installs_file
         fi
 
         return 1        
     fi
     
-    if [ "$machine" = "mysql" ]
+    if [ "$node_type" = "mysql" ]
     then
         copy_sql_schema
 
@@ -142,11 +143,11 @@ function create_node {
         fi
     fi
  
-    bash ./set-ufw-rules.sh $machine-$ID
+    bash ./set-ufw-rules.sh $machine_id
     
-    if [ "$machine" != "manager" ]
+    if [ "$node_type" != "manager" ]
     then
-        join_swarm $machine-$ID       
+        join_swarm $machine_id
     fi
 }
 
@@ -158,11 +159,11 @@ then
 
     for i in $(eval echo "{1..$num_workers}")      
         do
-            create_node $machine
+            create_node $node_type
 
             ((index++))                
     done
 else
     echo "======> Creating $num_workers node"
-    create_node $machine
+    create_node $node_type
 fi

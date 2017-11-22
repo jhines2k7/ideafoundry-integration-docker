@@ -145,7 +145,7 @@ function deploy_stack {
 
     if [ "$PROVIDER" = "aws" ]
     then
-        directory=/home/ubuntu
+        directory=/home/ubuntu/
     fi
 
     if [ "$ENV" = "dev" ]
@@ -168,7 +168,7 @@ function copy_compose_file {
 
     if [ "$PROVIDER" = "aws" ]
     then
-        directory=/home/ubuntu
+        directory=/home/ubuntu/
     fi
 
     if [ "$ENV" = "dev" ]
