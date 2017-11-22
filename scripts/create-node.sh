@@ -35,7 +35,7 @@ function copy_sql_schema {
     local mysql_machine=$(docker-machine ls --format "{{.Name}}" | grep 'mysql')
     local sql_directory=/schemas
 
-    if [ "$ENV" = "dev" ]
+    if [ "$PROVIDER" = "aws" ]
     then
         sql_directory=/home/ubuntu/schemas
     fi

@@ -143,10 +143,14 @@ function deploy_stack {
     local docker_file="docker-compose.yml"
     local directory=/
 
+    if [ "$PROVIDER" = "aws" ]
+    then
+        directory=/home/ubuntu
+    fi
+
     if [ "$ENV" = "dev" ]
     then
         docker_file="docker-compose.dev.yml"
-        directory=/home/ubuntu/
     fi
         
     docker-machine ssh $manager_machine sudo docker login --username=$DOCKER_HUB_USER --password=$DOCKER_HUB_PASSWORD
@@ -162,10 +166,14 @@ function copy_compose_file {
     local docker_file="../docker-compose.yml"
     local directory=/
 
+    if [ "$PROVIDER" = "aws" ]
+    then
+        directory=/home/ubuntu
+    fi
+
     if [ "$ENV" = "dev" ]
     then
         docker_file="../docker-compose.dev.yml"
-        directory=/home/ubuntu
     fi
 
     echo "======> copying compose file to manager node ..."
