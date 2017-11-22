@@ -57,7 +57,7 @@ function create_node {
     local size="1gb"
     local vpc_id="vpc-cef83fa9"
     local security_group="ideafoundry-integration"
-    local machine_id
+    local machine_id=$node_type-$ID
     
     echo "======> creating $machine_id"
 
