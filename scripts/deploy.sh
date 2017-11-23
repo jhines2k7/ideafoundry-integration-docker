@@ -209,10 +209,10 @@ create_mysql_node
 create_person_worker_nodes $INSTANCE_COUNT
 create_1gb_worker_nodes 1
 
-#if [ "$ENV" = "dev" ]
-#then
-# create_512mb_worker_nodes 1
-#fi
+if [ "$ENV" = "dev" ]
+then
+ create_512mb_worker_nodes 1
+fi
 
 bash ./remove-nodes-with-failed-docker-installations.sh
 
