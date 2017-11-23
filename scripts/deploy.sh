@@ -68,7 +68,8 @@ function set_manager_node_env_variables {
        "$DOCKER_HUB_USER" \
        "$DOCKER_HUB_PASSWORD" \
        "$DIGITALOCEAN_ACCESS_TOKEN" \
-       "$MAX_CREATEPERSON_INSTANCE_COUNT"
+       "$MAX_CREATEPERSON_INSTANCE_COUNT" \
+       "$IF_OCCASION_RECONCILE"
 }
 
 #create createperson worker nodes
