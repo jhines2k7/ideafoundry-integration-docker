@@ -24,43 +24,43 @@ services:
       - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
       - IF_OCCASION_CREDS=${IF_OCCASION_CREDS}
       - IF_OCCASION_EXPORT_URL=${IF_OCCASION_EXPORT_URL}
-#  personsink:
-#    depends_on:
-#      - kafka
-#      - mysql
-#    image: ideafoundry/create-airtable-person-service:1.25.11-SNAPSHOT
-#    deploy:
-#      restart_policy:
-#        condition: on-failure
-#        delay: 5s
-#        max_attempts: 3
-#        window: 120s
-#      replicas: 1
-#      placement:
-#        constraints:
-#          - engine.labels.node.type==createperson
-#    environment:
-#      - MAX_CREATEPERSON_INSTANCE_COUNT=${MAX_CREATEPERSON_INSTANCE_COUNT}
-#      - DB_HOST=${DB_HOST}
-#      - IF_DB_PORT=${IF_DB_PORT}
-#      - IF_DB_USERNAME=${IF_DB_USERNAME}
-#      - IF_DB_PASSWORD=${IF_DB_PASSWORD}
-#      - KAFKA_HOST=${KAFKA_HOST}
-#      - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
-#    mockoccasionapi:
-#      image: ideafoundry/mock-occasion-api:2.4.3
-#      depends_on:
-#        - kafka
-#      deploy:
-#        restart_policy:
-#        condition: on-failure
-#        delay: 5s
-#        max_attempts: 3
-#        window: 120s
-#      replicas: 1
-#      placement:
-#        constraints:
-#          - engine.labels.node.type==512mb
+  personsink:
+    depends_on:
+      - kafka
+      - mysql
+    image: ideafoundry/create-airtable-person-service:1.25.11-SNAPSHOT
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      replicas: 1
+      placement:
+        constraints:
+          - engine.labels.node.type==createperson
+    environment:
+      - MAX_CREATEPERSON_INSTANCE_COUNT=${MAX_CREATEPERSON_INSTANCE_COUNT}
+      - DB_HOST=${DB_HOST}
+      - IF_DB_PORT=${IF_DB_PORT}
+      - IF_DB_USERNAME=${IF_DB_USERNAME}
+      - IF_DB_PASSWORD=${IF_DB_PASSWORD}
+      - KAFKA_HOST=${KAFKA_HOST}
+      - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
+    mockoccasionapi:
+      image: ideafoundry/mock-occasion-api:2.4.3
+      depends_on:
+        - kafka
+      deploy:
+        restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      replicas: 1
+      placement:
+        constraints:
+          - engine.labels.node.type==512mb
   mysql:
     image: mysql:8.0.1
     deploy:
