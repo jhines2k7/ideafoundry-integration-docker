@@ -47,67 +47,67 @@ services:
       - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
   reconcileoccurrencesink:
     image: ideafoundry/reconcile-occurrence:1.0.0
-      depends_on:
-        - kafka
-      deploy:
-        restart_policy:
-          condition: on-failure
-          delay: 5s
-          max_attempts: 3
-          window: 120s
-        replicas: 1
-        placement:
-          constraints:
-            - engine.labels.node.type==1gb
-      environment:
-        - DB_HOST=${DB_HOST}
-        - IF_DB_PORT=${IF_DB_PORT}
-        - IF_DB_USERNAME=${IF_DB_USERNAME}
-        - IF_DB_PASSWORD=${IF_DB_PASSWORD}
-        - KAFKA_HOST=${KAFKA_HOST}
-        - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
+    depends_on:
+      - kafka
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      replicas: 1
+      placement:
+        constraints:
+          - engine.labels.node.type==1gb
+    environment:
+      - DB_HOST=${DB_HOST}
+      - IF_DB_PORT=${IF_DB_PORT}
+      - IF_DB_USERNAME=${IF_DB_USERNAME}
+      - IF_DB_PASSWORD=${IF_DB_PASSWORD}
+      - KAFKA_HOST=${KAFKA_HOST}
+      - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
   reconcileordersink:
     image: ideafoundry/reconcile-order:1.0.0
-      depends_on:
-        - kafka
-      deploy:
-        restart_policy:
-          condition: on-failure
-          delay: 5s
-          max_attempts: 3
-          window: 120s
-        replicas: 1
-        placement:
-          constraints:
-            - engine.labels.node.type==1gb
-      environment:
-        - DB_HOST=${DB_HOST}
-        - IF_DB_PORT=${IF_DB_PORT}
-        - IF_DB_USERNAME=${IF_DB_USERNAME}
-        - IF_DB_PASSWORD=${IF_DB_PASSWORD}
-        - KAFKA_HOST=${KAFKA_HOST}
-        - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
+    depends_on:
+      - kafka
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      replicas: 1
+      placement:
+        constraints:
+          - engine.labels.node.type==1gb
+    environment:
+      - DB_HOST=${DB_HOST}
+      - IF_DB_PORT=${IF_DB_PORT}
+      - IF_DB_USERNAME=${IF_DB_USERNAME}
+      - IF_DB_PASSWORD=${IF_DB_PASSWORD}
+      - KAFKA_HOST=${KAFKA_HOST}
+      - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
   reconcilequestionsink:
     image: ideafoundry/reconcile-question:1.0.0
-      depends_on:
-        - kafka
-      deploy:
-        restart_policy:
-          condition: on-failure
-          delay: 5s
-          max_attempts: 3
-          window: 120s
-        replicas: 1
-        placement:
-          constraints:
-            - engine.labels.node.type==1gb
-      environment:
-        - DB_HOST=${DB_HOST}
-        - IF_DB_PORT=${IF_DB_PORT}
-        - IF_DB_USERNAME=${IF_DB_USERNAME}
-        - IF_DB_PASSWORD=${IF_DB_PASSWORD}
-        - KAFKA_HOST=${KAFKA_HOST}
-        - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
+    depends_on:
+      - kafka
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      replicas: 1
+      placement:
+        constraints:
+          - engine.labels.node.type==1gb
+    environment:
+      - DB_HOST=${DB_HOST}
+      - IF_DB_PORT=${IF_DB_PORT}
+      - IF_DB_USERNAME=${IF_DB_USERNAME}
+      - IF_DB_PASSWORD=${IF_DB_PASSWORD}
+      - KAFKA_HOST=${KAFKA_HOST}
+      - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
   personsink:
     depends_on:
       - kafka
@@ -119,7 +119,7 @@ services:
         delay: 5s
         max_attempts: 3
         window: 120s
-      replicas: 1
+      replicas: ${INSTANCE_COUNT}
       placement:
         constraints:
           - engine.labels.node.type==createperson

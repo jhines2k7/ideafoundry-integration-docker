@@ -69,7 +69,8 @@ function set_manager_node_env_variables {
        "$DOCKER_HUB_PASSWORD" \
        "$DIGITALOCEAN_ACCESS_TOKEN" \
        "$MAX_CREATEPERSON_INSTANCE_COUNT" \
-       "$IF_OCCASION_RECONCILE"
+       "$IF_OCCASION_RECONCILE" \
+       "$INSTANCE_COUNT"
 }
 
 #create createperson worker nodes
@@ -221,6 +222,6 @@ set_manager_node_env_variables
 
 deploy_stack
 
-scale_createperson_nodes
+#scale_createperson_nodes
 
 docker-machine ls
