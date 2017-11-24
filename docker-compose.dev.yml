@@ -24,8 +24,8 @@ services:
 #      - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
 #      - IF_OCCASION_CREDS=${IF_OCCASION_CREDS}
 #      - IF_OCCASION_EXPORT_URL=${IF_OCCASION_EXPORT_URL}
-  savepersonsink:
-    image: ideafoundry/saveperson-sink:1.0.0
+  reconcilepersonsink:
+    image: ideafoundry/reconcile-person:1.0.0
     depends_on:
       - kafka
     deploy:
@@ -45,8 +45,8 @@ services:
       - IF_DB_PASSWORD=${IF_DB_PASSWORD}
       - KAFKA_HOST=${KAFKA_HOST}
       - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
-  saveoccurrencesink:
-    image: ideafoundry/saveoccurrence-sink:1.0.0
+  reconcileoccurrencesink:
+    image: ideafoundry/reconcile-occurrence:1.0.0
       depends_on:
         - kafka
       deploy:
@@ -59,8 +59,15 @@ services:
         placement:
           constraints:
             - engine.labels.node.type==1gb
-  saveordersink:
-    image: ideafoundry/saveorder-sink:1.0.0
+      environment:
+        - DB_HOST=${DB_HOST}
+        - IF_DB_PORT=${IF_DB_PORT}
+        - IF_DB_USERNAME=${IF_DB_USERNAME}
+        - IF_DB_PASSWORD=${IF_DB_PASSWORD}
+        - KAFKA_HOST=${KAFKA_HOST}
+        - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
+  reconcileordersink:
+    image: ideafoundry/reconcile-order:1.0.0
       depends_on:
         - kafka
       deploy:
@@ -73,8 +80,15 @@ services:
         placement:
           constraints:
             - engine.labels.node.type==1gb
-  savequestionsink:
-    image: ideafoundry/savequestion-sink:1.0.0
+      environment:
+        - DB_HOST=${DB_HOST}
+        - IF_DB_PORT=${IF_DB_PORT}
+        - IF_DB_USERNAME=${IF_DB_USERNAME}
+        - IF_DB_PASSWORD=${IF_DB_PASSWORD}
+        - KAFKA_HOST=${KAFKA_HOST}
+        - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
+  reconcilequestionsink:
+    image: ideafoundry/reconcile-question:1.0.0
       depends_on:
         - kafka
       deploy:
@@ -87,6 +101,13 @@ services:
         placement:
           constraints:
             - engine.labels.node.type==1gb
+      environment:
+        - DB_HOST=${DB_HOST}
+        - IF_DB_PORT=${IF_DB_PORT}
+        - IF_DB_USERNAME=${IF_DB_USERNAME}
+        - IF_DB_PASSWORD=${IF_DB_PASSWORD}
+        - KAFKA_HOST=${KAFKA_HOST}
+        - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
   personsink:
     depends_on:
       - kafka
