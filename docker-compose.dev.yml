@@ -24,6 +24,69 @@ services:
 #      - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
 #      - IF_OCCASION_CREDS=${IF_OCCASION_CREDS}
 #      - IF_OCCASION_EXPORT_URL=${IF_OCCASION_EXPORT_URL}
+  savepersonsink:
+    image: ideafoundry/saveperson-sink:1.0.0
+    depends_on:
+      - kafka
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      replicas: 1
+      placement:
+        constraints:
+          - engine.labels.node.type==1gb
+    environment:
+      - DB_HOST=${DB_HOST}
+      - IF_DB_PORT=${IF_DB_PORT}
+      - IF_DB_USERNAME=${IF_DB_USERNAME}
+      - IF_DB_PASSWORD=${IF_DB_PASSWORD}
+      - KAFKA_HOST=${KAFKA_HOST}
+      - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
+  saveoccurrencesink:
+    image: ideafoundry/saveoccurrence-sink:1.0.0
+      depends_on:
+        - kafka
+      deploy:
+        restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 3
+          window: 120s
+        replicas: 1
+        placement:
+          constraints:
+            - engine.labels.node.type==1gb
+  saveordersink:
+    image: ideafoundry/saveorder-sink:1.0.0
+      depends_on:
+        - kafka
+      deploy:
+        restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 3
+          window: 120s
+        replicas: 1
+        placement:
+          constraints:
+            - engine.labels.node.type==1gb
+  savequestionsink:
+    image: ideafoundry/savequestion-sink:1.0.0
+      depends_on:
+        - kafka
+      deploy:
+        restart_policy:
+          condition: on-failure
+          delay: 5s
+          max_attempts: 3
+          window: 120s
+        replicas: 1
+        placement:
+          constraints:
+            - engine.labels.node.type==1gb
   personsink:
     depends_on:
       - kafka
