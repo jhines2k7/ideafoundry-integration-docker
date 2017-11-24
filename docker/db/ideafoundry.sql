@@ -77,31 +77,31 @@ CREATE TABLE occurrence (
   ENGINE = InnoDB;
 
 CREATE TABLE reconcile_question (
-  id        VARCHAR(255) NOT NULL PRIMARY KEY,
-  record_id INT(11),
+  id          INT(11) NOT NULL PRIMARY KEY,
+  occasion_id   VARCHAR(255),
   question  LONGTEXT,
   answer    LONGTEXT
 )
   ENGINE = InnoDB;
 
 CREATE TABLE reconcile_order (
-  id          VARCHAR(255) NOT NULL PRIMARY KEY,
-  record_id   INT(11),
+  id          INT(11) NOT NULL PRIMARY KEY,
+  occasion_id   VARCHAR(255),
   description LONGTEXT
 )
   ENGINE = InnoDB;
 
 CREATE TABLE reconcile_person (
-  id         VARCHAR(255) NOT NULL PRIMARY KEY,
-  record_id  INT(11),
+  id          INT(11) NOT NULL PRIMARY KEY,
+  occasion_id   VARCHAR(255),
   first_name VARCHAR(255),
   last_name  VARCHAR(255)
 )
   ENGINE = InnoDB;
 
 CREATE TABLE reconcile_occurrence (
-  id        VARCHAR(255) NOT NULL PRIMARY KEY,
-  record_id INT(11),
+  id          INT(11) NOT NULL PRIMARY KEY,
+  occasion_id   VARCHAR(255),
   starts_at VARCHAR(255)
 )
   ENGINE = InnoDB;
