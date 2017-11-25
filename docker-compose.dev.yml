@@ -160,7 +160,7 @@ services:
         constraints:
           - engine.labels.node.type==mysql
     volumes:
-      - /home/ubuntu/schemas:/docker-entrypoint-initdb.d
+      - ${MYSQL_VOLUME}schemas:/docker-entrypoint-initdb.d
       - db_data:/var/lib/mysql
     ports:
       - "3306:3306"
