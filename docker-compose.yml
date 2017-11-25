@@ -5,7 +5,7 @@ services:
     depends_on:
       - personsink
       - kafka
-    image: ideafoundry/occasion-legacy-data-export-service:1.29.2-SNAPSHOT
+    image: ideafoundry/occasion-legacy-data-export-service:1.29.3-SNAPSHOT
     deploy:
       restart_policy:
         condition: on-failure
@@ -23,6 +23,7 @@ services:
       - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
       - IF_OCCASION_CREDS=${IF_OCCASION_CREDS}
       - IF_OCCASION_EXPORT_URL=${IF_OCCASION_EXPORT_URL}
+      - IF_OCCASION_RECONCILE=${IF_OCCASION_RECONCILE}
   reconcilepersonsink:
     image: ideafoundry/reconcile-person:1.2.0
     depends_on:
