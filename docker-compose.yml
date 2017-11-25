@@ -6,7 +6,7 @@ services:
       - personsink
       - kafka
       - mockoccasionapi
-    image: ideafoundry/occasion-legacy-data-export-service:1.28.1-SNAPSHOT
+    image: ideafoundry/occasion-legacy-data-export-service:1.29.1-SNAPSHOT
     deploy:
       restart_policy:
         condition: on-failure
@@ -25,7 +25,7 @@ services:
       - IF_OCCASION_CREDS=${IF_OCCASION_CREDS}
       - IF_OCCASION_EXPORT_URL=${IF_OCCASION_EXPORT_URL}
   reconcilepersonsink:
-    image: ideafoundry/reconcile-person:1.0.0
+    image: ideafoundry/reconcile-person:1.2.0
     depends_on:
       - kafka
     deploy:
@@ -46,7 +46,7 @@ services:
       - KAFKA_HOST=${KAFKA_HOST}
       - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
   reconcileoccurrencesink:
-    image: ideafoundry/reconcile-occurrence:1.0.0
+    image: ideafoundry/reconcile-occurrence:1.2.0
     depends_on:
       - kafka
     deploy:
@@ -67,7 +67,7 @@ services:
       - KAFKA_HOST=${KAFKA_HOST}
       - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
   reconcileordersink:
-    image: ideafoundry/reconcile-order:1.0.0
+    image: ideafoundry/reconcile-order:1.2.0
     depends_on:
       - kafka
     deploy:
@@ -88,7 +88,7 @@ services:
       - KAFKA_HOST=${KAFKA_HOST}
       - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
   reconcilequestionsink:
-    image: ideafoundry/reconcile-question:1.0.0
+    image: ideafoundry/reconcile-question:1.2.0
     depends_on:
       - kafka
     deploy:
