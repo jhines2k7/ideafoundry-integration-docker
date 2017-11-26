@@ -191,14 +191,6 @@ function create_512mb_worker_nodes {
     bash ./create-node.sh 512mb $num_nodes $ENV $PROVIDER
 }
 
-function scale_createperson_nodes {
-    echo "======> scaling createperson nodes to $INSTANCE_COUNT"
-
-    local manager_machine=$(get_manager_machine_name)
-    
-    docker-machine ssh $manager_machine sudo docker service scale integration_personsink=$INSTANCE_COUNT 
-}
-
 > $failed_installs_file
 
 bash ./remove-all-nodes.sh
@@ -206,22 +198,20 @@ bash ./remove-all-nodes.sh
 create_manager_node
 init_swarm_manager
 copy_compose_file
-#create_kafka_node
+create_kafka_node
 create_mysql_node
-#create_person_worker_nodes $INSTANCE_COUNT
-#create_1gb_worker_nodes 4
+create_person_worker_nodes $INSTANCE_COUNT
+create_1gb_worker_nodes 4
 
-#if [ "$ENV" = "dev" ]
-#then
-# create_512mb_worker_nodes 1
-#fi
+if [ "$ENV" = "dev" ]
+then
+ create_512mb_worker_nodes 1
+fi
 
 bash ./remove-nodes-with-failed-docker-installations.sh
 
 set_manager_node_env_variables
 
 deploy_stack
-
-#scale_createperson_nodes
 
 docker-machine ls
