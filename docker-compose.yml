@@ -193,5 +193,5 @@ services:
 volumes:
   db_data:
   db_schema_volume:
-    - type: bind
-      name: ${DB_SCHEMA_VOLUME}
+    type: bind
+    name: ${DB_SCHEMA_VOLUME}
