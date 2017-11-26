@@ -189,6 +189,6 @@ services:
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
       - KAFKA_ADVERTISED_PORT=9092
     volumes:
-      - /var/run/docker.ock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock
 volumes:
   db_data:
