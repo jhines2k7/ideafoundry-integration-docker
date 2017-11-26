@@ -70,8 +70,7 @@ function set_manager_node_env_variables {
        "$DIGITALOCEAN_ACCESS_TOKEN" \
        "$MAX_CREATEPERSON_INSTANCE_COUNT" \
        "$IF_OCCASION_RECONCILE" \
-       "$INSTANCE_COUNT" \
-       "$DB_SCHEMA_VOLUME"
+       "$INSTANCE_COUNT"
 }
 
 #create createperson worker nodes

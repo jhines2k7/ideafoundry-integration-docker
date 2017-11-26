@@ -26,5 +26,4 @@ echo "=======> setting env variables for manager node"
     echo "MAX_CREATEPERSON_INSTANCE_COUNT=${21}"
     echo "IF_OCCASION_RECONCILE=${22}"
     echo "INSTANCE_COUNT=${23}"
-    echo "DB_SCHEMA_VOLUME=${24}"
 } | sudo tee -a /etc/environment > /dev/null
