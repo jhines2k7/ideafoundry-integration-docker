@@ -208,8 +208,8 @@ init_swarm_manager
 copy_compose_file
 create_kafka_node
 create_mysql_node
-#create_person_worker_nodes $INSTANCE_COUNT
-#create_1gb_worker_nodes 4
+create_person_worker_nodes $INSTANCE_COUNT
+create_1gb_worker_nodes 4
 
 #if [ "$ENV" = "dev" ]
 #then
