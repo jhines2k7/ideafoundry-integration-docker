@@ -2,8 +2,74 @@
 
 failed_installs_file="./failed_installs.txt"
 
-ENV=$1
-PROVIDER=$2
+ENV="dev"
+PROVIDER="digitalocean"
+INCLUDED="*"
+EXCLUDED="none"
+SERVICES=(
+    'personsink'
+    'dataexport'
+    'mysql'
+    'kafka'
+    'reconcileperson'
+    'reconcilequestion'
+    'reconcileorder'
+    'reconcileoccurrence'
+    'mockapi'
+)
+
+function usage {
+    echo "Usage: bash $0	[OPTIONS]
+
+    Create and init a swarm cluster.
+    Options:
+    -a, --all                                   Todo
+    -p, --provider                              Todo (default digitalocean)
+    -e, --env                                   Todo (default prod)
+    -i, --include                               Todo (example: --include personsink,mysql,kafka)
+    -x, --exclude                               Todo (example: --exclude personsink,mysql,kafka)
+    ls                                          lists service names"
+    exit 1
+}
+
+# get parameters
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        --all|-a)
+        INCLUDED="*"
+        shift 2
+        ;;
+        --provider|-p)
+        PROVIDER="$2"
+        shift 2
+        ;;
+        --env|-e)
+        ENV="$2"
+        shift 2
+        ;;
+        --include|-i)
+        INCLUDED="$2"
+        shift 2
+        ;;
+        --exclude|-x)
+        EXCLUDED="$2"
+        shift 2
+        ;;
+        --list|-ls)
+        list_services
+        shift 2
+        ;;
+        -h|--help)
+        usage
+        ;;
+    esac
+done
+
+function list_services {
+    for ((i = 0; i < ${#SERVICS[@]}; ++i)); do
+        echo -e ${SERVICES[$i]}'\n'
+    done
+}
 
 function get_ip {
     echo $(docker-machine ip $1)
@@ -150,11 +216,6 @@ function deploy_stack {
         directory=/home/ubuntu/
     fi
 
-    if [ "$ENV" = "dev" ]
-    then
-        docker_file="docker-compose.dev.yml"
-    fi
-        
     docker-machine ssh $manager_machine sudo docker login --username=$DOCKER_HUB_USER --password=$DOCKER_HUB_PASSWORD
     
     docker-machine ssh $manager_machine \
@@ -173,14 +234,38 @@ function copy_compose_file {
         directory=/home/ubuntu
     fi
 
-    if [ "$ENV" = "dev" ]
-    then
-        docker_file="../docker-compose.dev.yml"
-    fi
-
     echo "======> copying compose file to manager node ..."
     
     docker-machine scp $docker_file $(get_manager_machine_name):$directory
+}
+
+function generate_compose_file {
+    echo "======> generating compose file ..."
+
+    if [ "$EXCLUDED" != "none" ]
+    then
+        IFS=', ' read -r -a excludes_array <<< "$EXCLUDED"
+
+        ea=" ${excludes_array[*]} "
+
+        docker-compose \
+
+        for service in ${SERVICES[@]}; do
+            -f docker-compose.yml
+        done
+
+        config \
+        > ../docker-compose.yml
+
+        return 0;
+    fi
+
+    if [ "$INCLUDED" != "*" ]
+    then
+        echo "Including all"
+
+        return 0;
+    fi
 }
 
 function create_512mb_worker_nodes {
@@ -197,6 +282,7 @@ bash ./remove-all-nodes.sh
 
 create_manager_node
 init_swarm_manager
+generate_compose_file
 copy_compose_file
 create_kafka_node
 create_mysql_node
