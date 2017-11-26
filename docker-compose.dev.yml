@@ -207,6 +207,6 @@ services:
 #      - /var/run/docker.sock:/var/run/docker.sock
 volumes:
   db_data:
-  - type: bind
-    db_schema_volume:
+  db_schema_volume:
+    - type: bind
       name: ${DB_SCHEMA_VOLUME}
