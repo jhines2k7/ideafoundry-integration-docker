@@ -145,7 +145,7 @@ services:
         constraints:
           - engine.labels.node.type==mysql
     volumes:
-      - db_schema_volume:/docker-entrypoint-initdb.d
+      - /schemas:/docker-entrypoint-initdb.d
       - db_data:/var/lib/mysql
     ports:
       - "3306:3306"
@@ -192,6 +192,3 @@ services:
 #      - /var/run/docker.ock:/var/run/docker.sock
 volumes:
   db_data:
-  db_schema_volume:
-    type: bind
-    name: ${DB_SCHEMA_VOLUME}
