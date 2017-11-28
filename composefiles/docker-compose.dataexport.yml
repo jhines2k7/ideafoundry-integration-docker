@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  legacydataexport:
+  dataexport:
     depends_on:
       - personsink
       - kafka

@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  mockoccasionapi:
+  mockapi:
     image: ideafoundry/mock-occasion-api:2.4.3
     depends_on:
       - kafka

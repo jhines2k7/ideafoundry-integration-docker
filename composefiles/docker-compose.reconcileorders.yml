@@ -1,8 +1,8 @@
 version: '3'
 
 services:
-  reconcilepersonsink:
-    image: ideafoundry/reconcile-person:1.2.0
+  reconcileorders:
+    image: ideafoundry/reconcile-order:1.2.0
     depends_on:
       - kafka
     deploy:

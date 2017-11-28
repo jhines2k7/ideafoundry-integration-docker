@@ -1,8 +1,8 @@
 version: '3'
 
 services:
-  reconcilequestionsink:
-    image: ideafoundry/reconcile-question:1.2.0
+  reconcileoccurrences:
+    image: ideafoundry/reconcile-occurrence:1.2.0
     depends_on:
       - kafka
     deploy:
