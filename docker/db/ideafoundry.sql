@@ -24,7 +24,6 @@ CREATE TABLE occasion_order (
   id                  INT(11) NOT NULL PRIMARY KEY,
   occasion_id         VARCHAR(255),
   person_id           INT(11),
-  occurrence_id       INT(11),
   gift_card_amount    DOUBLE,
   coupon_amount       DOUBLE,
   outstanding_balance DOUBLE,
@@ -61,6 +60,7 @@ CREATE TABLE question (
 CREATE TABLE occurrence (
   id           INT(11) NOT NULL PRIMARY KEY,
   occasion_id  VARCHAR(255),
+  order_id     INT(11),
   duration     INT(11),
   closes_at    VARCHAR(255),
   created_at   VARCHAR(255),
