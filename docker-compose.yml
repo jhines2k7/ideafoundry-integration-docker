@@ -112,7 +112,7 @@ services:
     depends_on:
       - kafka
       - mysql
-    image: ideafoundry/create-airtable-person-service:1.25.11-SNAPSHOT
+    image: ideafoundry/create-airtable-person-service:1.27.11-SNAPSHOT
     deploy:
       restart_policy:
         condition: on-failure
@@ -145,7 +145,7 @@ services:
         constraints:
           - engine.labels.node.type==mysql
     volumes:
-      - /schemas:/docker-entrypoint-initdb.d
+      - /home/ubuntu/schemas:/docker-entrypoint-initdb.d
       - db_data:/var/lib/mysql
     ports:
       - "3306:3306"
