@@ -40,6 +40,7 @@ case "$subcommand" in
                     ;;
             esac
         done
+
         shift $((OPTIND -1))
 
         TYPE=512mb
@@ -51,6 +52,15 @@ case "$subcommand" in
 
         subcommand=$1; shift  # Remove 'worker' from the argument list
         case "$subcommand" in
+            "" )
+                echo "Usage: colony worker COMMAND"
+                    echo "    create    Create a worker node"
+                    echo "    add       Adds worker node to swarm"
+                    echo "    stop      Stops worker node"
+                    echo "    rm        Removes worker node"
+                    echo "    start     Starts worker node"
+                    exit 0
+                    ;;
             create )
                 while getopts ":ht:l:d:-:" opt; do
                     case ${opt} in
