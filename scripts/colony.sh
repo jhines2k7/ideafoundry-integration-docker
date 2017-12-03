@@ -52,7 +52,7 @@ case "$subcommand" in
         subcommand=$1; shift  # Remove 'worker' from the argument list
         case "$subcommand" in
             create )
-                while getopts ":ht:l:-:" opt; do
+                while getopts ":ht:l:d:-:" opt; do
                     case ${opt} in
                         -)
                             case "${OPTARG}" in
@@ -65,7 +65,16 @@ case "$subcommand" in
                                     val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
                                     echo "Parsing option: '--${OPTARG}', value: '${val}'" >&2;
                                     LABEL=${val} >&2
-                                    LABEL=${val} >&2
+                                    ;;
+                                num_workers)
+                                    val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
+                                    echo "Parsing option: '--${OPTARG}', value: '${val}'" >&2;
+                                    NUM_WORKERS=${val} >&2
+                                    ;;
+                                deployment)
+                                    val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
+                                    echo "Parsing option: '--${OPTARG}', value: '${val}'" >&2;
+                                    DEPLOYMENT=${val} >&2
                                     ;;
                                 *)
                                     if [ "$OPTERR" = 1 ] && [ "${optspec:0:1}" != ":" ]; then
@@ -92,10 +101,16 @@ case "$subcommand" in
                             echo "Parsing option: '-${opt}', value: '${OPTARG}'" >&2;
                             LABEL=${OPTARG} >&2
                             ;;
+                        d )
+                            echo "Parsing option: '-${opt}', value: '${OPTARG}'" >&2;
+                            DEPLOYMENT=${OPTARG} >&2
+                            ;;
                     esac
                 done
                 echo "TYPE: $TYPE"
                 echo "LABEL: $LABEL"
+                echo "NUM_WORKERS: $NUM_WORKERS"
+                echo "DEPLOYMENT: $DEPLOYMENT"
                 echo "Calling create function..."
                 ;;
         esac
