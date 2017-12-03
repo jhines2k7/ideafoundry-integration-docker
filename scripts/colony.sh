@@ -62,29 +62,81 @@ case "$subcommand" in
                     exit 0
                     ;;
             create )
-                while getopts ":ht:l:d:-:" opt; do
+                while getopts ":ht:l:d:p:e:-:" opt; do
                     case ${opt} in
                         -)
                             case "${OPTARG}" in
                                 type)
                                     val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
+
+                                    if [[ -z "${val}" ]]
+                                    then
+                                        echo "Option --${OPTARG} requires an argument." >&2
+                                        exit 1
+                                    fi
+
                                     echo "Parsing option: '--${OPTARG}', value: '${val}'" >&2;
                                     TYPE=${val} >&2
                                     ;;
                                 label)
                                     val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
+
+                                    if [[ -z "${val}" ]]
+                                    then
+                                        echo "Option --${OPTARG} requires an argument." >&2
+                                        exit 1
+                                    fi
+
                                     echo "Parsing option: '--${OPTARG}', value: '${val}'" >&2;
                                     LABEL=${val} >&2
                                     ;;
                                 num_workers)
                                     val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
+
+                                    if [[ -z "${val}" ]]
+                                    then
+                                        echo "Option --${OPTARG} requires an argument." >&2
+                                        exit 1
+                                    fi
+
                                     echo "Parsing option: '--${OPTARG}', value: '${val}'" >&2;
                                     NUM_WORKERS=${val} >&2
                                     ;;
                                 deployment)
                                     val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
+
+                                    if [[ -z "${val}" ]]
+                                    then
+                                        echo "Option --${OPTARG} requires an argument." >&2
+                                        exit 1
+                                    fi
+
                                     echo "Parsing option: '--${OPTARG}', value: '${val}'" >&2;
                                     DEPLOYMENT=${val} >&2
+                                    ;;
+                                provider)
+                                    val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
+
+                                    if [[ -z "${val}" ]]
+                                    then
+                                        echo "Option --${OPTARG} requires an argument." >&2
+                                        exit 1
+                                    fi
+
+                                    echo "Parsing option: '--${OPTARG}', value: '${val}'" >&2;
+                                    provider=${val} >&2
+                                    ;;
+                                environment)
+                                    val="${!OPTIND}"; OPTIND=$(( $OPTIND + 1 ))
+
+                                    if [[ -z "${val}" ]]
+                                    then
+                                        echo "Option --${OPTARG} requires an argument." >&2
+                                        exit 1
+                                    fi
+
+                                    echo "Parsing option: '--${OPTARG}', value: '${val}'" >&2;
+                                    ENV=${val} >&2
                                     ;;
                                 *)
                                     if [ "$OPTERR" = 1 ] && [ "${optspec:0:1}" != ":" ]; then
@@ -115,12 +167,26 @@ case "$subcommand" in
                             echo "Parsing option: '-${opt}', value: '${OPTARG}'" >&2;
                             DEPLOYMENT=${OPTARG} >&2
                             ;;
+                        p )
+                            echo "Parsing option: '-${opt}', value: '${OPTARG}'" >&2;
+                            PROVIDER=${OPTARG} >&2
+                            ;;
+                        e )
+                            echo "Parsing option: '-${opt}', value: '${OPTARG}'" >&2;
+                            ENV=${OPTARG} >&2
+                            ;;
+                        :)
+                            echo "Option -$OPTARG requires an argument." >&2
+                            exit 1
+                            ;;
                     esac
                 done
                 echo "TYPE: $TYPE"
                 echo "LABEL: $LABEL"
                 echo "NUM_WORKERS: $NUM_WORKERS"
                 echo "DEPLOYMENT: $DEPLOYMENT"
+                echo "PROVIDER: $PROVIDER"
+                echo "ENV: $ENV"
                 echo "Calling create function..."
                 ;;
         esac
