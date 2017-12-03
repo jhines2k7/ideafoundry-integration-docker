@@ -43,7 +43,7 @@ case "$subcommand" in
         shift $((OPTIND -1))
 
         TYPE=512mb
-        LABEL=""
+        LABEL=
         NUM_WORKERS=1
         PROVIDER=aws
         ENV=dev
@@ -70,17 +70,17 @@ case "$subcommand" in
                         h )
                             echo "Usage: colony worker create [OPTIONS]"
                             echo -e "\nOptions:"
-                            echo "          --type string       TODO: add description"
-                            echo "          --label string      TODO: add description"
-                            echo "          --num_workers int   TODO: add description"
-                            echo "          --provider string   TODO: add description"
-                            echo "          --env string        TODO: add description"
-                            echo "          --deployment string TODO: add description"
+                            echo "          -t, --type string       TODO: add description"
+                            echo "          -l, --label string      TODO: add description"
+                            echo "              --num_workers int   TODO: add description"
+                            echo "          -p, --provider string   TODO: add description"
+                            echo "          -e, --env string        TODO: add description"
+                            echo "          -d, --deployment string TODO: add description"
                             exit 0
                             ;;
                         t )
-                            echo "Type triggered"
-                            TYPE=$OPTARG >&2
+                            echo "Parsing option: '-${opt}', value: '${OPTARG}'" >&2;
+                            TYPE=${OPTARG} >&2
                             ;;
                     esac
                 done
