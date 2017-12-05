@@ -198,8 +198,13 @@ bash ./remove-all-nodes.sh
 create_manager_node
 init_swarm_manager
 copy_compose_file
-create_kafka_node
-create_mysql_node
+
+echo "======> creating kafka and mysql nodes ..."
+create_kafka_node &
+create_mysql_node &
+wait
+echo "======> finished creating kafka and mysql nodes ..."
+
 create_person_worker_nodes $INSTANCE_COUNT
 create_1gb_worker_nodes 4
 

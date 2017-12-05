@@ -159,10 +159,13 @@ then
 
     for i in $(eval echo "{1..$num_workers}")      
         do
-            create_node $node_type
+            create_node $node_type &
 
             ((index++))                
     done
+
+    wait
+    echo "======> Finished creating $num_workers nodes. Check $failed_installs_file for any nodes that may not have been created properly"
 else
     echo "======> Creating $num_workers node"
     create_node $node_type
