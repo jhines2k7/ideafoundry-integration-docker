@@ -20,6 +20,21 @@ CREATE TABLE person (
 )
   ENGINE = InnoDB;
 
+CREATE TABLE occurrence (
+  id           INT(11) NOT NULL PRIMARY KEY,
+  occasion_id  VARCHAR(255),
+  duration     INT(11),
+  closes_at    VARCHAR(255),
+  created_at   VARCHAR(255),
+  ends_at      VARCHAR(255),
+  is_active    TINYINT(1),
+  schedule_id  VARCHAR(255),
+  starts_at    VARCHAR(255),
+  time_slot_id VARCHAR(255),
+  updated_at   VARCHAR(255)
+)
+  ENGINE = InnoDB;
+
 CREATE TABLE occasion_order (
   id                  INT(11) NOT NULL PRIMARY KEY,
   occasion_id         VARCHAR(255),
@@ -44,6 +59,9 @@ CREATE TABLE occasion_order (
   updated_at          VARCHAR(255),
   FOREIGN KEY fk_person_id(person_id) REFERENCES person (id)
     ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  FOREIGN KEY fk_occurrence_id(occurrence_id) REFERENCES occurrence (id)
+    ON UPDATE CASCADE
     ON DELETE RESTRICT
 )
   ENGINE = InnoDB;
@@ -55,24 +73,6 @@ CREATE TABLE question (
   answer      LONGTEXT,
   created_at  VARCHAR(255),
   updated_at  VARCHAR(255)
-)
-  ENGINE = InnoDB;
-
-CREATE TABLE occurrence (
-  id           INT(11) NOT NULL PRIMARY KEY,
-  occasion_id  VARCHAR(255),
-  duration     INT(11),
-  closes_at    VARCHAR(255),
-  created_at   VARCHAR(255),
-  ends_at      VARCHAR(255),
-  is_active    TINYINT(1),
-  schedule_id  VARCHAR(255),
-  starts_at    VARCHAR(255),
-  time_slot_id VARCHAR(255),
-  updated_at   VARCHAR(255),
-  FOREIGN KEY fk_order_id(order_id) REFERENCES occasion_order (id)
-    ON UPDATE CASCADE
-    ON DELETE RESTRICT
 )
   ENGINE = InnoDB;
 

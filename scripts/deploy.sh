@@ -2,6 +2,9 @@
 
 failed_installs_file="./failed_installs.txt"
 
+ENV=$1
+PROVIDER=$2
+
 function get_ip {
     echo $(docker-machine ip $1)
 }
@@ -147,8 +150,13 @@ function deploy_stack {
         directory=/home/ubuntu/
     fi
 
+    if [ "$ENV" = "dev" ]
+    then
+        docker_file="docker-compose.dev.yml"
+    fi
+        
     docker-machine ssh $manager_machine sudo docker login --username=$DOCKER_HUB_USER --password=$DOCKER_HUB_PASSWORD
-#
+    
 #    docker-machine ssh $manager_machine \
 #        sudo docker stack deploy \
 #        --compose-file $directory$docker_file \
@@ -165,38 +173,14 @@ function copy_compose_file {
         directory=/home/ubuntu
     fi
 
+    if [ "$ENV" = "dev" ]
+    then
+        docker_file="../docker-compose.dev.yml"
+    fi
+
     echo "======> copying compose file to manager node ..."
     
     docker-machine scp $docker_file $(get_manager_machine_name):$directory
-}
-
-function generate_compose_file {
-    echo "======> generating compose file ..."
-
-    if [ "$EXCLUDED" != "none" ]
-    then
-        IFS=', ' read -r -a excludes_array <<< "$EXCLUDED"
-
-        ea=" ${excludes_array[*]} "
-
-        docker-compose \
-
-        for service in ${SERVICES[@]}; do
-            -f docker-compose.yml
-        done
-
-        config \
-        > ../docker-compose.yml
-
-        return 0;
-    fi
-
-    if [ "$INCLUDED" != "*" ]
-    then
-        echo "Including all"
-
-        return 0;
-    fi
 }
 
 function create_512mb_worker_nodes {
@@ -213,7 +197,6 @@ bash ./remove-all-nodes.sh
 
 create_manager_node
 init_swarm_manager
-generate_compose_file
 copy_compose_file
 create_kafka_node
 create_mysql_node
