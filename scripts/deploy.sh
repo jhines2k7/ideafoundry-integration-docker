@@ -137,31 +137,6 @@ function init_swarm_manager {
 
     echo "Swarm manager machine name: $manager_machine"
     docker-machine ssh $manager_machine sudo docker swarm init --advertise-addr $ip
-}       
-
-function deploy_stack {
-    local manager_machine=$(get_manager_machine_name)
-
-    local docker_file="docker-compose.yml"
-    local directory=/
-
-    if [ "$PROVIDER" = "aws" ]
-    then
-        directory=/home/ubuntu/
-    fi
-
-    if [ "$ENV" = "dev" ]
-    then
-        docker_file="docker-compose.dev.yml"
-    fi
-        
-    docker-machine ssh $manager_machine sudo docker login --username=$DOCKER_HUB_USER --password=$DOCKER_HUB_PASSWORD
-    
-#    docker-machine ssh $manager_machine \
-#        sudo docker stack deploy \
-#        --compose-file $directory$docker_file \
-#        --with-registry-auth \
-#        integration
 }
 
 function copy_compose_file {
@@ -216,7 +191,5 @@ fi
 bash ./remove-nodes-with-failed-docker-installations.sh
 
 set_manager_node_env_variables
-
-deploy_stack
 
 docker-machine ls
