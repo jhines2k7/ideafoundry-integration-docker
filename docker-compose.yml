@@ -145,7 +145,8 @@ services:
         constraints:
           - engine.labels.node.type==mysql
     volumes:
-      - /schemas:/docker-entrypoint-initdb.d
+#      - /schemas:/docker-entrypoint-initdb.d
+      - /ubuntu/home/schemas:/docker-entrypoint-initdb.d
       - db_data:/var/lib/mysql
     ports:
       - "3306:3306"
