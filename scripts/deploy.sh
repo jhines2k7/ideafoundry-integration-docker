@@ -180,8 +180,10 @@ create_mysql_node &
 wait
 echo "======> finished creating kafka and mysql nodes ..."
 
+echo "======> creating createperson and 1gb worker nodes ..."
 create_person_worker_nodes $INSTANCE_COUNT
 create_1gb_worker_nodes 4
+echo "======> finished creating createperson and 1gb worker nodes ..."
 
 if [ "$ENV" = "dev" ]
 then
