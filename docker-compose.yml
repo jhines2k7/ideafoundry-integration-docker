@@ -27,7 +27,7 @@ services:
   reconcilepersonsink:
     image: ideafoundry/reconcile-person:1.2.0
     depends_on:
-      - kafka
+      - legacydataexport
     deploy:
       restart_policy:
         condition: on-failure
@@ -48,7 +48,7 @@ services:
   reconcileoccurrencesink:
     image: ideafoundry/reconcile-occurrence:1.2.0
     depends_on:
-      - kafka
+      - legacydataexport
     deploy:
       restart_policy:
         condition: on-failure
@@ -69,7 +69,7 @@ services:
   reconcileordersink:
     image: ideafoundry/reconcile-order:1.2.0
     depends_on:
-      - kafka
+      - legacydataexport
     deploy:
       restart_policy:
         condition: on-failure
@@ -90,7 +90,7 @@ services:
   reconcilequestionsink:
     image: ideafoundry/reconcile-question:1.2.0
     depends_on:
-      - kafka
+      - legacydataexport
     deploy:
       restart_policy:
         condition: on-failure
