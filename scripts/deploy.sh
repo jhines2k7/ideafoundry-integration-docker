@@ -148,6 +148,11 @@ function copy_compose_file {
         directory=/home/ubuntu
     fi
 
+    if [ "$ENV" = "test" ]
+    then
+        docker_file="../docker-compose.test.yml"
+    fi
+
     if [ "$ENV" = "dev" ]
     then
         docker_file="../docker-compose.dev.yml"

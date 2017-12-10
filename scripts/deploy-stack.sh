@@ -18,6 +18,11 @@ then
     docker_file="docker-compose.dev.yml"
 fi
 
+if [ "$ENV" = "test" ]
+then
+    docker_file="docker-compose.dev.yml"
+fi
+
 docker-machine ssh $manager_machine sudo docker login --username=$DOCKER_HUB_USER --password=$DOCKER_HUB_PASSWORD
 
 docker-machine ssh $manager_machine \

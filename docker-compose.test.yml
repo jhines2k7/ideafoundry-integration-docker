@@ -5,7 +5,8 @@ services:
     depends_on:
       - personsink
       - kafka
-    image: ideafoundry/occasion-legacy-data-export-service:1.29.3.RELEASE
+      - mockoccasionapi
+    image: ideafoundry/occasion-legacy-data-export-service:1.29.2-SNAPSHOT
     deploy:
       restart_policy:
         condition: on-failure
@@ -27,7 +28,7 @@ services:
   reconcilepersonsink:
     image: ideafoundry/reconcile-person:1.2.0
     depends_on:
-      - legacydataexport
+      - kafka
     deploy:
       restart_policy:
         condition: on-failure
@@ -48,7 +49,7 @@ services:
   reconcileoccurrencesink:
     image: ideafoundry/reconcile-occurrence:1.2.0
     depends_on:
-      - legacydataexport
+      - kafka
     deploy:
       restart_policy:
         condition: on-failure
@@ -69,7 +70,7 @@ services:
   reconcileordersink:
     image: ideafoundry/reconcile-order:1.2.0
     depends_on:
-      - legacydataexport
+      - kafka
     deploy:
       restart_policy:
         condition: on-failure
@@ -90,7 +91,7 @@ services:
   reconcilequestionsink:
     image: ideafoundry/reconcile-question:1.2.0
     depends_on:
-      - legacydataexport
+      - kafka
     deploy:
       restart_policy:
         condition: on-failure
@@ -112,7 +113,7 @@ services:
     depends_on:
       - kafka
       - mysql
-    image: ideafoundry/create-airtable-person-service:1.27.11.RELEASE
+    image: ideafoundry/create-airtable-person-service:1.25.11-SNAPSHOT
     deploy:
       restart_policy:
         condition: on-failure
