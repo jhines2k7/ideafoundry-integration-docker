@@ -157,9 +157,6 @@ case "$subcommand" in
                             ;;
                         t )
                             echo "Parsing option: '-${opt}', value: '${OPTARG}'" >&2;
-                            TYPE=${OPTARG} >&2
-                            ;;
-                        l )
                             echo "Parsing option: '-${opt}', value: '${OPTARG}'" >&2;
                             LABEL=${OPTARG} >&2
                             ;;
