@@ -5,10 +5,10 @@ while getopts ":h" opt; do
     case ${opt} in
         h | help )
             echo "Usage: colony COMMAND"
-            echo "    colony -h                     Display this help message."
-            echo "    colony worker <operation>     Perform operations on a worker node"
-            echo "    colony service <operation>    Envoke service commands"
-            echo "    colony deploy <operation>     Deploy a swarm composed of worker nodes"
+            echo "    swarmer -h                     Display this help message."
+            echo "    swarmer worker <operation>     Perform operations on a worker node"
+            echo "    swarmer service <operation>    Envoke service commands"
+            echo "    swarmer deploy <operation>     Deploy a swarm composed of worker nodes"
             exit 0
             ;;
         \? )
@@ -19,14 +19,14 @@ while getopts ":h" opt; do
 done
 shift $((OPTIND -1))
 
-subcommand=$1; shift  # Remove 'colony' from the argument list
+subcommand=$1; shift  # Remove 'swarmer' from the argument list
 case "$subcommand" in
     # Parse options to the worker sub command
     worker )
         while getopts ":h" opt; do
             case ${opt} in
                 h | help )
-                    echo "Usage: colony worker COMMAND"
+                    echo "Usage: swarmer worker COMMAND"
                     echo "    create    Create a worker node"
                     echo "    add       Adds worker node to swarm"
                     echo "    stop      Stops worker node"
@@ -53,7 +53,7 @@ case "$subcommand" in
         subcommand=$1; shift  # Remove 'worker' from the argument list
         case "$subcommand" in
             "" )
-                echo "Usage: colony worker COMMAND"
+                echo "Usage: swarmer worker COMMAND"
                     echo "    create    Create a worker node"
                     echo "    add       Adds worker node to swarm"
                     echo "    stop      Stops worker node"
@@ -145,7 +145,7 @@ case "$subcommand" in
                                     ;;
                             esac;;
                         h )
-                            echo "Usage: colony worker create [OPTIONS]"
+                            echo "Usage: swarmer worker create [OPTIONS]"
                             echo -e "\nOptions:"
                             echo "          -t, --type string       TODO: add description"
                             echo "          -l, --label string      TODO: add description"
