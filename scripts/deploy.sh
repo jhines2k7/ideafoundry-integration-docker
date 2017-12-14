@@ -99,12 +99,6 @@ function create_kafka_node {
 
     if [ $result -ne 0 ]
     then
-        echo "There was an error installing docker on the kafka node. The script will now exit."
-        
-        echo "=====> Cleaning up..."
-
-        bash ./remove-all-nodes.sh
-
         exit 1
     fi
 }
@@ -118,13 +112,7 @@ function create_mysql_node {
 
     if [ $result -ne 0 ]
     then
-        echo "There was an error installing docker on the mysql node. The script will now exit."
-        
-        echo "=====> Cleaning up..."
-
-        bash ./remove-all-nodes.sh
-
-        exit 1   
+        exit 1
     fi
 }
 
@@ -182,7 +170,22 @@ copy_compose_file
 echo "======> creating kafka and mysql nodes ..."
 create_kafka_node &
 create_mysql_node &
-wait
+wait %1
+create_kafka_result=$?
+wait %2
+create_mysql_result=$?
+
+if [ $create_kafka_result -ne 0 ] || [ $create_mysql_result -ne 0 ]
+then
+    echo "There was an error installing docker on the mysql or kafka node. The script will now exit."
+
+    echo "=====> Cleaning up..."
+
+    bash ./remove-all-nodes.sh
+
+    exit 1
+fi
+
 echo "======> finished creating kafka and mysql nodes ..."
 
 echo "======> creating createperson and 1gb worker nodes ..."
