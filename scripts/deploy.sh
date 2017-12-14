@@ -134,6 +134,7 @@ function copy_compose_file {
     if [ "$PROVIDER" = "aws" ]
     then
         directory=/home/ubuntu
+        docker_file="../docker-compose.aws.yml"
     fi
 
     if [ "$ENV" = "test" ]
