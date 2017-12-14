@@ -10,6 +10,7 @@ directory=/
 
 if [ "$PROVIDER" = "aws" ]
 then
+    docker_file="docker-compose.aws.yml"
     directory=/home/ubuntu/
 fi
 
