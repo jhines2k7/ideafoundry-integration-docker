@@ -181,10 +181,10 @@ create_manager_node
 init_swarm_manager
 copy_compose_file
 
-echo "======> creating kafka and mysql nodes ..."
-
 if [ "$RECONCILE" = false ]
 then
+    echo "======> creating kafka and mysql nodes ..."
+
     create_kafka_node &
     create_mysql_node &
 
@@ -205,6 +205,8 @@ then
         exit 1
     fi
 else
+    echo "======> creating kafka node ..."
+
     create_kafka_node &
     wait %1
     create_kafka_result=$?
