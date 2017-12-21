@@ -4,6 +4,7 @@ failed_installs_file="./failed_installs.txt"
 
 ENV=$1
 PROVIDER=$2
+RECONCILE=$3
 
 function get_ip {
     echo $(docker-machine ip $1)
@@ -177,15 +178,23 @@ copy_compose_file
 
 echo "======> creating kafka and mysql nodes ..."
 create_kafka_node &
-#create_mysql_node &
 
 wait %1
-create_kafka_result=$?
-#wait %2
-#create_mysql_result=$?
 
-#if [ $create_kafka_result -ne 0 ] || [ $create_mysql_result -ne 0 ]
-if [ $create_kafka_result -ne 0 ]
+create_kafka_result=$?
+
+create_mysql_result=0
+
+if [ "$RECONCILE" = false ]
+then
+    create_mysql_node &
+
+    wait %2
+
+    create_mysql_result=$?
+fi
+
+if [ $create_kafka_result -ne 0 ] || [ $create_mysql_result -ne 0 ]
 then
     echo "There was an error installing docker on the mysql or kafka node. The script will now exit."
 
