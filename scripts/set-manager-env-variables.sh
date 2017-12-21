@@ -24,6 +24,6 @@ echo "=======> setting env variables for manager node"
     echo "DOCKER_HUB_PASSWORD=${19}"
     echo "DIGITALOCEAN_ACCESS_TOKEN=${20}"
     echo "MAX_CREATEPERSON_INSTANCE_COUNT=${21}"
-    echo "IF_OCCASION_RECONCILE=${22}"
-    echo "INSTANCE_COUNT=${23}"
+    echo "INSTANCE_COUNT=${22}"
+    echo "UNPROCESSED_VERIFICATION_CODES_FILE=${23}"
 } | sudo tee -a /etc/environment > /dev/null

@@ -70,7 +70,8 @@ function set_manager_node_env_variables {
        "$DIGITALOCEAN_ACCESS_TOKEN" \
        "$MAX_CREATEPERSON_INSTANCE_COUNT" \
        "$IF_OCCASION_RECONCILE" \
-       "$INSTANCE_COUNT"
+       "$INSTANCE_COUNT" \
+       "$UNPROCESSED_VERIFICATION_CODES_FILE"
 }
 
 #create createperson worker nodes
@@ -176,13 +177,15 @@ copy_compose_file
 
 echo "======> creating kafka and mysql nodes ..."
 create_kafka_node &
-create_mysql_node &
+#create_mysql_node &
+
 wait %1
 create_kafka_result=$?
-wait %2
-create_mysql_result=$?
+#wait %2
+#create_mysql_result=$?
 
-if [ $create_kafka_result -ne 0 ] || [ $create_mysql_result -ne 0 ]
+#if [ $create_kafka_result -ne 0 ] || [ $create_mysql_result -ne 0 ]
+if [ $create_kafka_result -ne 0 ]
 then
     echo "There was an error installing docker on the mysql or kafka node. The script will now exit."
 
