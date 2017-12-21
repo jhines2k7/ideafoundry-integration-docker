@@ -170,7 +170,12 @@ function create_512mb_worker_nodes {
 
 > $failed_installs_file
 
-bash ./remove-all-nodes.sh
+if [ "$RECONCILE" = true ]
+then
+    bash ./remove-all-but-mysql-node.sh
+else
+    bash ./remove-all-nodes.sh
+fi
 
 create_manager_node
 init_swarm_manager
