@@ -220,6 +220,7 @@ function randomDate(start, end) {
 module.exports = () => {
     let customers = [];
     let attributes = [];
+    let occurrences = [];
 
     const data = {
         orders: [],
@@ -242,6 +243,10 @@ module.exports = () => {
 
     for (let i = 1; i <= 4000; i++) {
         customers.push(generateCustomer(i));
+    }
+
+    for(let i = 1; i <= 2000; i++) {
+        occurrences.push(generateOccurence());
     }
 
     for (let i = 1; i <= 6000; i++) {
@@ -268,7 +273,7 @@ module.exports = () => {
             orderWithIncludes.included.push(attribute);
         }
 
-        orderWithIncludes.included.push(generateOccurence());
+        orderWithIncludes.included.push(occurrences[Math.floor(Math.random() * 2000)]);
 
         data.ordersWithIncludes.push(orderWithIncludes);
     }
