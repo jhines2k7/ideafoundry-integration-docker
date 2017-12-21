@@ -6,7 +6,8 @@ function get_manager_machine_name {
 }
 
 function get_ip {
-    echo $(docker-machine ip $1)
+    local manager_machine=$1
+    echo $(docker-machine ip $manager_machine)
 }
 
 function get_worker_token {
