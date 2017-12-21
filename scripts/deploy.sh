@@ -182,32 +182,42 @@ init_swarm_manager
 copy_compose_file
 
 echo "======> creating kafka and mysql nodes ..."
-create_kafka_node &
-
-wait %1
-
-create_kafka_result=$?
-
-create_mysql_result=0
 
 if [ "$RECONCILE" = false ]
 then
+    create_kafka_node &
+    wait %1
+    create_kafka_result=$?
+
     create_mysql_node &
-
     wait %2
-
     create_mysql_result=$?
-fi
 
-if [ $create_kafka_result -ne 0 ] || [ $create_mysql_result -ne 0 ]
-then
-    echo "There was an error installing docker on the mysql or kafka node. The script will now exit."
+    if [ $create_kafka_result -ne 0 ] || [ $create_mysql_result -ne 0 ]
+    then
+        echo "There was an error installing docker on the mysql or kafka node. The script will now exit."
 
-    echo "=====> Cleaning up..."
+        echo "=====> Cleaning up..."
 
-    bash ./remove-all-nodes.sh
+        bash ./remove-all-nodes.sh
 
-    exit 1
+        exit 1
+    fi
+else
+    create_kafka_node &
+    wait %1
+    create_kafka_result=$?
+
+    if [ $create_kafka_result -ne 0 ]
+    then
+        echo "There was an error installing docker on the kafka node. The script will now exit."
+
+        echo "=====> Cleaning up..."
+
+        bash ./remove-all-nodes.sh
+
+        exit 1
+    fi
 fi
 
 echo "======> finished creating kafka and mysql nodes ..."
