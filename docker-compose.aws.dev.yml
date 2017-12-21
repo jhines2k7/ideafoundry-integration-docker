@@ -5,8 +5,7 @@ services:
     depends_on:
       - personsink
       - kafka
-      - mockoccasionapi
-    image: ideafoundry/occasion-legacy-data-export-service:1.29.2-SNAPSHOT
+    image: ideafoundry/occasion-legacy-data-export-service:1.29.3.RELEASE
     deploy:
       restart_policy:
         condition: on-failure
@@ -25,30 +24,6 @@ services:
       - IF_OCCASION_CREDS=${IF_OCCASION_CREDS}
       - IF_OCCASION_EXPORT_URL=${IF_OCCASION_EXPORT_URL}
       - IF_OCCASION_RECONCILE=${IF_OCCASION_RECONCILE}
-  personsink:
-    depends_on:
-      - kafka
-      - mysql
-    image: ideafoundry/create-airtable-person-service:1.25.11-SNAPSHOT
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
-      replicas: ${INSTANCE_COUNT}
-      placement:
-        constraints:
-          - engine.labels.node.type==createperson
-    environment:
-      - IF_OCCASION_RECONCILE=${IF_OCCASION_RECONCILE}
-      - MAX_CREATEPERSON_INSTANCE_COUNT=${MAX_CREATEPERSON_INSTANCE_COUNT}
-      - DB_HOST=${DB_HOST}
-      - IF_DB_PORT=${IF_DB_PORT}
-      - IF_DB_USERNAME=${IF_DB_USERNAME}
-      - IF_DB_PASSWORD=${IF_DB_PASSWORD}
-      - KAFKA_HOST=${KAFKA_HOST}
-      - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
   mysql:
     image: mysql:8.0.1
     deploy:
@@ -62,7 +37,7 @@ services:
         constraints:
           - engine.labels.node.type==mysql
     volumes:
-      - /schemas:/docker-entrypoint-initdb.d
+      - /home/ubuntu/schemas:/docker-entrypoint-initdb.d
       - db_data:/var/lib/mysql
     ports:
       - "3306:3306"

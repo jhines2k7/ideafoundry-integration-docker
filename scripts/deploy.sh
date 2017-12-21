@@ -131,10 +131,16 @@ function copy_compose_file {
     local docker_file="../docker-compose.yml"
     local directory=/
 
-    if [ "$PROVIDER" = "aws" ]
+    if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "dev" ]
     then
         directory=/home/ubuntu
-        docker_file="../docker-compose.aws.yml"
+        docker_file="../docker-compose.aws.dev.yml"
+    fi
+
+    if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "test" ]
+    then
+        directory=/home/ubuntu
+        docker_file="../docker-compose.aws.test.yml"
     fi
 
     if [ "$ENV" = "test" ]

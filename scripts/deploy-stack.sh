@@ -8,10 +8,16 @@ manager_machine=$(docker-machine ls --format "{{.Name}}" | grep 'manager')
 docker_file="docker-compose.yml"
 directory=/
 
-if [ "$PROVIDER" = "aws" ]
+if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "dev" ]
 then
-    docker_file="docker-compose.aws.yml"
-    directory=/home/ubuntu/
+    directory=/home/ubuntu
+    docker_file="../docker-compose.aws.dev.yml"
+fi
+
+if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "test" ]
+then
+    directory=/home/ubuntu
+    docker_file="../docker-compose.aws.test.yml"
 fi
 
 if [ "$ENV" = "dev" ]
