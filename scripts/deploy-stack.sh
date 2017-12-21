@@ -10,22 +10,22 @@ directory=/
 
 if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "dev" ]
 then
-    directory=/home/ubuntu
-    docker_file="../docker-compose.aws.dev.yml"
+    directory=/home/ubuntu/
+    docker_file="docker-compose.aws.dev.yml"
 fi
 
 if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "test" ]
 then
-    directory=/home/ubuntu
-    docker_file="../docker-compose.aws.test.yml"
+    directory=/home/ubuntu/
+    docker_file="docker-compose.aws.test.yml"
 fi
 
-if [ "$ENV" = "dev" ]
+if [ "$PROVIDER" != "aws" ] && [ "$ENV" = "dev" ]
 then
     docker_file="docker-compose.dev.yml"
 fi
 
-if [ "$ENV" = "test" ]
+if [ "$PROVIDER" != "aws" ] && [ "$ENV" = "test" ]
 then
     docker_file="docker-compose.dev.yml"
 fi
