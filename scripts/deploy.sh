@@ -186,10 +186,11 @@ echo "======> creating kafka and mysql nodes ..."
 if [ "$RECONCILE" = false ]
 then
     create_kafka_node &
+    create_mysql_node &
+
     wait %1
     create_kafka_result=$?
 
-    create_mysql_node &
     wait %2
     create_mysql_result=$?
 
