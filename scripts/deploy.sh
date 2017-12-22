@@ -70,7 +70,7 @@ function set_manager_node_env_variables {
        "$DOCKER_HUB_PASSWORD" \
        "$DIGITALOCEAN_ACCESS_TOKEN" \
        "$MAX_CREATEPERSON_INSTANCE_COUNT" \
-       "$IF_OCCASION_RECONCILE" \
+       "$RECONCILE" \
        "$INSTANCE_COUNT" \
        "$UNPROCESSED_VERIFICATION_CODES_FILE"
 }
