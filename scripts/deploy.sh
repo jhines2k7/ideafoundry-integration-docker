@@ -142,9 +142,9 @@ function copy_compose_file {
         docker_file="../docker-compose.aws.test.yml"
     fi
 
-    if [ "$PROVIDER" != "aws" ] && [ "$ENV" = "test" ]
+    if [ "$PROVIDER" != "aws" ] && [ "$ENV" = "staging" ]
     then
-        docker_file="../docker-compose.test.yml"
+        docker_file="../docker-compose.staging.yml"
     fi
 
     if [ "$PROVIDER" != "aws" ] && [ "$ENV" = "dev" ]

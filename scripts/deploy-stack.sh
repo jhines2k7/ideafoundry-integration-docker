@@ -22,9 +22,9 @@ then
     docker_file="docker-compose.dev.yml"
 fi
 
-if [ "$PROVIDER" != "aws" ] && [ "$ENV" = "test" ]
+if [ "$PROVIDER" != "aws" ] && [ "$ENV" = "staging" ]
 then
-    docker_file="docker-compose.test.yml"
+    docker_file="docker-compose.staging.yml"
 fi
 
 docker-machine ssh $manager_machine sudo docker login --username=$DOCKER_HUB_USER --password=$DOCKER_HUB_PASSWORD

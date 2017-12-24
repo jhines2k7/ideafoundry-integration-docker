@@ -5,8 +5,7 @@ services:
     depends_on:
       - personsink
       - kafka
-      - mockoccasionapi
-    image: ideafoundry/occasion-legacy-data-export-service:1.29.2-SNAPSHOT
+    image: ideafoundry/occasion-legacy-data-export-service:1.34.4.RELEASE
     deploy:
       restart_policy:
         condition: on-failure
@@ -25,11 +24,13 @@ services:
       - IF_OCCASION_CREDS=${IF_OCCASION_CREDS}
       - IF_OCCASION_EXPORT_URL=${IF_OCCASION_EXPORT_URL}
       - IF_OCCASION_RECONCILE=${IF_OCCASION_RECONCILE}
+      - UNPROCESSED_ORDER_IDS_FILE=${UNPROCESSED_ORDER_IDS_FILE}
+      - ENV=${ENV}
   personsink:
     depends_on:
       - kafka
       - mysql
-    image: ideafoundry/create-airtable-person-service:1.25.11-SNAPSHOT
+    image: ideafoundry/create-airtable-person-service:1.27.11.RELEASE
     deploy:
       restart_policy:
         condition: on-failure
