@@ -26,35 +26,35 @@ services:
       - IF_OCCASION_RECONCILE=${IF_OCCASION_RECONCILE}
       - UNPROCESSED_VERIFICATION_CODES_FILE=${UNPROCESSED_VERIFICATION_CODES_FILE}
       - ENV=${ENV}
-#  personsink:
-#    depends_on:
-#      - kafka
-#      - mysql
-#    image: ideafoundry/create-airtable-person-service:1.27.11-SNAPSHOT
-#    deploy:
-#      restart_policy:
-#        condition: on-failure
-#        delay: 5s
-#        max_attempts: 3
-#        window: 120s
-#      replicas: ${INSTANCE_COUNT}
-#      placement:
-#        constraints:
-#          - engine.labels.node.type==createperson
+  personsink:
+    depends_on:
+      - kafka
+      - mysql
+    image: ideafoundry/create-airtable-person-service:1.27.11-SNAPSHOT
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      replicas: ${INSTANCE_COUNT}
+      placement:
+        constraints:
+          - engine.labels.node.type==createperson
   mockoccasionapi:
-      image: ideafoundry/mock-occasion-api:2.5.3
-      depends_on:
-        - kafka
-      deploy:
-        restart_policy:
-          condition: on-failure
-          delay: 5s
-          max_attempts: 3
-          window: 120s
-        replicas: 1
-        placement:
-          constraints:
-            - engine.labels.node.type==512mb
+    image: ideafoundry/mock-occasion-api:2.5.3
+    depends_on:
+      - kafka
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      replicas: 1
+      placement:
+        constraints:
+          - engine.labels.node.type==512mb
   mysql:
     image: mysql:8.0.1
     deploy:
