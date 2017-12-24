@@ -2,10 +2,6 @@
 
 failed_installs_file="./failed_installs.txt"
 
-ENV=$1
-PROVIDER=$2
-RECONCILE=$3
-
 function get_ip {
     echo $(docker-machine ip $1)
 }
