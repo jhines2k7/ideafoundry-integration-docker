@@ -27,4 +27,5 @@ echo "=======> setting env variables for manager node"
     echo "IF_OCCASION_RECONCILE=${22}"
     echo "INSTANCE_COUNT=${23}"
     echo "UNPROCESSED_VERIFICATION_CODES_FILE=${24}"
+    echo "ENV=${25}"
 } | sudo tee -a /etc/environment > /dev/null

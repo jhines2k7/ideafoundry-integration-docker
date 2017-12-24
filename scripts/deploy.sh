@@ -72,7 +72,8 @@ function set_manager_node_env_variables {
        "$MAX_CREATEPERSON_INSTANCE_COUNT" \
        "$RECONCILE" \
        "$INSTANCE_COUNT" \
-       "$UNPROCESSED_VERIFICATION_CODES_FILE"
+       "$UNPROCESSED_VERIFICATION_CODES_FILE" \
+       "$ENV"
 }
 
 #create createperson worker nodes

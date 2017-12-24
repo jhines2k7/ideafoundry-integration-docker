@@ -5,7 +5,7 @@ services:
     depends_on:
       - personsink
       - kafka
-    image: ideafoundry/occasion-legacy-data-export-service:1.32.4-SNAPSHOT
+    image: ideafoundry/occasion-legacy-data-export-service:1.33.4-SNAPSHOT
     deploy:
       restart_policy:
         condition: on-failure
@@ -25,6 +25,7 @@ services:
       - IF_OCCASION_EXPORT_URL=${IF_OCCASION_EXPORT_URL}
       - IF_OCCASION_RECONCILE=${IF_OCCASION_RECONCILE}
       - UNPROCESSED_VERIFICATION_CODES_FILE=${UNPROCESSED_VERIFICATION_CODES_FILE}
+      - ENV=${ENV}
   personsink:
     depends_on:
       - kafka
@@ -41,7 +42,7 @@ services:
         constraints:
           - engine.labels.node.type==createperson
   mockoccasionapi:
-      image: ideafoundry/mock-occasion-api:2.4.3
+      image: ideafoundry/mock-occasion-api:2.5.3
       depends_on:
         - kafka
       deploy:
