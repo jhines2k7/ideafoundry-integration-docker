@@ -236,8 +236,6 @@ fi
 wait
 echo "======> finished creating worker nodes ..."
 
-
-
 bash ./remove-nodes-with-failed-docker-installations.sh
 
 set_manager_node_env_variables
