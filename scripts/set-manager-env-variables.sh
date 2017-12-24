@@ -26,6 +26,6 @@ echo "=======> setting env variables for manager node"
     echo "MAX_CREATEPERSON_INSTANCE_COUNT=${21}"
     echo "IF_OCCASION_RECONCILE=${22}"
     echo "INSTANCE_COUNT=${23}"
-    echo "UNPROCESSED_VERIFICATION_CODES_FILE=${24}"
+    echo "UNPROCESSED_ORDER_IDS_FILE=${24}"
     echo "ENV=${25}"
 } | sudo tee -a /etc/environment > /dev/null
