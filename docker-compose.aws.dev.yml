@@ -26,21 +26,21 @@ services:
       - IF_OCCASION_RECONCILE=${IF_OCCASION_RECONCILE}
       - UNPROCESSED_VERIFICATION_CODES_FILE=${UNPROCESSED_VERIFICATION_CODES_FILE}
       - ENV=${ENV}
-  personsink:
-    depends_on:
-      - kafka
-      - mysql
-    image: ideafoundry/create-airtable-person-service:1.27.11-SNAPSHOT
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
-      replicas: ${INSTANCE_COUNT}
-      placement:
-        constraints:
-          - engine.labels.node.type==createperson
+#  personsink:
+#    depends_on:
+#      - kafka
+#      - mysql
+#    image: ideafoundry/create-airtable-person-service:1.27.11-SNAPSHOT
+#    deploy:
+#      restart_policy:
+#        condition: on-failure
+#        delay: 5s
+#        max_attempts: 3
+#        window: 120s
+#      replicas: ${INSTANCE_COUNT}
+#      placement:
+#        constraints:
+#          - engine.labels.node.type==createperson
   mockoccasionapi:
       image: ideafoundry/mock-occasion-api:2.5.3
       depends_on:
@@ -79,6 +79,8 @@ services:
       - MYSQL_PASSWORD=${IF_DB_PASSWORD}
   zookeeper:
     image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
     deploy:
       restart_policy:
         condition: on-failure
@@ -93,6 +95,8 @@ services:
     depends_on:
       - zookeeper
     image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
     deploy:
       restart_policy:
         condition: on-failure
