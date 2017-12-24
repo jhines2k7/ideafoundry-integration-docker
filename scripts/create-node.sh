@@ -3,8 +3,6 @@
 failed_installs_file="./failed_installs.txt"
 node_type=$1
 num_workers=$2
-ENV=$3
-PROVIDER=$4
 
 function get_ip {
     echo $(docker-machine ip $1)
