@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-ENV=$1
-PROVIDER=$2
-
 manager_machine=$(docker-machine ls --format "{{.Name}}" | grep 'manager')
 
 docker_file="docker-compose.yml"
