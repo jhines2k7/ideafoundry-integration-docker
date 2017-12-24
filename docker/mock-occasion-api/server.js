@@ -10,11 +10,16 @@ const orders = mocked.orders
 const ordersWithIncludes = mocked.ordersWithIncludes;
 
 server.get('/orders/:id', (req, res) => {
-    res.jsonp(ordersWithIncludes.find((order) => {
+    let order = ordersWithIncludes.find((order) => {
         "use strict";
 
         return order.data[0].id === req.params.id;
-    }));
+    });
+
+    res.jsonp({
+        data: order.data[0],
+        included: order.included
+    });
 });
 
 // Add custom routes before JSON Server router
