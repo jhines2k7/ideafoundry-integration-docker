@@ -3,6 +3,12 @@ let padStart = require('string.prototype.padstart');
 
 padStart.shim();
 
+const NUM_ORDERS = 12000;
+const NUM_OCCURRENCES = 3000;
+const NUM_CUSTOMERS = 6000;
+const NUM_QUESTIONS = 30;
+const NUM_ANSWERS = 100;
+
 function generateOccurence() {
     let date = randomDate(new Date(2014, 0, 1), new Date());
     let occurrenceId = randomString(8, '0123456789abcdefghijklmnopqrstuvwxyz');
@@ -45,7 +51,7 @@ function generateAnswers() {
 
     let answers = [];
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < NUM_ANSWERS; i++) {
         answers.push(faker.hacker.phrase());
     }
 
@@ -57,7 +63,7 @@ function generateQuestions() {
 
     let questions = [];
 
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < NUM_QUESTIONS; i++) {
         questions.push(faker.hacker.phrase());
     }
 
@@ -241,16 +247,16 @@ module.exports = () => {
         attributes.push(generateAttributeValue(question, answer));
     }
 
-    for (let i = 1; i <= 4000; i++) {
+    for (let i = 1; i <= NUM_CUSTOMERS; i++) {
         customers.push(generateCustomer(i));
     }
 
-    for(let i = 1; i <= 2000; i++) {
+    for (let i = 1; i <= NUM_OCCURRENCES; i++) {
         occurrences.push(generateOccurence());
     }
 
-    for (let i = 1; i <= 6000; i++) {
-        let customer = customers[Math.floor(Math.random() * 4000)];
+    for (let i = 1; i <= NUM_ORDERS; i++) {
+        let customer = customers[Math.floor(Math.random() * NUM_CUSTOMERS)];
 
         let order = generateOrder(customer, i);
 
@@ -273,7 +279,7 @@ module.exports = () => {
             orderWithIncludes.included.push(attribute);
         }
 
-        orderWithIncludes.included.push(occurrences[Math.floor(Math.random() * 2000)]);
+        orderWithIncludes.included.push(occurrences[Math.floor(Math.random() * NUM_OCCURRENCES)]);
 
         data.ordersWithIncludes.push(orderWithIncludes);
     }

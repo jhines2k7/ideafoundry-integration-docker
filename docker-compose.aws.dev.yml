@@ -43,7 +43,7 @@ services:
         constraints:
           - engine.labels.node.type==createperson
   mockoccasionapi:
-    image: ideafoundry/mock-occasion-api:2.5.4
+    image: ideafoundry/mock-occasion-api:2.6.4
     depends_on:
       - kafka
     deploy:
