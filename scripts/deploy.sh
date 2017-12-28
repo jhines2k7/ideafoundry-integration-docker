@@ -69,7 +69,8 @@ function set_manager_node_env_variables {
        "$RECONCILE" \
        "$INSTANCE_COUNT" \
        "$UNPROCESSED_ORDER_IDS_FILE" \
-       "$ENV"
+       "$ENV" \
+       "$PERSONSINK_REPLICAS"
 }
 
 #create createperson worker nodes

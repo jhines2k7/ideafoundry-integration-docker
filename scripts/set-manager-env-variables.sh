@@ -28,4 +28,5 @@ echo "=======> setting env variables for manager node"
     echo "INSTANCE_COUNT=${23}"
     echo "UNPROCESSED_ORDER_IDS_FILE=${24}"
     echo "ENV=${25}"
+    echo "PERSONSINK_REPLICAS=${26}"
 } | sudo tee -a /etc/environment > /dev/null
