@@ -6,7 +6,7 @@ const middlewares = jsonServer.defaults();
 let mockData = require('./mockData');
 
 const mocked = mockData();
-const orders = mocked.orders
+const orders = mocked.orders;
 const ordersWithIncludes = mocked.ordersWithIncludes;
 
 server.get('/orders/:id', (req, res) => {
@@ -33,7 +33,7 @@ server.get('/orders', (req, res) => {
             return order.data[0].attributes.verification_code === req.query.filter.verification_code;
         });
 
-    } else if(req.query.page) {
+    } else if (req.query.page) {
         let pageNum = parseInt(req.query.page.number);
         let numOrdersPerPage = parseInt(req.query.page.size);
 
