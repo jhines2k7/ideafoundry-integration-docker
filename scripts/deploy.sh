@@ -70,7 +70,8 @@ function set_manager_node_env_variables {
        "$INSTANCE_COUNT" \
        "$UNPROCESSED_ORDER_IDS_FILE" \
        "$ENV" \
-       "$PERSONSINK_REPLICAS"
+       "$PERSONSINK_REPLICAS" \
+       "$PAGE_SIZE"
 }
 
 #create createperson worker nodes

@@ -29,4 +29,5 @@ echo "=======> setting env variables for manager node"
     echo "UNPROCESSED_ORDER_IDS_FILE=${24}"
     echo "ENV=${25}"
     echo "PERSONSINK_REPLICAS=${26}"
+    echo "PAGE_SIZE=${27}"
 } | sudo tee -a /etc/environment > /dev/null

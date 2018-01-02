@@ -27,6 +27,7 @@ services:
       - IF_OCCASION_RECONCILE=${IF_OCCASION_RECONCILE}
       - UNPROCESSED_ORDER_IDS_FILE=${UNPROCESSED_ORDER_IDS_FILE}
       - ENV=${ENV}
+      - PAGE_SIZE=${PAGE_SIZE}
   personsink:
     depends_on:
       - kafka
