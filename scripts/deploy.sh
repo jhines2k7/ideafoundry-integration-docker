@@ -151,6 +151,7 @@ function copy_compose_file {
 
     if [ "$PROVIDER" != "aws" ] && [ "$ENV" = "staging" ]
     then
+        directory=/home/ubuntu
         docker_file="../docker-compose.staging.yml"
     fi
 
