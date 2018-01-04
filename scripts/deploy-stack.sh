@@ -37,8 +37,7 @@ fi
 docker-machine ssh $manager_machine sudo docker login --username=$DOCKER_HUB_USER --password=$DOCKER_HUB_PASSWORD
 
 docker-machine ssh $manager_machine \
-    export $(cat $directory$env_file) \
-    && sudo docker stack deploy \
+    sudo docker stack deploy \
     --compose-file $directory$docker_file \
     --with-registry-auth \
     integration

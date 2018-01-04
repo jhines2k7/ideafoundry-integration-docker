@@ -5,7 +5,7 @@ services:
     depends_on:
       - personsink
       - kafka
-    image: ${EXPORT_SERVICE_RELEASE_IMAGE_NAME}
+    image: ideafoundry/occasion-legacy-data-export-service:1.39.9.RELEASE
     deploy:
       restart_policy:
         condition: on-failure
