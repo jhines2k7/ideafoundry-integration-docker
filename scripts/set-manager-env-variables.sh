@@ -30,4 +30,6 @@ echo "=======> setting env variables for manager node"
     echo "ENV=${25}"
     echo "PERSONSINK_REPLICAS=${26}"
     echo "PAGE_SIZE=${27}"
+    echo "AWS_ACCESS_KEY=${28}"
+    echo "AWS_SECRET_KEY=${29}"
 } | sudo tee -a /etc/environment > /dev/null

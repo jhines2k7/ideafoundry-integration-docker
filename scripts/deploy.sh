@@ -71,7 +71,9 @@ function set_manager_node_env_variables {
        "$UNPROCESSED_ORDER_IDS_FILE" \
        "$ENV" \
        "$PERSONSINK_REPLICAS" \
-       "$PAGE_SIZE"
+       "$PAGE_SIZE" \
+       "$AWS_ACCESS_KEY" \
+       "$AWS_SECRET_KEY"
 }
 
 #create createperson worker nodes
