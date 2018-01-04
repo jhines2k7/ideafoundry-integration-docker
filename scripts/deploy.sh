@@ -130,6 +130,20 @@ function init_swarm_manager {
     docker-machine ssh $manager_machine sudo docker swarm init --advertise-addr $ip
 }
 
+function copy_env_file {
+    local env_file="../.env"
+    local directory=/
+
+    if [ "$PROVIDER" = "aws" ]
+    then
+        directory=/home/ubuntu
+    fi
+
+    echo "======> copying .env file to manager node ..."
+
+    docker-machine scp $env_file $(get_manager_machine_name):$directory
+}
+
 function copy_compose_file {
     local docker_file="../docker-compose.yml"
     local directory=/
@@ -187,6 +201,7 @@ fi
 create_manager_node
 init_swarm_manager
 copy_compose_file
+copy_env_file
 
 if [ "$RECONCILE" = false ]
 then
