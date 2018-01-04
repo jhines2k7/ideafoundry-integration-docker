@@ -201,7 +201,7 @@ fi
 create_manager_node
 init_swarm_manager
 copy_compose_file
-copy_env_file
+#copy_env_file
 
 if [ "$RECONCILE" = false ]
 then
