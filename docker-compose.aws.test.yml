@@ -6,7 +6,7 @@ services:
       - personsink
       - kafka
       - mockoccasionapi
-    image: ideafoundry/occasion-legacy-data-export-service:1.37.8-SNAPSHOT
+    image: ideafoundry/occasion-legacy-data-export-service:1.38.8-SNAPSHOT
     deploy:
       restart_policy:
         condition: on-failure
@@ -28,6 +28,8 @@ services:
       - UNPROCESSED_ORDER_IDS_FILE=${UNPROCESSED_ORDER_IDS_FILE}
       - ENV=${ENV}
       - PAGE_SIZE=${PAGE_SIZE}
+      - ACCESS_KEY_AWS=${ACCESS_KEY_AWS}
+      - SECRET_KEY_AWS=${SECRET_KEY_AWS}
   personsink:
     depends_on:
       - kafka
