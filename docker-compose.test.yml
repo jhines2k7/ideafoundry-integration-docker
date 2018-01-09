@@ -34,7 +34,7 @@ services:
     depends_on:
       - kafka
       - mysql
-    image: ideafoundry/create-airtable-person-service:1.27.11-SNAPSHOT
+    image: ideafoundry/create-airtable-person-service:1.28.11-SNAPSHOT
     deploy:
       restart_policy:
         condition: on-failure
@@ -45,6 +45,15 @@ services:
       placement:
         constraints:
           - engine.labels.node.type==createperson
+    environment:
+      - IF_OCCASION_RECONCILE=${IF_OCCASION_RECONCILE}
+      - MAX_CREATEPERSON_INSTANCE_COUNT=${MAX_CREATEPERSON_INSTANCE_COUNT}
+      - DB_HOST=${DB_HOST}
+      - IF_DB_PORT=${IF_DB_PORT}
+      - IF_DB_USERNAME=${IF_DB_USERNAME}
+      - IF_DB_PASSWORD=${IF_DB_PASSWORD}
+      - KAFKA_HOST=${KAFKA_HOST}
+      - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
   mockoccasionapi:
     image: ideafoundry/mock-occasion-api:2.6.4
     depends_on:
@@ -83,8 +92,6 @@ services:
       - MYSQL_PASSWORD=${IF_DB_PASSWORD}
   zookeeper:
     image: wurstmeister/zookeeper
-    ports:
-      - "2181:2181"
     deploy:
       restart_policy:
         condition: on-failure
@@ -99,8 +106,6 @@ services:
     depends_on:
       - zookeeper
     image: wurstmeister/kafka
-    ports:
-      - "9092:9092"
     deploy:
       restart_policy:
         condition: on-failure

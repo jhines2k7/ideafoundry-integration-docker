@@ -9,24 +9,19 @@ env_file=".env"
 if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "dev" ]
 then
     directory=/home/ubuntu/
-    docker_file="docker-compose.aws.dev.yml"
+    docker_file="docker-compose.dev.yml"
 fi
 
 if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "test" ]
 then
     directory=/home/ubuntu/
-    docker_file="docker-compose.aws.test.yml"
+    docker_file="docker-compose.test.yml"
 fi
 
 if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "staging" ]
 then
     directory=/home/ubuntu/
     docker_file="docker-compose.aws.staging.yml"
-fi
-
-if [ "$PROVIDER" != "aws" ] && [ "$ENV" = "dev" ]
-then
-    docker_file="docker-compose.dev.yml"
 fi
 
 if [ "$PROVIDER" != "aws" ] && [ "$ENV" = "staging" ]
