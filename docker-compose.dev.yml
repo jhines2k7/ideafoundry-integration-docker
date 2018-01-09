@@ -30,21 +30,21 @@ services:
       - PAGE_SIZE=${PAGE_SIZE}
       - ACCESS_KEY_AWS=${ACCESS_KEY_AWS}
       - SECRET_KEY_AWS=${SECRET_KEY_AWS}
-  personsink:
-    depends_on:
-      - kafka
-      - mysql
-    image: ideafoundry/create-airtable-person-service:1.28.11-SNAPSHOT
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
-      replicas: ${PERSONSINK_REPLICAS}
-      placement:
-        constraints:
-          - engine.labels.node.type==createperson
+#  personsink:
+#    depends_on:
+#      - kafka
+#      - mysql
+#    image: ideafoundry/create-airtable-person-service:1.28.11-SNAPSHOT
+#    deploy:
+#      restart_policy:
+#        condition: on-failure
+#        delay: 5s
+#        max_attempts: 3
+#        window: 120s
+#      replicas: ${PERSONSINK_REPLICAS}
+#      placement:
+#        constraints:
+#          - engine.labels.node.type==createperson
   mockoccasionapi:
     image: ideafoundry/mock-occasion-api:2.6.4
     depends_on:
