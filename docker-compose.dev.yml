@@ -3,7 +3,7 @@ version: '3'
 services:
   legacydataexport:
     depends_on:
-      - personsink
+#      - personsink
       - kafka
       - mockoccasionapi
     image: ideafoundry/occasion-legacy-data-export-service:1.41.9-SNAPSHOT
