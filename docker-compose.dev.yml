@@ -6,7 +6,7 @@ services:
 #      - personsink
       - kafka
       - mockoccasionapi
-    image: ideafoundry/occasion-legacy-data-export-service:1.42.9-SNAPSHOT
+    image: ideafoundry/occasion-legacy-data-export-service:1.43.9-SNAPSHOT
     deploy:
       restart_policy:
         condition: on-failure
