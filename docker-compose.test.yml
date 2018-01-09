@@ -68,12 +68,12 @@ services:
       placement:
         constraints:
           - engine.labels.node.type==512mb
-      environment:
-        - NUM_ORDERS=${NUM_ORDERS}
-        - NUM_OCCURRENCES=${NUM_OCCURRENCES}
-        - NUM_CUSTOMERS=${NUM_CUSTOMERS}
-        - NUM_QUESTIONS=${NUM_QUESTIONS}
-        - NUM_ANSWERS=${NUM_ANSWERS}
+    environment:
+      - NUM_ORDERS=${NUM_ORDERS}
+      - NUM_OCCURRENCES=${NUM_OCCURRENCES}
+      - NUM_CUSTOMERS=${NUM_CUSTOMERS}
+      - NUM_QUESTIONS=${NUM_QUESTIONS}
+      - NUM_ANSWERS=${NUM_ANSWERS}
   mysql:
     image: mysql:8.0.1
     deploy:
