@@ -242,7 +242,7 @@ fi
 echo "======> finished creating kafka and mysql nodes ..."
 
 echo "======> creating worker nodes ..."
-create_person_worker_nodes $INSTANCE_COUNT &
+#create_person_worker_nodes $INSTANCE_COUNT &
 create_1gb_worker_nodes 1 &
 if [ "$ENV" = "dev" ] || [ "$ENV" = "test" ]
 then
