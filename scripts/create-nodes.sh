@@ -73,7 +73,12 @@ function set_manager_node_env_variables {
        "$PERSONSINK_REPLICAS" \
        "$PAGE_SIZE" \
        "$ACCESS_KEY_AWS" \
-       "$SECRET_KEY_AWS"
+       "$SECRET_KEY_AWS" \
+       "$NUM_ORDERS" \
+       "$NUM_OCCURRENCES" \
+       "$NUM_CUSTOMERS" \
+       "$NUM_QUESTIONS" \
+       "$NUM_ANSWERS"
 }
 
 #create createperson worker nodes
