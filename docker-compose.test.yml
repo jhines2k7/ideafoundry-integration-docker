@@ -6,7 +6,7 @@ services:
       - personsink
       - kafka
       - mockoccasionapi
-    image: ideafoundry/occasion-legacy-data-export-service:1.41.9-SNAPSHOT
+    image: ideafoundry/occasion-legacy-data-export-service:1.42.9-SNAPSHOT
     deploy:
       restart_policy:
         condition: on-failure
@@ -55,7 +55,7 @@ services:
       - KAFKA_HOST=${KAFKA_HOST}
       - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
   mockoccasionapi:
-    image: ideafoundry/mock-occasion-api:2.6.4
+    image: ideafoundry/mock-occasion-api:2.7.4
     depends_on:
       - kafka
     deploy:

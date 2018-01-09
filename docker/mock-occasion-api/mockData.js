@@ -3,11 +3,11 @@ let padStart = require('string.prototype.padstart');
 
 padStart.shim();
 
-const NUM_ORDERS = 12000;
-const NUM_OCCURRENCES = 3000;
-const NUM_CUSTOMERS = 6000;
-const NUM_QUESTIONS = 30;
-const NUM_ANSWERS = 100;
+const NUM_ORDERS = 1200;
+const NUM_OCCURRENCES = 300;
+const NUM_CUSTOMERS = 600;
+const NUM_QUESTIONS = 3;
+const NUM_ANSWERS = 10;
 
 function generateOccurence() {
     let date = randomDate(new Date(2014, 0, 1), new Date());
