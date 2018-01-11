@@ -176,6 +176,12 @@ function copy_compose_file {
         docker_file="../docker-compose.staging.yml"
     fi
 
+    if [ "$PROVIDER" != "aws" ] && [ "$ENV" = "prod" ]
+    then
+        directory=/home/ubuntu
+        docker_file="../docker-compose.aws.yml"
+    fi
+
     echo "======> copying compose file to manager node ..."
     
     docker-machine scp $docker_file $(get_manager_machine_name):$directory
@@ -203,46 +209,25 @@ init_swarm_manager
 copy_compose_file
 #copy_env_file
 
-if [ "$RECONCILE" = false ]
+echo "======> creating kafka and mysql nodes ..."
+create_kafka_node &
+create_mysql_node &
+
+wait %1
+create_kafka_result=$?
+
+wait %2
+create_mysql_result=$?
+
+if [ $create_kafka_result -ne 0 ] || [ $create_mysql_result -ne 0 ]
 then
-    echo "======> creating kafka and mysql nodes ..."
+    echo "There was an error installing docker on the mysql or kafka node. The script will now exit."
 
-    create_kafka_node &
-    create_mysql_node &
+    echo "=====> Cleaning up..."
 
-    wait %1
-    create_kafka_result=$?
+    bash ./remove-all-nodes.sh
 
-    wait %2
-    create_mysql_result=$?
-
-    if [ $create_kafka_result -ne 0 ] || [ $create_mysql_result -ne 0 ]
-    then
-        echo "There was an error installing docker on the mysql or kafka node. The script will now exit."
-
-        echo "=====> Cleaning up..."
-
-        bash ./remove-all-nodes.sh
-
-        exit 1
-    fi
-else
-    echo "======> creating kafka node ..."
-
-    create_kafka_node &
-    wait %1
-    create_kafka_result=$?
-
-    if [ $create_kafka_result -ne 0 ]
-    then
-        echo "There was an error installing docker on the kafka node. The script will now exit."
-
-        echo "=====> Cleaning up..."
-
-        bash ./remove-all-nodes.sh
-
-        exit 1
-    fi
+    exit 1
 fi
 echo "======> finished creating kafka and mysql nodes ..."
 
