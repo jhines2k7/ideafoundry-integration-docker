@@ -68,7 +68,7 @@ function set_manager_node_env_variables {
        "$MAX_CREATEPERSON_INSTANCE_COUNT" \
        "$RECONCILE" \
        "$INSTANCE_COUNT" \
-       "$UNPROCESSED_ORDER_IDS_FILE" \
+       "$ORDER_IDS_FILE" \
        "$ENV" \
        "$PERSONSINK_REPLICAS" \
        "$PAGE_SIZE" \
