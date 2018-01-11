@@ -105,7 +105,7 @@ function create_node {
          docker-machine create \
          --engine-label "node.type=$node_type" \
          --driver digitalocean \
-         --digitalocean-image ubuntu-17-04-x64 \
+         --digitalocean-image ubuntu-17.10-x64 \
          --digitalocean-size $size \
          --digitalocean-access-token $DIGITALOCEAN_ACCESS_TOKEN \
          $machine_id
