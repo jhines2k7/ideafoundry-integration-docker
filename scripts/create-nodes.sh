@@ -171,15 +171,15 @@ function copy_compose_file {
         docker_file="../docker-compose.aws.staging.yml"
     fi
 
-    if [ "$PROVIDER" != "aws" ] && [ "$ENV" = "staging" ]
-    then
-        docker_file="../docker-compose.staging.yml"
-    fi
-
-    if [ "$PROVIDER" != "aws" ] && [ "$ENV" = "prod" ]
+    if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "prod" ]
     then
         directory=/home/ubuntu
         docker_file="../docker-compose.aws.yml"
+    fi
+
+    if [ "$PROVIDER" != "aws" ] && [ "$ENV" = "staging" ]
+    then
+        docker_file="../docker-compose.staging.yml"
     fi
 
     echo "======> copying compose file to manager node ..."
