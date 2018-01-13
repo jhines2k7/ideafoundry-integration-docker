@@ -78,7 +78,8 @@ function set_manager_node_env_variables {
        "$NUM_OCCURRENCES" \
        "$NUM_CUSTOMERS" \
        "$NUM_QUESTIONS" \
-       "$NUM_ANSWERS"
+       "$NUM_ANSWERS" \
+       "$EXPORT_FROM_FILE"
 }
 
 #create createperson worker nodes
@@ -209,27 +210,49 @@ init_swarm_manager
 copy_compose_file
 #copy_env_file
 
-echo "======> creating kafka and mysql nodes ..."
-create_kafka_node &
-create_mysql_node &
-
-wait %1
-create_kafka_result=$?
-
-wait %2
-create_mysql_result=$?
-
-if [ $create_kafka_result -ne 0 ] || [ $create_mysql_result -ne 0 ]
+if [ $RECONCILE = true ]
 then
-    echo "There was an error installing docker on the mysql or kafka node. The script will now exit."
+    echo "======> creating kafka node ..."
+    create_kafka_node
 
-    echo "=====> Cleaning up..."
+    create_kafka_result=$?
 
-    bash ./remove-all-nodes.sh
+    if [ $create_kafka_result -ne 0 ]
+    then
+        echo "There was an error installing docker on the kafka node. The script will now exit."
 
-    exit 1
+        echo "=====> Cleaning up..."
+
+        bash ./remove-all-nodes.sh
+
+        exit 1
+    fi
+    echo "======> finished creating kafka node ..."
+else
+    echo "======> creating kafka and mysql nodes ..."
+    create_kafka_node &
+    create_mysql_node &
+
+    wait %1
+    create_kafka_result=$?
+
+    wait %2
+    create_mysql_result=$?
+
+    if [ $create_kafka_result -ne 0 ] || [ $create_mysql_result -ne 0 ]
+    then
+        echo "There was an error installing docker on the mysql or kafka node. The script will now exit."
+
+        echo "=====> Cleaning up..."
+
+        bash ./remove-all-nodes.sh
+
+        exit 1
+    fi
+    echo "======> finished creating kafka and mysql nodes ..."
 fi
-echo "======> finished creating kafka and mysql nodes ..."
+
+
 
 echo "======> creating worker nodes ..."
 create_person_worker_nodes $INSTANCE_COUNT &

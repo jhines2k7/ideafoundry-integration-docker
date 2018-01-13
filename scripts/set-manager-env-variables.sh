@@ -37,4 +37,5 @@ echo "=======> setting env variables for manager node"
     echo "NUM_CUSTOMERS=${32}"
     echo "NUM_QUESTIONS=${33}"
     echo "NUM_ANSWERS=${34}"
+    echo "EXPORT_FROM_FILE=${35}"
 } | sudo tee -a /etc/environment > /dev/null
