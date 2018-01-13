@@ -5,7 +5,7 @@ services:
     depends_on:
       - personsink
       - kafka
-    image: ideafoundry/occasion-legacy-data-export-service:1.45.9.RELEASE
+    image: ideafoundry/occasion-legacy-data-export-service:1.46.9.RELEASE
     deploy:
       restart_policy:
         condition: on-failure
@@ -29,6 +29,7 @@ services:
       - PAGE_SIZE=${PAGE_SIZE}
       - ACCESS_KEY_AWS=${ACCESS_KEY_AWS}
       - SECRET_KEY_AWS=${SECRET_KEY_AWS}
+      - EXPORT_FROM_FILE=${EXPORT_FROM_FILE}
   personsink:
     depends_on:
       - kafka
