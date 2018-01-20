@@ -3,7 +3,7 @@ version: '3'
 services:
   getOccasionOrdersByVerificationCodeWorker:
     depends_on:
-      - personsink
+      - saveOccasionOrderToDatabaseWorker
       - kafka
     image: ideafoundry/occasion-legacy-data-export-service:1.46.9.RELEASE
     deploy:
