@@ -5,7 +5,7 @@ services:
     depends_on:
       - saveOccasionOrderToDatabaseWorker
       - kafka
-    image: ideafoundry/occasion-legacy-data-export-service:1.46.9.RELEASE
+    image: ideafoundry/get-occasion-orders-by-verification-code-task:1.46.9.RELEASE
     deploy:
       restart_policy:
         condition: on-failure
