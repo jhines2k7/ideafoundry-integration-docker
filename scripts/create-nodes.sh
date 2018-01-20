@@ -49,19 +49,13 @@ function set_manager_node_env_variables {
        "$kafka_host" \
        "$zookeeper_host" \
        "$OKHTTP_CLIENT_TIMEOUT_SECONDS" \
-       "$AIRTABLE_APP_ID" \
        "$OCCASION_EXPORT_STARTING_PAGE_NUM" \
        "$IF_OCCASION_EXPORT_URL" \
-       "$IF_AIRTABLE_CREDS" \
        "$IF_DB_PASSWORD" \
        "$IF_DB_PORT" \
        "$IF_DB_ROOT_PASS" \
        "$IF_DB_USERNAME" \
-       "$IF_EMAIL_CREDS" \
-       "$IF_EMAIL_ID" \
        "$IF_OCCASION_CREDS" \
-       "$GIT_USERNAME" \
-       "$GIT_PASSWORD" \
        "$DOCKER_HUB_USER" \
        "$DOCKER_HUB_PASSWORD" \
        "$DIGITALOCEAN_ACCESS_TOKEN" \
