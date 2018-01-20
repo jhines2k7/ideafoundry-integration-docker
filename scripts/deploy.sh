@@ -2,20 +2,20 @@
 
 manager_machine=$(docker-machine ls --format "{{.Name}}" | grep 'manager')
 
-docker_file="docker-compose.yml"
+docker_file="export-occasion-data-to-mysql-job.yml"
 directory=/
 env_file=".env"
 
 if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "dev" ]
 then
     directory=/home/ubuntu/
-    docker_file="docker-compose.dev.yml"
+    docker_file="export-occasion-data-to-mysql-job.dev.yml"
 fi
 
 if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "test" ]
 then
     directory=/home/ubuntu/
-    docker_file="docker-compose.test.yml"
+    docker_file="export-occasion-data-to-mysql-job.test.yml"
 fi
 
 if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "staging" ]
@@ -27,12 +27,12 @@ fi
 if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "prod" ]
 then
     directory=/home/ubuntu/
-    docker_file="docker-compose.aws.yml"
+    docker_file="export-occasion-data-to-mysql-job.aws.yml"
 fi
 
 if [ "$PROVIDER" != "aws" ] && [ "$ENV" = "staging" ]
 then
-    docker_file="docker-compose.staging.yml"
+    docker_file="export-occasion-data-to-mysql-job.staging.yml"
 fi
 
 docker-machine ssh $manager_machine sudo docker login --username=$DOCKER_HUB_USER --password=$DOCKER_HUB_PASSWORD

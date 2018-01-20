@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  legacydataexport:
+  getOccasionOrdersByVerificationCodeWorker:
     depends_on:
       - personsink
       - kafka
@@ -30,7 +30,7 @@ services:
       - ACCESS_KEY_AWS=${ACCESS_KEY_AWS}
       - SECRET_KEY_AWS=${SECRET_KEY_AWS}
       - EXPORT_FROM_FILE=${EXPORT_FROM_FILE}
-  personsink:
+  saveOccasionOrderToDatabaseWorker:
     depends_on:
       - kafka
       - mysql

@@ -151,19 +151,19 @@ function copy_env_file {
 }
 
 function copy_compose_file {
-    local docker_file="../docker-compose.yml"
+    local docker_file="../export-occasion-data-to-mysql-job.yml"
     local directory=/
 
     if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "dev" ]
     then
         directory=/home/ubuntu
-        docker_file="../docker-compose.dev.yml"
+        docker_file="../export-occasion-data-to-mysql-job.dev.yml"
     fi
 
     if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "test" ]
     then
         directory=/home/ubuntu
-        docker_file="../docker-compose.test.yml"
+        docker_file="../export-occasion-data-to-mysql-job.test.yml"
     fi
 
     if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "staging" ]
@@ -175,12 +175,12 @@ function copy_compose_file {
     if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "prod" ]
     then
         directory=/home/ubuntu
-        docker_file="../docker-compose.aws.yml"
+        docker_file="../export-occasion-data-to-mysql-job.aws.yml"
     fi
 
     if [ "$PROVIDER" != "aws" ] && [ "$ENV" = "staging" ]
     then
-        docker_file="../docker-compose.staging.yml"
+        docker_file="../export-occasion-data-to-mysql-job.staging.yml"
     fi
 
     echo "======> copying compose file to manager node ..."
