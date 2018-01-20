@@ -1,9 +1,9 @@
 version: '3'
 
 services:
-  getOccasionOrdersByVerificationCodeWorker:
+  getOrdersByVerificationCodeWorker:
     depends_on:
-      - saveOccasionOrderToDatabaseWorker
+      - saveOrderToDBWorker
       - kafka
       - mockoccasionapi
     image: ideafoundry/get-occasion-orders-by-verification-code-task:1.46.9-SNAPSHOT
@@ -24,31 +24,31 @@ services:
       - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
       - IF_OCCASION_CREDS=${IF_OCCASION_CREDS}
       - IF_OCCASION_EXPORT_URL=${IF_OCCASION_EXPORT_URL}
-      - IF_OCCASION_RECONCILE=${IF_OCCASION_RECONCILE}
+      - RECONCILE=${RECONCILE}
       - ORDER_IDS_FILE=${ORDER_IDS_FILE}
       - ENV=${ENV}
       - PAGE_SIZE=${PAGE_SIZE}
       - ACCESS_KEY_AWS=${ACCESS_KEY_AWS}
       - SECRET_KEY_AWS=${SECRET_KEY_AWS}
       - EXPORT_FROM_FILE=${EXPORT_FROM_FILE}
-  saveOccasionOrderToDatabaseWorker:
+  saveOrderToDBWorker:
     depends_on:
       - kafka
       - mysql
-    image: ideafoundry/create-airtable-person-service:1.27.11-SNAPSHOT
+    image: ideafoundry/save-occasion-order-to-db-task:1.27.11-SNAPSHOT
     deploy:
       restart_policy:
         condition: on-failure
         delay: 5s
         max_attempts: 3
         window: 120s
-      replicas: ${PERSONSINK_REPLICAS}
+      replicas: ${NUM_SAVE_ORDER_TO_DB_WORKERS}
       placement:
         constraints:
-          - engine.labels.node.type==createperson
+          - engine.labels.node.type==saveordertodb
     environment:
-      - IF_OCCASION_RECONCILE=${IF_OCCASION_RECONCILE}
-      - MAX_CREATEPERSON_INSTANCE_COUNT=${MAX_CREATEPERSON_INSTANCE_COUNT}
+      - RECONCILE=${RECONCILE}
+      - MAX_SAVE_ORDER_TO_DB_WORKER_COUNT=${MAX_SAVE_ORDER_TO_DB_WORKER_COUNT}
       - DB_HOST=${DB_HOST}
       - IF_DB_PORT=${IF_DB_PORT}
       - IF_DB_USERNAME=${IF_DB_USERNAME}

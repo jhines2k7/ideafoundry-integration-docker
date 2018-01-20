@@ -59,12 +59,12 @@ function set_manager_node_env_variables {
        "$DOCKER_HUB_USER" \
        "$DOCKER_HUB_PASSWORD" \
        "$DIGITALOCEAN_ACCESS_TOKEN" \
-       "$MAX_CREATEPERSON_INSTANCE_COUNT" \
+       "$MAX_SAVE_ORDER_TO_DB_WORKER_COUNT" \
        "$RECONCILE" \
-       "$INSTANCE_COUNT" \
+       "$SAVE_ORDER_TO_DB_WORKER_COUNT" \
        "$ORDER_IDS_FILE" \
        "$ENV" \
-       "$PERSONSINK_REPLICAS" \
+       "$NUM_SAVE_ORDER_TO_DB_WORKERS" \
        "$PAGE_SIZE" \
        "$ACCESS_KEY_AWS" \
        "$SECRET_KEY_AWS" \
@@ -76,11 +76,11 @@ function set_manager_node_env_variables {
        "$EXPORT_FROM_FILE"
 }
 
-#create createperson worker nodes
-function create_person_worker_nodes {
+#create savetodb worker nodes
+function create_save_order_to_db_worker_nodes {
     local num_nodes=$1
 
-    bash ./create-node.sh createperson $num_nodes $ENV $PROVIDER
+    bash ./create-node.sh saveordertodb $num_nodes $ENV $PROVIDER
 }
 
 #create 1gb worker nodes
@@ -249,7 +249,7 @@ fi
 
 
 echo "======> creating worker nodes ..."
-create_person_worker_nodes $INSTANCE_COUNT &
+create_save_order_to_db_worker_nodes $SAVE_ORDER_TO_DB_WORKER_NODE_COUNT &
 create_1gb_worker_nodes 1 &
 if [ "$ENV" = "dev" ] || [ "$ENV" = "test" ]
 then
