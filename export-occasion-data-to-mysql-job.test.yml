@@ -35,7 +35,7 @@ services:
     depends_on:
       - kafka
       - mysql
-    image: ideafoundry/save-occasion-order-to-db-task:1.27.11-SNAPSHOT
+    image: ideafoundry/save-occasion-order-to-db-task:1.29.11-SNAPSHOT
     deploy:
       restart_policy:
         condition: on-failure
