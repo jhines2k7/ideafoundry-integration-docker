@@ -157,7 +157,7 @@ function copy_compose_file {
     if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "test" ]
     then
         directory=/home/ubuntu
-        docker_file="../export-occasion-data-to-mysql-job.test.yml"
+        docker_file="../export-data-from-occasion-to-mysql-job.test.yml"
     fi
 
     if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "staging" ]
