@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  getOrdersByVerificationCodeWorker:
+  getOrdersByVerificationCodeTask:
     depends_on:
       - saveOrderToDBWorker
       - kafka
@@ -31,7 +31,7 @@ services:
       - ACCESS_KEY_AWS=${ACCESS_KEY_AWS}
       - SECRET_KEY_AWS=${SECRET_KEY_AWS}
       - EXPORT_FROM_FILE=${EXPORT_FROM_FILE}
-  saveOrderToDBWorker:
+  saveOrderToDBTask:
     depends_on:
       - kafka
       - mysql
