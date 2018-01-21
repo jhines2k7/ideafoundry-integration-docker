@@ -49,38 +49,38 @@ function set_manager_node_env_variables {
        "$kafka_host" \
        "$zookeeper_host" \
        "$OKHTTP_CLIENT_TIMEOUT_SECONDS" \
-       "$AIRTABLE_APP_ID" \
        "$OCCASION_EXPORT_STARTING_PAGE_NUM" \
        "$IF_OCCASION_EXPORT_URL" \
-       "$IF_AIRTABLE_CREDS" \
        "$IF_DB_PASSWORD" \
        "$IF_DB_PORT" \
        "$IF_DB_ROOT_PASS" \
        "$IF_DB_USERNAME" \
-       "$IF_EMAIL_CREDS" \
-       "$IF_EMAIL_ID" \
        "$IF_OCCASION_CREDS" \
-       "$GIT_USERNAME" \
-       "$GIT_PASSWORD" \
        "$DOCKER_HUB_USER" \
        "$DOCKER_HUB_PASSWORD" \
        "$DIGITALOCEAN_ACCESS_TOKEN" \
-       "$MAX_CREATEPERSON_INSTANCE_COUNT" \
+       "$MAX_SAVE_ORDER_TO_DB_WORKER_COUNT" \
        "$RECONCILE" \
-       "$INSTANCE_COUNT" \
-       "$UNPROCESSED_ORDER_IDS_FILE" \
+       "$SAVE_ORDER_TO_DB_WORKER_COUNT" \
+       "$ORDER_IDS_FILE" \
        "$ENV" \
-       "$PERSONSINK_REPLICAS" \
+       "$NUM_SAVE_ORDER_TO_DB_WORKERS" \
        "$PAGE_SIZE" \
        "$ACCESS_KEY_AWS" \
-       "$SECRET_KEY_AWS"
+       "$SECRET_KEY_AWS" \
+       "$NUM_ORDERS" \
+       "$NUM_OCCURRENCES" \
+       "$NUM_CUSTOMERS" \
+       "$NUM_QUESTIONS" \
+       "$NUM_ANSWERS" \
+       "$EXPORT_FROM_FILE"
 }
 
-#create createperson worker nodes
-function create_person_worker_nodes {
+#create savetodb worker nodes
+function create_save_order_to_db_worker_nodes {
     local num_nodes=$1
 
-    bash ./create-node.sh createperson $num_nodes $ENV $PROVIDER
+    bash ./create-node.sh saveordertodb $num_nodes $ENV $PROVIDER
 }
 
 #create 1gb worker nodes
@@ -145,19 +145,19 @@ function copy_env_file {
 }
 
 function copy_compose_file {
-    local docker_file="../docker-compose.yml"
+    local docker_file="../export-occasion-data-to-mysql-job.yml"
     local directory=/
 
     if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "dev" ]
     then
         directory=/home/ubuntu
-        docker_file="../docker-compose.dev.yml"
+        docker_file="../export-occasion-data-to-mysql-job.dev.yml"
     fi
 
     if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "test" ]
     then
         directory=/home/ubuntu
-        docker_file="../docker-compose.test.yml"
+        docker_file="../export-occasion-data-to-mysql-job.test.yml"
     fi
 
     if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "staging" ]
@@ -166,9 +166,15 @@ function copy_compose_file {
         docker_file="../docker-compose.aws.staging.yml"
     fi
 
+    if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "prod" ]
+    then
+        directory=/home/ubuntu
+        docker_file="../export-occasion-data-to-mysql-job.aws.yml"
+    fi
+
     if [ "$PROVIDER" != "aws" ] && [ "$ENV" = "staging" ]
     then
-        docker_file="../docker-compose.staging.yml"
+        docker_file="../export-occasion-data-to-mysql-job.staging.yml"
     fi
 
     echo "======> copying compose file to manager node ..."
@@ -198,10 +204,26 @@ init_swarm_manager
 copy_compose_file
 #copy_env_file
 
-if [ "$RECONCILE" = false ]
+if [ $RECONCILE = true ]
 then
-    echo "======> creating kafka and mysql nodes ..."
+    echo "======> creating kafka node ..."
+    create_kafka_node
 
+    create_kafka_result=$?
+
+    if [ $create_kafka_result -ne 0 ]
+    then
+        echo "There was an error installing docker on the kafka node. The script will now exit."
+
+        echo "=====> Cleaning up..."
+
+        bash ./remove-all-nodes.sh
+
+        exit 1
+    fi
+    echo "======> finished creating kafka node ..."
+else
+    echo "======> creating kafka and mysql nodes ..."
     create_kafka_node &
     create_mysql_node &
 
@@ -221,28 +243,13 @@ then
 
         exit 1
     fi
-else
-    echo "======> creating kafka node ..."
-
-    create_kafka_node &
-    wait %1
-    create_kafka_result=$?
-
-    if [ $create_kafka_result -ne 0 ]
-    then
-        echo "There was an error installing docker on the kafka node. The script will now exit."
-
-        echo "=====> Cleaning up..."
-
-        bash ./remove-all-nodes.sh
-
-        exit 1
-    fi
+    echo "======> finished creating kafka and mysql nodes ..."
 fi
-echo "======> finished creating kafka and mysql nodes ..."
+
+
 
 echo "======> creating worker nodes ..."
-create_person_worker_nodes $INSTANCE_COUNT &
+create_save_order_to_db_worker_nodes $SAVE_ORDER_TO_DB_WORKER_NODE_COUNT &
 create_1gb_worker_nodes 1 &
 if [ "$ENV" = "dev" ] || [ "$ENV" = "test" ]
 then

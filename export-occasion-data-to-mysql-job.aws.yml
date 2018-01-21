@@ -1,11 +1,11 @@
 version: '3'
 
 services:
-  legacydataexport:
+  getOccasionOrdersByVerificationCodeWorker:
     depends_on:
-      - personsink
+      - saveOccasionOrderToDatabaseWorker
       - kafka
-    image: ideafoundry/occasion-legacy-data-export-service:1.41.9.RELEASE
+    image: ideafoundry/get-occasion-orders-by-verification-code-task:1.46.9.RELEASE
     deploy:
       restart_policy:
         condition: on-failure
@@ -24,16 +24,17 @@ services:
       - IF_OCCASION_CREDS=${IF_OCCASION_CREDS}
       - IF_OCCASION_EXPORT_URL=${IF_OCCASION_EXPORT_URL}
       - IF_OCCASION_RECONCILE=${IF_OCCASION_RECONCILE}
-      - UNPROCESSED_ORDER_IDS_FILE=${UNPROCESSED_ORDER_IDS_FILE}
+      - ORDER_IDS_FILE=${ORDER_IDS_FILE}
       - ENV=${ENV}
       - PAGE_SIZE=${PAGE_SIZE}
       - ACCESS_KEY_AWS=${ACCESS_KEY_AWS}
       - SECRET_KEY_AWS=${SECRET_KEY_AWS}
-  personsink:
+      - EXPORT_FROM_FILE=${EXPORT_FROM_FILE}
+  saveOccasionOrderToDatabaseWorker:
     depends_on:
       - kafka
       - mysql
-    image: ideafoundry/create-airtable-person-service:1.28.11.RELEASE
+    image: ideafoundry/create-airtable-person-service:1.27.11.RELEASE
     deploy:
       restart_policy:
         condition: on-failure
