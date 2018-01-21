@@ -2,37 +2,37 @@
 
 manager_machine=$(docker-machine ls --format "{{.Name}}" | grep 'manager')
 
-docker_file="export-occasion-data-to-mysql-job.yml"
+docker_file="export-data-from-occasion-to-mysql-service.yml"
 directory=/
 env_file=".env"
 
 if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "dev" ]
 then
     directory=/home/ubuntu/
-    docker_file="export-occasion-data-to-mysql-job.dev.yml"
+    docker_file="export-data-from-occasion-to-mysql-service.dev.yml"
 fi
 
 if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "test" ]
 then
     directory=/home/ubuntu/
-    docker_file="export-data-from-occasion-to-mysql-job.test.yml"
+    docker_file="export-data-from-occasion-to-mysql-service.test.yml"
 fi
 
 if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "staging" ]
 then
     directory=/home/ubuntu/
-    docker_file="docker-compose.aws.staging.yml"
+    docker_file="export-data-from-occasion-to-mysql-service.aws.staging.yml"
 fi
 
 if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "prod" ]
 then
     directory=/home/ubuntu/
-    docker_file="export-occasion-data-to-mysql-job.aws.yml"
+    docker_file="export-data-from-occasion-to-mysql-service.aws.yml"
 fi
 
 if [ "$PROVIDER" != "aws" ] && [ "$ENV" = "staging" ]
 then
-    docker_file="export-occasion-data-to-mysql-job.staging.yml"
+    docker_file="export-data-from-occasion-to-mysql-service.staging.yml"
 fi
 
 docker-machine ssh $manager_machine sudo docker login --username=$DOCKER_HUB_USER --password=$DOCKER_HUB_PASSWORD
