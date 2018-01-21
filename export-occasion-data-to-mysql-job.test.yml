@@ -1,12 +1,12 @@
 version: '3'
 
 services:
-  getOrdersByVerificationCodeTask:
+  getOrdersUsingOccasionAPITask:
     depends_on:
-      - saveOrderToDBWorker
+      - saveOccasionOrderToMySQLTask
       - kafka
       - mockoccasionapi
-    image: ideafoundry/get-occasion-orders-by-verification-code-task:1.46.9-SNAPSHOT
+    image: ideafoundry/get-orders-using-occasion-api-worker:1.47.9-SNAPSHOT
     deploy:
       restart_policy:
         condition: on-failure
@@ -31,11 +31,11 @@ services:
       - ACCESS_KEY_AWS=${ACCESS_KEY_AWS}
       - SECRET_KEY_AWS=${SECRET_KEY_AWS}
       - EXPORT_FROM_FILE=${EXPORT_FROM_FILE}
-  saveOrderToDBTask:
+  saveOccasionOrderToMySQLTask:
     depends_on:
       - kafka
       - mysql
-    image: ideafoundry/save-occasion-order-to-db-task:1.29.11-SNAPSHOT
+    image: ideafoundry/save-occasion-order-to-mysql-worker:1.30.11-SNAPSHOT
     deploy:
       restart_policy:
         condition: on-failure
