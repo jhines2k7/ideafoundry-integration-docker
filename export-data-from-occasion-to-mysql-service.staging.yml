@@ -1,11 +1,12 @@
 version: '3'
 
 services:
-  getOccasionOrdersByVerificationCodeWorker:
+  getOrdersUsingOccasionAPITask:
     depends_on:
-      - saveOccasionOrderToDatabaseWorker
+      - saveOccasionOrderToMySQLTask
       - kafka
-    image: ideafoundry/get-occasion-orders-by-verification-code-task:1.46.9.RELEASE
+      - mockoccasionapi
+    image: ideafoundry/get-orders-using-occasion-api-worker:1.47.9-RELEASE
     deploy:
       restart_policy:
         condition: on-failure
@@ -23,37 +24,57 @@ services:
       - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
       - IF_OCCASION_CREDS=${IF_OCCASION_CREDS}
       - IF_OCCASION_EXPORT_URL=${IF_OCCASION_EXPORT_URL}
-      - IF_OCCASION_RECONCILE=${IF_OCCASION_RECONCILE}
+      - RECONCILE=${RECONCILE}
       - ORDER_IDS_FILE=${ORDER_IDS_FILE}
       - ENV=${ENV}
       - PAGE_SIZE=${PAGE_SIZE}
       - ACCESS_KEY_AWS=${ACCESS_KEY_AWS}
       - SECRET_KEY_AWS=${SECRET_KEY_AWS}
       - EXPORT_FROM_FILE=${EXPORT_FROM_FILE}
-  saveOccasionOrderToDatabaseWorker:
+  saveOccasionOrderToMySQLTask:
     depends_on:
       - kafka
       - mysql
-    image: ideafoundry/create-airtable-person-service:1.27.11.RELEASE
+    image: ideafoundry/save-occasion-order-to-mysql-worker:1.30.11-RELEASE
     deploy:
       restart_policy:
         condition: on-failure
         delay: 5s
         max_attempts: 3
         window: 120s
-      replicas: ${PERSONSINK_REPLICAS}
+      replicas: ${NUM_SAVE_ORDER_TO_DB_WORKERS}
       placement:
         constraints:
-          - engine.labels.node.type==createperson
+          - engine.labels.node.type==saveordertodb
     environment:
-      - IF_OCCASION_RECONCILE=${IF_OCCASION_RECONCILE}
-      - MAX_CREATEPERSON_INSTANCE_COUNT=${MAX_CREATEPERSON_INSTANCE_COUNT}
+      - RECONCILE=${RECONCILE}
+      - MAX_SAVE_ORDER_TO_DB_WORKER_COUNT=${MAX_SAVE_ORDER_TO_DB_WORKER_COUNT}
       - DB_HOST=${DB_HOST}
       - IF_DB_PORT=${IF_DB_PORT}
       - IF_DB_USERNAME=${IF_DB_USERNAME}
       - IF_DB_PASSWORD=${IF_DB_PASSWORD}
       - KAFKA_HOST=${KAFKA_HOST}
       - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
+  mockoccasionapi:
+    image: ideafoundry/mock-occasion-api:2.7.4
+    depends_on:
+      - kafka
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      replicas: 1
+      placement:
+        constraints:
+          - engine.labels.node.type==512mb
+    environment:
+      - NUM_ORDERS=${NUM_ORDERS}
+      - NUM_OCCURRENCES=${NUM_OCCURRENCES}
+      - NUM_CUSTOMERS=${NUM_CUSTOMERS}
+      - NUM_QUESTIONS=${NUM_QUESTIONS}
+      - NUM_ANSWERS=${NUM_ANSWERS}
   mysql:
     image: mysql:8.0.1
     deploy:
