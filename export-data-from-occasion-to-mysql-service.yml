@@ -55,26 +55,6 @@ services:
       - IF_DB_PASSWORD=${IF_DB_PASSWORD}
       - KAFKA_HOST=${KAFKA_HOST}
       - ZOOKEEPER_HOST=${ZOOKEEPER_HOST}
-  mockoccasionapi:
-    image: ideafoundry/mock-occasion-api:2.7.4
-    depends_on:
-      - kafka
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
-      replicas: 1
-      placement:
-        constraints:
-          - engine.labels.node.type==512mb
-    environment:
-      - NUM_ORDERS=${NUM_ORDERS}
-      - NUM_OCCURRENCES=${NUM_OCCURRENCES}
-      - NUM_CUSTOMERS=${NUM_CUSTOMERS}
-      - NUM_QUESTIONS=${NUM_QUESTIONS}
-      - NUM_ANSWERS=${NUM_ANSWERS}
   mysql:
     image: mysql:8.0.1
     deploy:
