@@ -18,21 +18,10 @@ then
     docker_file="export-data-from-occasion-to-mysql-service.test.yml"
 fi
 
-if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "staging" ]
+if [ "$PROVIDER" = "aws" ] && ([ "$ENV" = "staging" ] || [ "$ENV" = "prod" ])
 then
     directory=/home/ubuntu/
     docker_file="export-data-from-occasion-to-mysql-service.aws.yml"
-fi
-
-if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "prod" ]
-then
-    directory=/home/ubuntu/
-    docker_file="export-data-from-occasion-to-mysql-service.aws.yml"
-fi
-
-if [ "$PROVIDER" != "aws" ] && [ "$ENV" = "staging" ]
-then
-    docker_file="export-data-from-occasion-to-mysql-service.yml"
 fi
 
 docker-machine ssh $manager_machine sudo docker login --username=$DOCKER_HUB_USER --password=$DOCKER_HUB_PASSWORD
