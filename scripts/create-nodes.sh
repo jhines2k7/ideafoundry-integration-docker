@@ -160,21 +160,10 @@ function copy_compose_file {
         docker_file="../export-data-from-occasion-to-mysql-service.test.yml"
     fi
 
-    if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "staging" ]
+    if [ "$PROVIDER" = "aws" ] && ([ "$ENV" = "staging" ] || [ "$ENV" = "prod" ])
     then
         directory=/home/ubuntu
         docker_file="../export-data-from-occasion-to-mysql-service.aws.yml"
-    fi
-
-    if [ "$PROVIDER" = "aws" ] && [ "$ENV" = "prod" ]
-    then
-        directory=/home/ubuntu
-        docker_file="../export-data-from-occasion-to-mysql-service.aws.yml"
-    fi
-
-    if [ "$PROVIDER" != "aws" ] && [ "$ENV" = "staging" ]
-    then
-        docker_file="../export-data-from-occasion-to-mysql-service.yml"
     fi
 
     echo "======> copying compose file to manager node ..."
