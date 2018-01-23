@@ -193,49 +193,22 @@ init_swarm_manager
 copy_compose_file
 #copy_env_file
 
-if [ $RECONCILE = true ]
+echo "======> creating kafka node ..."
+create_kafka_node
+
+create_kafka_result=$?
+
+if [ $create_kafka_result -ne 0 ]
 then
-    echo "======> creating kafka node ..."
-    create_kafka_node
+    echo "There was an error installing docker on the kafka node. The script will now exit."
 
-    create_kafka_result=$?
+    echo "=====> Cleaning up..."
 
-    if [ $create_kafka_result -ne 0 ]
-    then
-        echo "There was an error installing docker on the kafka node. The script will now exit."
+    bash ./remove-all-nodes.sh
 
-        echo "=====> Cleaning up..."
-
-        bash ./remove-all-nodes.sh
-
-        exit 1
-    fi
-    echo "======> finished creating kafka node ..."
-else
-    echo "======> creating kafka and mysql nodes ..."
-    create_kafka_node &
-    create_mysql_node &
-
-    wait %1
-    create_kafka_result=$?
-
-    wait %2
-    create_mysql_result=$?
-
-    if [ $create_kafka_result -ne 0 ] || [ $create_mysql_result -ne 0 ]
-    then
-        echo "There was an error installing docker on the mysql or kafka node. The script will now exit."
-
-        echo "=====> Cleaning up..."
-
-        bash ./remove-all-nodes.sh
-
-        exit 1
-    fi
-    echo "======> finished creating kafka and mysql nodes ..."
+    exit 1
 fi
-
-
+echo "======> finished creating kafka node ..."
 
 echo "======> creating worker nodes ..."
 create_save_order_to_db_worker_nodes $SAVE_ORDER_TO_DB_WORKER_NODE_COUNT &
