@@ -130,16 +130,6 @@ function create_node {
 
         return 1        
     fi
-    
-    if [ "$node_type" = "mysql" ]
-    then
-        copy_sql_schema
-
-        if [ $? -ne 0 ]
-        then
-            exit 2
-        fi
-    fi
  
     bash ./set-ufw-rules.sh $machine_id
     
