@@ -6,7 +6,7 @@ services:
 #      - saveOccasionOrderToDatabaseWorker
       - kafka
       - mockoccasionapi
-    image: ideafoundry/get-occasion-orders-by-verification-code-task:1.46.9-SNAPSHOT
+    image: ideafoundry/get-occasion-orders-by-verification-code-task:1.48.9-SNAPSHOT
     deploy:
       restart_policy:
         condition: on-failure
@@ -35,7 +35,7 @@ services:
 #    depends_on:
 #      - kafka
 #      - mysql
-#    image: ideafoundry/create-airtable-person-service:1.27.11-SNAPSHOT
+#    image: ideafoundry/create-airtable-person-service:1.31.11-SNAPSHOT
 #    deploy:
 #      restart_policy:
 #        condition: on-failure
