@@ -105,19 +105,6 @@ function create_kafka_node {
         exit 1
     fi
 }
- 
-function create_mysql_node {
-    echo "======> creating mysql worker node"
-    
-    bash ./create-node.sh mysql 1 $ENV $PROVIDER
-
-    result=$?
-
-    if [ $result -ne 0 ]
-    then
-        exit 1
-    fi
-}
 
 function init_swarm_manager {
     # initialize swarm mode and create a manager
