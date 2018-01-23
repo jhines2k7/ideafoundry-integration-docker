@@ -31,12 +31,10 @@ function create_manager_node {
 function set_manager_node_env_variables {
     local kafka_host="kafka"
     local zookeeper_host="zookeeper"
-    local mysql_host="mysql"
 
     if [ "$ENV" = "dev" ]
     then
         kafka_machine_ip=$(get_ip $(docker-machine ls --format "{{.Name}}" | grep 'kafka'))
-        mysql_host=$(get_ip $(docker-machine ls --format "{{.Name}}" | grep 'mysql'))
 
         kafka_host=$kafka_machine_ip
         zookeeper_host=$kafka_machine_ip
@@ -45,7 +43,7 @@ function set_manager_node_env_variables {
     ./runremote.sh \
        ./set-manager-env-variables.sh \
        $(get_manager_machine_name)  \
-       "$mysql_host" \
+       "$DB_HOST" \
        "$kafka_host" \
        "$zookeeper_host" \
        "$OKHTTP_CLIENT_TIMEOUT_SECONDS" \
@@ -92,7 +90,7 @@ function create_1gb_worker_nodes {
     bash ./create-node.sh 1gb $num_nodes $ENV $PROVIDER
 }
 
-#create kafka and mysql nodes
+#create kafka node
 function create_kafka_node {
     echo "======> creating kafka worker node"
 
