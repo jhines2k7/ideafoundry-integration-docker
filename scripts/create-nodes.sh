@@ -115,20 +115,6 @@ function init_swarm_manager {
     docker-machine ssh $manager_machine sudo docker swarm init --advertise-addr $ip
 }
 
-function copy_env_file {
-    local env_file="../.env"
-    local directory=/
-
-    if [ "$PROVIDER" = "aws" ]
-    then
-        directory=/home/ubuntu
-    fi
-
-    echo "======> copying .env file to manager node ..."
-
-    docker-machine scp $env_file $(get_manager_machine_name):$directory
-}
-
 function copy_compose_file {
     local docker_file="../export-data-from-occasion-to-mysql-service.yml"
     local directory=/
@@ -166,17 +152,11 @@ function create_512mb_worker_nodes {
 
 > $failed_installs_file
 
-if [ "$RECONCILE" = true ]
-then
-    bash ./remove-all-but-mysql-node.sh
-else
-    bash ./remove-all-nodes.sh
-fi
+bash ./remove-all-nodes.sh
 
 create_manager_node
 init_swarm_manager
 copy_compose_file
-#copy_env_file
 
 echo "======> creating kafka node ..."
 create_kafka_node
