@@ -31,10 +31,12 @@ function create_manager_node {
 function set_manager_node_env_variables {
     local kafka_host="kafka"
     local zookeeper_host="zookeeper"
+    local mysql_host="mysql"
 
     if [ "$ENV" = "dev" ]
     then
         kafka_machine_ip=$(get_ip $(docker-machine ls --format "{{.Name}}" | grep 'kafka'))
+        mysql_host=$(get_ip $(docker-machine ls --format "{{.Name}}" | grep 'mysql'))
 
         kafka_host=$kafka_machine_ip
         zookeeper_host=$kafka_machine_ip
@@ -43,7 +45,7 @@ function set_manager_node_env_variables {
     ./runremote.sh \
        ./set-manager-env-variables.sh \
        $(get_manager_machine_name)  \
-       "$DB_HOST" \
+       "$mysql_host" \
        "$kafka_host" \
        "$zookeeper_host" \
        "$OKHTTP_CLIENT_TIMEOUT_SECONDS" \
@@ -90,11 +92,24 @@ function create_1gb_worker_nodes {
     bash ./create-node.sh 1gb $num_nodes $ENV $PROVIDER
 }
 
-#create kafka node
+#create kafka and mysql nodes
 function create_kafka_node {
     echo "======> creating kafka worker node"
 
     bash ./create-node.sh kafka 1 $ENV $PROVIDER
+
+    result=$?
+
+    if [ $result -ne 0 ]
+    then
+        exit 1
+    fi
+}
+ 
+function create_mysql_node {
+    echo "======> creating mysql worker node"
+    
+    bash ./create-node.sh mysql 1 $ENV $PROVIDER
 
     result=$?
 
@@ -113,6 +128,20 @@ function init_swarm_manager {
 
     echo "Swarm manager machine name: $manager_machine"
     docker-machine ssh $manager_machine sudo docker swarm init --advertise-addr $ip
+}
+
+function copy_env_file {
+    local env_file="../.env"
+    local directory=/
+
+    if [ "$PROVIDER" = "aws" ]
+    then
+        directory=/home/ubuntu
+    fi
+
+    echo "======> copying .env file to manager node ..."
+
+    docker-machine scp $env_file $(get_manager_machine_name):$directory
 }
 
 function copy_compose_file {
@@ -152,28 +181,59 @@ function create_512mb_worker_nodes {
 
 > $failed_installs_file
 
-bash ./remove-all-nodes.sh
+if [ "$RECONCILE" = true ]
+then
+    bash ./remove-all-but-mysql-node.sh
+else
+    bash ./remove-all-nodes.sh
+fi
 
 create_manager_node
 init_swarm_manager
 copy_compose_file
+#copy_env_file
 
-echo "======> creating kafka node ..."
-create_kafka_node
-
-create_kafka_result=$?
-
-if [ $create_kafka_result -ne 0 ]
+if [ $RECONCILE = true ] || [ $IMMUTABLE_INFRASTRUCTURE = false ]
 then
-    echo "There was an error installing docker on the kafka node. The script will now exit."
+    echo "======> creating kafka node ..."
+    create_kafka_node
 
-    echo "=====> Cleaning up..."
+    create_kafka_result=$?
 
-    bash ./remove-all-nodes.sh
+    if [ $create_kafka_result -ne 0 ]
+    then
+        echo "There was an error installing docker on the kafka node. The script will now exit."
 
-    exit 1
+        echo "=====> Cleaning up..."
+
+        bash ./remove-all-nodes.sh
+
+        exit 1
+    fi
+    echo "======> finished creating kafka node ..."
+else
+    echo "======> creating kafka and mysql nodes ..."
+    create_kafka_node &
+    create_mysql_node &
+
+    wait %1
+    create_kafka_result=$?
+
+    wait %2
+    create_mysql_result=$?
+
+    if [ $create_kafka_result -ne 0 ] || [ $create_mysql_result -ne 0 ]
+    then
+        echo "There was an error installing docker on the mysql or kafka node. The script will now exit."
+
+        echo "=====> Cleaning up..."
+
+        bash ./remove-all-nodes.sh
+
+        exit 1
+    fi
+    echo "======> finished creating kafka and mysql nodes ..."
 fi
-echo "======> finished creating kafka node ..."
 
 echo "======> creating worker nodes ..."
 create_save_order_to_db_worker_nodes $SAVE_ORDER_TO_DB_WORKER_NODE_COUNT &

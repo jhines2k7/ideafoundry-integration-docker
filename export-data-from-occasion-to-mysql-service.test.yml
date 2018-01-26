@@ -6,7 +6,7 @@ services:
       - saveOccasionOrderToMySQLTask
       - kafka
       - mockoccasionapi
-    image: ideafoundry/get-orders-using-occasion-api-worker:1.48.9-SNAPSHOT
+    image: ideafoundry/get-orders-using-occasion-api-worker:1.49.9-SNAPSHOT
     deploy:
       restart_policy:
         condition: on-failure
