@@ -186,7 +186,7 @@ function create_512mb_worker_nodes {
 
 > $failed_installs_file
 
-if [ "$RECONCILE" = true ]
+if [ "$RECONCILE" = true ] || [ "$IMMUTABLE_INFRASTRUCTURE" = false ]
 then
     bash ./remove-all-but-mysql-node.sh
 else
