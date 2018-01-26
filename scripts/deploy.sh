@@ -34,6 +34,6 @@ docker-machine ssh $manager_machine \
 
 if [ "$IMMUTABLE_INFRASTRUCTURE" = false ]
 then
-    echo "======> removing mysql service from swarm"
+    echo "======> removing unused mysql service from swarm"
     docker-machine ssh $manager_machine sudo docker service rm integration_mysql
 fi
