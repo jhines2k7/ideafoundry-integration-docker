@@ -31,3 +31,8 @@ docker-machine ssh $manager_machine \
     --compose-file $directory$docker_file \
     --with-registry-auth \
     integration
+
+if [ "$IMMUTABLE_INFRASTRUCTURE" = false ]
+then
+    docker-machine ssh $manager_machine sudo docker service rm integration_mysql
+fi
