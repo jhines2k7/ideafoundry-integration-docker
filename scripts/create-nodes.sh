@@ -235,8 +235,6 @@ else
     echo "======> finished creating kafka and mysql nodes ..."
 fi
 
-
-
 echo "======> creating worker nodes ..."
 create_save_order_to_db_worker_nodes $SAVE_ORDER_TO_DB_WORKER_NODE_COUNT &
 create_1gb_worker_nodes 1 &
