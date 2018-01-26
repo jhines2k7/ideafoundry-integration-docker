@@ -27,6 +27,27 @@ function join_swarm {
         $(get_ip $manager_machine):2377
 }
 
+function copy_sql_schema {
+    echo "======> copying sql schema file to mysql node ..."
+
+    local mysql_machine=$(docker-machine ls --format "{{.Name}}" | grep 'mysql')
+    local sql_directory=/schemas
+
+    if [ "$PROVIDER" = "aws" ]
+    then
+        sql_directory=/home/ubuntu/schemas
+    fi
+
+    docker-machine ssh $mysql_machine mkdir $sql_directory
+
+    if [ $? -ne 0 ]
+    then
+        exit 1
+    fi
+
+    docker-machine scp ../docker/db/ideafoundry.sql $mysql_machine:$sql_directory
+}
+
 function create_node {
     local node_type=$1
     local ID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
@@ -108,6 +129,16 @@ function create_node {
         fi
 
         return 1        
+    fi
+
+    if [ "$node_type" = "mysql" ]
+    then
+        copy_sql_schema
+
+        if [ $? -ne 0 ]
+        then
+            exit 2
+        fi
     fi
  
     bash ./set-ufw-rules.sh $machine_id
