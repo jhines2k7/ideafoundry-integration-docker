@@ -193,7 +193,7 @@ init_swarm_manager
 copy_compose_file
 #copy_env_file
 
-if [ $RECONCILE = true ]
+if [ $RECONCILE = true ] || [ $IMMUTABLE_INFRASTRUCTURE = false ]
 then
     echo "======> creating kafka node ..."
     create_kafka_node
