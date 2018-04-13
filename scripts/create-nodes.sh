@@ -243,11 +243,14 @@ fi
 echo "======> creating worker nodes ..."
 create_save_order_to_db_worker_nodes $SAVE_ORDER_TO_DB_WORKER_NODE_COUNT &
 create_1gb_worker_nodes 1 &
+
 if [ "$ENV" = "dev" ] || [ "$ENV" = "test" ]
 then
     create_512mb_worker_nodes 1 &
 fi
+
 wait
+
 echo "======> finished creating worker nodes ..."
 
 bash ./remove-nodes-with-failed-docker-installations.sh
