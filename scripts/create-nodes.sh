@@ -12,7 +12,7 @@ function get_manager_machine_name {
 
 #create manager node
 function create_manager_node {
-    bash ./create-node.sh if_manager 1 $ENV $PROVIDER
+    bash ./create-node.sh ifmanager 1 $ENV $PROVIDER
 
     result=$?
 
@@ -94,14 +94,14 @@ function create_1gb_worker_nodes {
 
     echo "======> creating 1gb worker nodes"
     
-    bash ./create-node.sh if_1gb $num_nodes $ENV $PROVIDER
+    bash ./create-node.sh if1gb $num_nodes $ENV $PROVIDER
 }
 
 #create kafka and mysql nodes
 function create_kafka_node {
     echo "======> creating kafka worker node"
 
-    bash ./create-node.sh if_kafka 1 $ENV $PROVIDER
+    bash ./create-node.sh ifkafka 1 $ENV $PROVIDER
 
     result=$?
 
@@ -114,7 +114,7 @@ function create_kafka_node {
 function create_mysql_node {
     echo "======> creating mysql worker node"
     
-    bash ./create-node.sh if_mysql 1 $ENV $PROVIDER
+    bash ./create-node.sh ifmysql 1 $ENV $PROVIDER
 
     result=$?
 
@@ -181,7 +181,7 @@ function create_512mb_worker_nodes {
 
     echo "======> creating 512mb worker nodes"
     
-    bash ./create-node.sh if_512mb $num_nodes $ENV $PROVIDER
+    bash ./create-node.sh if512mb $num_nodes $ENV $PROVIDER
 }
 
 > $failed_installs_file
