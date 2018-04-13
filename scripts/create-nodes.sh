@@ -7,7 +7,7 @@ function get_ip {
 }
 
 function get_manager_machine_name {
-    echo $(docker-machine ls --format "{{.Name}}" | grep 'manager')
+    echo $(docker-machine ls --format "{{.Name}}" | grep 'ifmanager')
 }
 
 #create manager node
@@ -35,8 +35,8 @@ function set_manager_node_env_variables {
 
     if [ "$ENV" = "dev" ]
     then
-        kafka_machine_ip=$(get_ip $(docker-machine ls --format "{{.Name}}" | grep 'kafka'))
-        mysql_host=$(get_ip $(docker-machine ls --format "{{.Name}}" | grep 'mysql'))
+        kafka_machine_ip=$(get_ip $(docker-machine ls --format "{{.Name}}" | grep 'ifkafka'))
+        mysql_host=$(get_ip $(docker-machine ls --format "{{.Name}}" | grep 'ifmysql'))
 
         kafka_host=$kafka_machine_ip
         zookeeper_host=$kafka_machine_ip

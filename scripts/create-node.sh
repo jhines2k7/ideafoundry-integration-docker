@@ -9,7 +9,7 @@ function get_ip {
 }
 
 function get_manager_machine_name {
-    echo $(docker-machine ls --format "{{.Name}}" | grep 'manager')
+    echo $(docker-machine ls --format "{{.Name}}" | grep 'ifmanager')
 }
 
 function get_worker_token {
@@ -30,7 +30,7 @@ function join_swarm {
 function copy_sql_schema {
     echo "======> copying sql schema file to mysql node ..."
 
-    local mysql_machine=$(docker-machine ls --format "{{.Name}}" | grep 'mysql')
+    local mysql_machine=$(docker-machine ls --format "{{.Name}}" | grep 'ifmysql')
     local sql_directory=/schemas
 
     if [ "$PROVIDER" = "aws" ]
@@ -65,17 +65,17 @@ function create_node {
 
     case "$node_type" in
 
-    mysql)
+    ifmysql)
         instance_type="t2.small"
         size="2gb"
         ;;
 
-    kafka)
+    ifkafka)
         instance_type="t2.small"
         size="2gb"
         ;;
 
-    512mb) instance_type="t2.nano"
+    if512mb) instance_type="t2.nano"
         ;;
     
     esac
@@ -121,7 +121,7 @@ function create_node {
 
     if [ $? -ne 0 ]
     then
-        if [ $node_type = "manager" ] || [ $node_type = "mysql" ] || [ $node_type = "kafka" ]
+        if [ $node_type = "ifmanager" ] || [ $node_type = "ifmysql" ] || [ $node_type = "ifkafka" ]
         then
             exit 2
         else                                
@@ -131,7 +131,7 @@ function create_node {
         return 1        
     fi
 
-    if [ "$node_type" = "mysql" ]
+    if [ "$node_type" = "ifmysql" ]
     then
         copy_sql_schema
 
@@ -143,7 +143,7 @@ function create_node {
  
     bash ./set-ufw-rules.sh $machine_id
     
-    if [ "$node_type" != "manager" ]
+    if [ "$node_type" != "ifmanager" ]
     then
         join_swarm $machine_id
     fi

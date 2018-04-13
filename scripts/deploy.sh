@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-manager_machine=$(docker-machine ls --format "{{.Name}}" | grep 'manager')
+manager_machine=$(docker-machine ls --format "{{.Name}}" | grep 'ifmanager')
 
 docker_file="export-data-from-occasion-to-mysql-service.yml"
 directory=/
